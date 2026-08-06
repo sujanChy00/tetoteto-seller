@@ -2,7 +2,6 @@ import { TextFieldKeyboardType } from "@/types/components";
 import { useFieldContext } from "@/utils/form-hook-context";
 import {
   Column,
-  Host,
   OutlinedTextField,
   Text,
   useNativeState,
@@ -27,6 +26,7 @@ interface Props {
   columnsModifiers?: ModifierConfig[];
   inputModifiers?: ModifierConfig[];
   keyboardType?: TextFieldKeyboardType;
+  autoFocus?: boolean;
 }
 
 export const TextField = ({
@@ -41,6 +41,7 @@ export const TextField = ({
   columnsModifiers,
   inputModifiers,
   keyboardType,
+  autoFocus = false,
 }: Props) => {
   const field = useFieldContext<string | undefined>();
   const nativeValue = useNativeState(field.state.value ?? "");
@@ -63,59 +64,60 @@ export const TextField = ({
     [nativeValue, updateField],
   );
   return (
-    <Host matchContents useViewportSizeMeasurement>
-      <Column
-        modifiers={[
-          fillMaxWidth(),
-          padding(16, 0, 16, 0),
-          ...(columnsModifiers ?? []),
-        ]}
+    <Column
+      modifiers={[
+        fillMaxWidth(),
+        padding(16, 0, 16, 0),
+        ...(columnsModifiers ?? []),
+      ]}
+    >
+      <OutlinedTextField
+        autoFocus={autoFocus}
+        modifiers={[fillMaxWidth(), ...(inputModifiers ?? [])]}
+        isError={isInvalid}
+        enabled={!disabled}
+        value={nativeValue}
+        onValueChange={handleValueChange}
+        keyboardOptions={{
+          keyboardType,
+          capitalization: "none",
+          autoCorrectEnabled: false,
+        }}
       >
-        <OutlinedTextField
-          modifiers={[fillMaxWidth(), ...(inputModifiers ?? [])]}
-          isError={isInvalid}
-          enabled={!disabled}
-          value={nativeValue}
-          onValueChange={handleValueChange}
-          keyboardOptions={{
-            keyboardType,
-          }}
-        >
-          <OutlinedTextField.Label>
-            <Text>{label}</Text>
-          </OutlinedTextField.Label>
-          {placeholder ? (
-            <OutlinedTextField.Placeholder>
-              <Text>{placeholder}</Text>
-            </OutlinedTextField.Placeholder>
-          ) : null}
-          {leadingIcon ? (
-            <OutlinedTextField.LeadingIcon>
-              <Text>{leadingIcon}</Text>
-            </OutlinedTextField.LeadingIcon>
-          ) : null}
-          {trailingIcon ? (
-            <OutlinedTextField.TrailingIcon>
-              <Text>{trailingIcon}</Text>
-            </OutlinedTextField.TrailingIcon>
-          ) : null}
-          {prefix ? (
-            <OutlinedTextField.Prefix>
-              <Text>{prefix}</Text>
-            </OutlinedTextField.Prefix>
-          ) : null}
-          {suffix ? (
-            <OutlinedTextField.Suffix>
-              <Text>{suffix}</Text>
-            </OutlinedTextField.Suffix>
-          ) : null}
-          {supportingText ? (
-            <OutlinedTextField.SupportingText>
-              <Text>{supportingText}</Text>
-            </OutlinedTextField.SupportingText>
-          ) : null}
-        </OutlinedTextField>
-      </Column>
-    </Host>
+        <OutlinedTextField.Label>
+          <Text>{label}</Text>
+        </OutlinedTextField.Label>
+        {placeholder ? (
+          <OutlinedTextField.Placeholder>
+            <Text>{placeholder}</Text>
+          </OutlinedTextField.Placeholder>
+        ) : null}
+        {leadingIcon ? (
+          <OutlinedTextField.LeadingIcon>
+            <Text>{leadingIcon}</Text>
+          </OutlinedTextField.LeadingIcon>
+        ) : null}
+        {trailingIcon ? (
+          <OutlinedTextField.TrailingIcon>
+            <Text>{trailingIcon}</Text>
+          </OutlinedTextField.TrailingIcon>
+        ) : null}
+        {prefix ? (
+          <OutlinedTextField.Prefix>
+            <Text>{prefix}</Text>
+          </OutlinedTextField.Prefix>
+        ) : null}
+        {suffix ? (
+          <OutlinedTextField.Suffix>
+            <Text>{suffix}</Text>
+          </OutlinedTextField.Suffix>
+        ) : null}
+        {supportingText ? (
+          <OutlinedTextField.SupportingText>
+            <Text>{supportingText}</Text>
+          </OutlinedTextField.SupportingText>
+        ) : null}
+      </OutlinedTextField>
+    </Column>
   );
 };

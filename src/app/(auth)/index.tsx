@@ -1,7 +1,5 @@
-import { LoginForm } from "@/components/form/login-form";
+import { LoginForm } from "@/components/form/auth/login-form";
 
-const LoginScreen = () => {
-  return <LoginForm />;
-};
+const LoginScreen = () => <LoginForm />;
 
 export default LoginScreen;

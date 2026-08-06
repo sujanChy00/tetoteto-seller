@@ -3,7 +3,6 @@ import {
   Button,
   CircularWavyProgressIndicator,
   Column,
-  Host,
   Text,
   useMaterialColors,
 } from "@expo/ui/jetpack-compose";
@@ -32,41 +31,35 @@ export const SubmitButton = ({
   const colors = useMaterialColors();
 
   return (
-    <Host matchContents useViewportSizeMeasurement>
-      <form.Subscribe
-        selector={(state) => [state.isSubmitting, state.isFieldsValidating]}
-      >
-        {([isSubmitting, isValidating]) => (
-          <Column
-            modifiers={[
-              fillMaxWidth(),
-              padding(16, 0, 16, 0),
-              ...(columnsModifiers ?? []),
-            ]}
+    <form.Subscribe
+      selector={(state) => [state.isSubmitting, state.isFieldsValidating]}
+    >
+      {([isSubmitting, isValidating]) => (
+        <Column
+          modifiers={[
+            fillMaxWidth(),
+            padding(16, 0, 16, 0),
+            ...(columnsModifiers ?? []),
+          ]}
+        >
+          <Button
+            enabled={!isSubmitting && !isValidating && !disabled}
+            modifiers={[fillMaxWidth(), height(48), ...(buttonModifiers ?? [])]}
+            onClick={() => {
+              form.handleSubmit();
+            }}
           >
-            <Button
-              enabled={!isSubmitting && !isValidating && !disabled}
-              modifiers={[
-                fillMaxWidth(),
-                height(48),
-                ...(buttonModifiers ?? []),
-              ]}
-              onClick={() => {
-                form.handleSubmit();
-              }}
-            >
-              {isSubmitting ? (
-                <CircularWavyProgressIndicator
-                  color={colors.surfaceBright}
-                  modifiers={[height(35), width(35)]}
-                />
-              ) : (
-                <Text>{buttonText}</Text>
-              )}
-            </Button>
-          </Column>
-        )}
-      </form.Subscribe>
-    </Host>
+            {isSubmitting ? (
+              <CircularWavyProgressIndicator
+                color={colors.surfaceBright}
+                modifiers={[height(35), width(35)]}
+              />
+            ) : (
+              <Text>{buttonText}</Text>
+            )}
+          </Button>
+        </Column>
+      )}
+    </form.Subscribe>
   );
 };

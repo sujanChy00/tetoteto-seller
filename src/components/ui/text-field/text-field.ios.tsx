@@ -7,12 +7,14 @@ import {
   useNativeState,
 } from "@expo/ui/swift-ui";
 import {
+  autocorrectionDisabled,
   border,
   disabled as disabledModifier,
   frame,
   ModifierConfig,
   padding,
   keyboardType as swiftKeyboardTypeModifier,
+  textInputAutocapitalization,
 } from "@expo/ui/swift-ui/modifiers";
 import { useCallback, useMemo } from "react";
 import { scheduleOnRN } from "react-native-worklets";
@@ -23,6 +25,7 @@ interface Props {
   disabled?: boolean;
   columnsModifiers?: ModifierConfig[];
   inputModifiers?: ModifierConfig[];
+  autoFocus?: boolean;
   keyboardType?: TextFieldKeyboardType;
 }
 
@@ -31,6 +34,7 @@ export const TextField = ({
   disabled,
   columnsModifiers,
   inputModifiers,
+  autoFocus = false,
   keyboardType,
 }: Props) => {
   const colorDanger = useCSSVariable("--color-danger");
@@ -93,7 +97,10 @@ export const TextField = ({
           placeholder={placeholder}
           text={nativeValue}
           onTextChange={handleValueChange}
+          autoFocus={autoFocus}
           modifiers={[
+            autocorrectionDisabled(),
+            textInputAutocapitalization("never"),
             ...invalidModifiers,
             ...keyboardTypeModifiers,
             disabledModifier(!!disabled),

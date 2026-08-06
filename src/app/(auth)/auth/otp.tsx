@@ -1,11 +1,5 @@
-import { Text, View } from 'react-native'
+import { OtpForm } from "@/components/form/auth/otp-form";
 
-const OptScreen = () => {
-  return (
-    <View>
-      <Text>OptScreen</Text>
-    </View>
-  )
-}
+const OptScreen = () => <OtpForm />;
 
-export default OptScreen
+export default OptScreen;

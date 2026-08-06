@@ -1,3 +1,4 @@
+import { OTPField } from "@/components/ui/otp-field";
 import { PasswordField } from "@/components/ui/password-field";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { TextField } from "@/components/ui/text-field";
@@ -8,6 +9,7 @@ const { useAppForm: useForm } = createFormHook({
   fieldComponents: {
     TextField,
     PasswordField,
+    OTPField,
   },
   formComponents: {
     SubmitButton,
