@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import { NAV_THEME } from "@/constants/colors";
 import { AppThemeProvider, useAppTheme } from "@/context/app-theme-provider";
 import { AuthProvider, useLoading } from "@/context/auth-provider";
@@ -12,27 +13,29 @@ import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
-
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-
-  return  <GestureHandlerRootView style={{ flex: 1 }}>
-    <KeyboardProvider>
-      <AppThemeProvider>
-          <AuthProvider>
-            <QueryProvider>
-              <StackLayout />
-            </QueryProvider>
-          </AuthProvider>
-      </AppThemeProvider>
-    </KeyboardProvider>
-  </GestureHandlerRootView>
+  return (
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <KeyboardProvider>
+          <AppThemeProvider>
+            <AuthProvider>
+              <QueryProvider>
+                <StackLayout />
+                <Toaster />
+              </QueryProvider>
+            </AuthProvider>
+          </AppThemeProvider>
+        </KeyboardProvider>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
+  );
 }
-
 
 function StackLayout() {
   const [loaded, error] = useFonts({
