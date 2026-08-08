@@ -1,30 +1,63 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
-import "@/global.css";
-
+import { DarkTheme, DefaultTheme, Theme } from "expo-router/react-navigation";
 import { Platform } from "react-native";
+import { isIOS } from "./platform";
 
-export const Colors = {
+const ANDROID_THEME: { light: Theme; dark: Theme } = {
   light: {
-    text: "#000000",
-    background: "#ffffff",
-    backgroundElement: "#F0F0F3",
-    backgroundSelected: "#E0E1E6",
-    textSecondary: "#60646C",
+    dark: false,
+    colors: {
+      background: "rgb(249, 249, 255)",
+      border: "rgb(215, 217, 228)",
+      card: "rgb(255, 255, 255)",
+      notification: "rgb(186, 26, 26)",
+      primary: "rgb(0, 112, 233)",
+      text: "rgb(0, 0, 0)",
+    },
+    fonts: DefaultTheme.fonts,
   },
   dark: {
-    text: "#ffffff",
-    background: "#000000",
-    backgroundElement: "#212225",
-    backgroundSelected: "#2E3135",
-    textSecondary: "#B0B4BA",
+    dark: true,
+    colors: {
+      background: "rgb(0, 0, 0)",
+      border: "rgb(39, 42, 50)",
+      card: "rgb(16, 19, 27)",
+      notification: "rgb(147, 0, 10)",
+      primary: "rgb(3, 133, 255)",
+      text: "rgb(255, 255, 255)",
+    },
+    fonts: DarkTheme.fonts,
   },
-} as const;
+};
+const IOS_THEME: { light: Theme; dark: Theme } = {
+  light: {
+    dark: false,
+    colors: {
+      background: "rgb(242, 242, 247)",
+      border: "rgb(230, 230, 235)",
+      card: "rgb(255, 255, 255)",
+      notification: "rgb(255, 56, 43)",
+      primary: "rgb(0, 123, 254)",
+      text: "rgb(0, 0, 0)",
+    },
+    fonts: DefaultTheme.fonts,
+  },
+  dark: {
+    dark: true,
+    colors: {
+      background: "rgb(0, 0, 0)",
+      border: "rgb(40, 40, 42)",
+      card: "rgb(21, 21, 24)",
+      notification: "rgb(254, 67, 54)",
+      primary: "rgb(3, 133, 255)",
+      text: "rgb(255, 255, 255)",
+    },
+    fonts: DarkTheme.fonts,
+  },
+};
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export const NAV_THEME: { light: Theme; dark: Theme } = isIOS
+  ? IOS_THEME
+  : ANDROID_THEME;
 
 export const Fonts = Platform.select({
   ios: {
@@ -50,16 +83,3 @@ export const Fonts = Platform.select({
     mono: "var(--font-mono)",
   },
 });
-
-export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
-} as const;
-
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;

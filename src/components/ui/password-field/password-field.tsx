@@ -1,3 +1,5 @@
+import { useAndroidModifiers } from "@/hooks/use-android-modifiers";
+import { PasswordFieldProps } from "@/types/components";
 import { useFieldContext } from "@/utils/form-hook-context";
 import Visibility from "@expo/material-symbols/visibility.xml";
 import VisibilityOff from "@expo/material-symbols/visibility_off.xml";
@@ -10,36 +12,25 @@ import {
   TextButton,
   useNativeState,
 } from "@expo/ui/jetpack-compose";
-import {
-  fillMaxWidth,
-  ModifierConfig,
-  padding,
-} from "@expo/ui/jetpack-compose/modifiers";
+import { fillMaxWidth, padding } from "@expo/ui/jetpack-compose/modifiers";
 
 import { useCallback, useState } from "react";
 import { scheduleOnRN } from "react-native-worklets";
-
-interface Props {
-  label: string;
-  placeholder?: string;
-  supportingText?: string;
-  disabled?: boolean;
-  columnsModifiers?: ModifierConfig[];
-  inputModifiers?: ModifierConfig[];
-}
 
 export const PasswordField = ({
   label,
   placeholder,
   disabled,
-  supportingText,
-  columnsModifiers,
-  inputModifiers,
-}: Props) => {
+  paddingHorizontal = 0,
+  useFullWidth = false,
+  paddingVertical = 0,
+}: PasswordFieldProps) => {
   const field = useFieldContext<string | undefined>();
   const nativeValue = useNativeState(field.state.value ?? "");
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+  const fieldError = field.state.meta.errors?.[0];
 
+  const { fullWidthModifier } = useAndroidModifiers({ useFullWidth });
   const updateField = useCallback(
     (value: string) => {
       field.handleChange(value);
@@ -63,18 +54,22 @@ export const PasswordField = ({
   };
 
   return (
-    <Host matchContents useViewportSizeMeasurement>
+    <Host matchContents useViewportSizeMeasurement={useFullWidth}>
       <Column
         modifiers={[
-          fillMaxWidth(),
-          padding(16, 0, 16, 0),
-          ...(columnsModifiers ?? []),
+          ...fullWidthModifier,
+          padding(
+            paddingHorizontal,
+            paddingVertical,
+            paddingHorizontal,
+            paddingVertical,
+          ),
         ]}
       >
         <OutlinedTextField
           value={nativeValue}
           onValueChange={handleValueChange}
-          modifiers={[fillMaxWidth(), ...(inputModifiers ?? [])]}
+          modifiers={useFullWidth ? [fillMaxWidth()] : []}
           isError={isInvalid}
           enabled={!disabled}
           visualTransformation={isPasswordVisible ? "none" : "password"}
@@ -95,9 +90,9 @@ export const PasswordField = ({
               />
             </TextButton>
           </OutlinedTextField.TrailingIcon>
-          {supportingText && (
+          {fieldError && (
             <OutlinedTextField.SupportingText>
-              <Text>{supportingText}</Text>
+              <Text>{fieldError?.message}</Text>
             </OutlinedTextField.SupportingText>
           )}
         </OutlinedTextField>

@@ -1,11 +1,5 @@
-import { Text, View } from 'react-native'
+import { PasswordExpiredForm } from "@/components/form/auth/password-expired-form";
 
-const PasswordExpiredScreen = () => {
-  return (
-    <View>
-      <Text>PasswordExpiredScreen</Text>
-    </View>
-  )
-}
+const PasswordExpiredScreen = () => <PasswordExpiredForm />;
 
-export default PasswordExpiredScreen
+export default PasswordExpiredScreen;

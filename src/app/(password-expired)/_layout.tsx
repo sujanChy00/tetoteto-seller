@@ -1,11 +1,14 @@
-import { Text, View } from 'react-native'
+import { Stack } from "expo-router";
 
 const PasswordExpiredLayout = () => {
   return (
-    <View>
-      <Text>PasswordExpiredLayout</Text>
-    </View>
-  )
-}
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        headerBackButtonDisplayMode: "minimal",
+      }}
+    />
+  );
+};
 
-export default PasswordExpiredLayout
+export default PasswordExpiredLayout;

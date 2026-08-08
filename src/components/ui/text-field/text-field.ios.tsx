@@ -1,46 +1,39 @@
-import { TextFieldKeyboardType } from "@/types/components";
+import { useIOSModifiers } from "@/hooks/use-ios-modifiers";
+import { TextFieldProps } from "@/types/components";
 import { useFieldContext } from "@/utils/form-hook-context";
-import { Column } from "@expo/ui";
 import {
   Host,
   TextField as SwiftTextField,
+  VStack,
   useNativeState,
 } from "@expo/ui/swift-ui";
 import {
   autocorrectionDisabled,
-  border,
   disabled as disabledModifier,
-  frame,
-  ModifierConfig,
   padding,
   keyboardType as swiftKeyboardTypeModifier,
   textInputAutocapitalization,
 } from "@expo/ui/swift-ui/modifiers";
 import { useCallback, useMemo } from "react";
 import { scheduleOnRN } from "react-native-worklets";
-import { useCSSVariable } from "uniwind";
-
-interface Props {
-  placeholder?: string;
-  disabled?: boolean;
-  columnsModifiers?: ModifierConfig[];
-  inputModifiers?: ModifierConfig[];
-  autoFocus?: boolean;
-  keyboardType?: TextFieldKeyboardType;
-}
 
 export const TextField = ({
   placeholder,
   disabled,
-  columnsModifiers,
-  inputModifiers,
   autoFocus = false,
   keyboardType,
-}: Props) => {
-  const colorDanger = useCSSVariable("--color-danger");
+  paddingHorizontal = 0,
+  paddingVertical = 0,
+  useFullWidth = false,
+}: TextFieldProps) => {
   const field = useFieldContext<string | undefined>();
   const nativeValue = useNativeState(field.state.value ?? "");
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+  const fieldError = field.state.meta.errors?.[0];
+  const { fullWidthModifier, invalidBorderModifiers } = useIOSModifiers({
+    useFullWidth,
+    isInvalid,
+  });
 
   const updateField = useCallback(
     (value: string) => {
@@ -58,10 +51,6 @@ export const TextField = ({
     },
     [nativeValue, updateField],
   );
-
-  const invalidModifiers = isInvalid
-    ? [border({ color: colorDanger as string, width: 1 })]
-    : [];
 
   const keyboardTypeModifiers = useMemo(() => {
     if (keyboardType === "email")
@@ -81,16 +70,14 @@ export const TextField = ({
   }, [keyboardType]);
 
   return (
-    <Host matchContents useViewportSizeMeasurement>
-      <Column
+    <Host matchContents useViewportSizeMeasurement={useFullWidth}>
+      <VStack
         modifiers={[
-          frame({
-            maxWidth: Infinity,
-          }),
           padding({
-            horizontal: 16,
+            horizontal: paddingHorizontal,
+            vertical: paddingVertical,
           }),
-          ...(columnsModifiers ?? []),
+          ...fullWidthModifier,
         ]}
       >
         <SwiftTextField
@@ -101,13 +88,13 @@ export const TextField = ({
           modifiers={[
             autocorrectionDisabled(),
             textInputAutocapitalization("never"),
-            ...invalidModifiers,
+            ...invalidBorderModifiers,
             ...keyboardTypeModifiers,
+            ...fullWidthModifier,
             disabledModifier(!!disabled),
-            ...(inputModifiers ?? []),
           ]}
         />
-      </Column>
+      </VStack>
     </Host>
   );
 };

@@ -1,11 +1,5 @@
-import { Text, View } from 'react-native'
+import { UpdatePasswordForm } from "@/components/form/auth/update-password-form";
 
-const UpdatePasswordScreen = () => {
-  return (
-    <View>
-      <Text>UpdatePasswordScreen</Text>
-    </View>
-  )
-}
+const UpdatePasswordScreen = () => <UpdatePasswordForm />;
 
-export default UpdatePasswordScreen
+export default UpdatePasswordScreen;

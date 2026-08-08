@@ -1,14 +1,17 @@
 import { useMMKVString } from "react-native-mmkv";
 
 import {
-    SASTO_SULAV_iNDIA,
-    SASTO_SULAV_NEPAL,
-    SELECTED_SHOP_KEY,
+  SASTO_SULAV_iNDIA,
+  SASTO_SULAV_NEPAL,
+  SELECTED_SHOP_KEY,
 } from "@/constants/query-keys";
 import { ISellerShopDetail } from "@/types/IProfile";
 import { storage } from "@/utils/storage";
+import { useUser } from "./use-user";
 
 export const useSelectedShop = () => {
+  const { user } = useUser();
+
   const [shop, setShop] = useMMKVString(SELECTED_SHOP_KEY, storage);
 
   const selectedShop = JSON.parse(shop || "{}") as ISellerShopDetail | null;
@@ -22,6 +25,12 @@ export const useSelectedShop = () => {
   const isSastoSulavSelected =
     selectedShop?.shopId === SASTO_SULAV_NEPAL ||
     selectedShop?.shopId === SASTO_SULAV_iNDIA;
+  const shopLists = user
+    ? user?.shopDetails.map((shop) => ({
+        label: shop.shopName,
+        value: shop.shopId,
+      }))
+    : [];
 
   return {
     selectedShop,
@@ -29,5 +38,6 @@ export const useSelectedShop = () => {
     isIndianShop,
     isNepaliShop,
     isSastoSulavSelected,
+    shopLists,
   };
 };

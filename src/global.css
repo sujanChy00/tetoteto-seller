@@ -28,8 +28,8 @@
       --color-default: oklch(94% 0.001 286.375);
       --color-default-foreground: oklch(0.2103 0.0059 285.89);
 
-      --color-accent: oklch(0.6204 0.195 253.83);
-      --color-accent-foreground: oklch(0.9911 0 0);
+      --color-primary: oklch(0.6204 0.195 253.83);
+      --color-primary-foreground: oklch(0.9911 0 0);
 
       /* Form Fields */
       --color-field-background: oklch(100% 0 0);
@@ -82,8 +82,8 @@
       --color-default: oklch(27.4% 0.006 286.033);
       --color-default-foreground: oklch(0.9911 0 0);
 
-      --color-accent: oklch(0.6204 0.195 253.83);
-      --color-accent-foreground: oklch(0.9911 0 0);
+      --color-primary: oklch(0.6204 0.195 253.83);
+      --color-primary-foreground: oklch(0.9911 0 0);
 
       /* Form Fields */
       --color-field-background: oklch(0.2103 0.0059 285.89);

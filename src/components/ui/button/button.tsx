@@ -1,3 +1,4 @@
+import { useAndroidModifiers } from "@/hooks/use-android-modifiers";
 import { UIButtonProps } from "@/types/components";
 import {
   ElevatedButton,
@@ -6,28 +7,33 @@ import {
   TextButton,
   Button as UIButton,
 } from "@expo/ui/jetpack-compose";
-import {
-  fillMaxWidth,
-  ModifierConfig,
-  padding,
-} from "@expo/ui/jetpack-compose/modifiers";
+import { padding } from "@expo/ui/jetpack-compose/modifiers";
 
 export const Button = ({
   variant = "default",
   onPress,
-  ...rest
-}: UIButtonProps & { modifiers?: ModifierConfig[] }) => {
+  paddingHorizontal = 0,
+  paddingVertical = 0,
+  useFullWidth = false,
+  children,
+}: UIButtonProps) => {
+  const { fullWidthModifier } = useAndroidModifiers({ useFullWidth });
+
   if (variant === "filled")
     return (
       <FilledTonalButton
         onClick={onPress}
         modifiers={[
-          fillMaxWidth(),
-          padding(16, 0, 16, 0),
-          ...(rest.modifiers ?? []),
+          ...fullWidthModifier,
+          padding(
+            paddingHorizontal,
+            paddingVertical,
+            paddingHorizontal,
+            paddingVertical,
+          ),
         ]}
       >
-        {rest.children}
+        {children}
       </FilledTonalButton>
     );
   if (variant === "outlined")
@@ -35,12 +41,16 @@ export const Button = ({
       <OutlinedButton
         onClick={onPress}
         modifiers={[
-          fillMaxWidth(),
-          padding(16, 0, 16, 0),
-          ...(rest.modifiers ?? []),
+          ...fullWidthModifier,
+          padding(
+            paddingHorizontal,
+            paddingVertical,
+            paddingHorizontal,
+            paddingVertical,
+          ),
         ]}
       >
-        {rest.children}
+        {children}
       </OutlinedButton>
     );
   if (variant === "elevated")
@@ -48,12 +58,16 @@ export const Button = ({
       <ElevatedButton
         onClick={onPress}
         modifiers={[
-          fillMaxWidth(),
-          padding(16, 0, 16, 0),
-          ...(rest.modifiers ?? []),
+          ...fullWidthModifier,
+          padding(
+            paddingHorizontal,
+            paddingVertical,
+            paddingHorizontal,
+            paddingVertical,
+          ),
         ]}
       >
-        {rest.children}
+        {children}
       </ElevatedButton>
     );
   if (variant === "text")
@@ -61,12 +75,16 @@ export const Button = ({
       <TextButton
         onClick={onPress}
         modifiers={[
-          fillMaxWidth(),
-          padding(16, 0, 16, 0),
-          ...(rest.modifiers ?? []),
+          ...fullWidthModifier,
+          padding(
+            paddingHorizontal,
+            paddingVertical,
+            paddingHorizontal,
+            paddingVertical,
+          ),
         ]}
       >
-        {rest.children}
+        {children}
       </TextButton>
     );
 
@@ -74,12 +92,16 @@ export const Button = ({
     <UIButton
       onClick={onPress}
       modifiers={[
-        fillMaxWidth(),
-        padding(16, 0, 16, 0),
-        ...(rest.modifiers ?? []),
+        ...fullWidthModifier,
+        padding(
+          paddingHorizontal,
+          paddingVertical,
+          paddingHorizontal,
+          paddingVertical,
+        ),
       ]}
     >
-      {rest.children}
+      {children}
     </UIButton>
   );
 };

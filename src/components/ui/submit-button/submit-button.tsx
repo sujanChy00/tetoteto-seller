@@ -1,65 +1,72 @@
+import { useAndroidModifiers } from "@/hooks/use-android-modifiers";
 import { useFormContext } from "@/utils/form-hook-context";
 import {
   Button,
   CircularWavyProgressIndicator,
   Column,
+  Host,
   Text,
   useMaterialColors,
 } from "@expo/ui/jetpack-compose";
-import {
-  fillMaxWidth,
-  height,
-  ModifierConfig,
-  padding,
-  width,
-} from "@expo/ui/jetpack-compose/modifiers";
+import { height, padding, width } from "@expo/ui/jetpack-compose/modifiers";
 
 interface Props {
   buttonText: string;
-  columnsModifiers?: ModifierConfig[];
-  buttonModifiers?: ModifierConfig[];
   disabled?: boolean;
+  paddingHorizontal?: number;
+  useFullWidth?: boolean;
+  paddingVertical?: number;
+  height?: number;
 }
 
 export const SubmitButton = ({
   buttonText,
-  columnsModifiers,
-  buttonModifiers,
   disabled,
+  paddingHorizontal = 0,
+  useFullWidth = false,
+  height: buttonHeight = 48,
+  paddingVertical = 0,
 }: Props) => {
   const form = useFormContext();
   const colors = useMaterialColors();
+  const { fullWidthModifier } = useAndroidModifiers({ useFullWidth });
 
   return (
-    <form.Subscribe
-      selector={(state) => [state.isSubmitting, state.isFieldsValidating]}
-    >
-      {([isSubmitting, isValidating]) => (
-        <Column
-          modifiers={[
-            fillMaxWidth(),
-            padding(16, 0, 16, 0),
-            ...(columnsModifiers ?? []),
-          ]}
-        >
-          <Button
-            enabled={!isSubmitting && !isValidating && !disabled}
-            modifiers={[fillMaxWidth(), height(48), ...(buttonModifiers ?? [])]}
-            onClick={() => {
-              form.handleSubmit();
-            }}
+    <Host matchContents useViewportSizeMeasurement={useFullWidth}>
+      <form.Subscribe
+        selector={(state) => [state.isSubmitting, state.isFieldsValidating]}
+      >
+        {([isSubmitting, isValidating]) => (
+          <Column
+            modifiers={[
+              ...fullWidthModifier,
+              padding(
+                paddingHorizontal,
+                paddingVertical,
+                paddingHorizontal,
+                paddingVertical,
+              ),
+            ]}
           >
-            {isSubmitting ? (
-              <CircularWavyProgressIndicator
-                color={colors.surfaceBright}
-                modifiers={[height(35), width(35)]}
-              />
-            ) : (
-              <Text>{buttonText}</Text>
-            )}
-          </Button>
-        </Column>
-      )}
-    </form.Subscribe>
+            <Button
+              enabled={!isSubmitting && !isValidating && !disabled}
+              modifiers={[...fullWidthModifier, height(buttonHeight)]}
+              onClick={() => {
+                form.handleSubmit();
+              }}
+            >
+              {isSubmitting ? (
+                <CircularWavyProgressIndicator
+                  color={colors.surfaceBright}
+                  modifiers={[height(35), width(35)]}
+                />
+              ) : (
+                <Text>{buttonText}</Text>
+              )}
+            </Button>
+          </Column>
+        )}
+      </form.Subscribe>
+    </Host>
   );
 };

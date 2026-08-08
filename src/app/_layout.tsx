@@ -1,12 +1,13 @@
 import { Toaster } from "@/components/ui/toaster";
-import { NAV_THEME } from "@/constants/colors";
+import { NAV_THEME } from "@/constants/theme";
 import { AppThemeProvider, useAppTheme } from "@/context/app-theme-provider";
 import { AuthProvider, useLoading } from "@/context/auth-provider";
 import { QueryProvider } from "@/context/query-provider";
 import { useAppInit } from "@/hooks/use-app-init";
 import { useUser } from "@/hooks/use-user";
 import { useFonts } from "expo-font";
-import { Stack, ThemeProvider } from "expo-router";
+import { Stack } from "expo-router";
+import { ThemeProvider } from "expo-router/react-navigation";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";

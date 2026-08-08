@@ -1,21 +1,72 @@
+import { useIOSModifiers } from "@/hooks/use-ios-modifiers";
 import { UIButtonProps } from "@/types/components";
 import { Button as UIButton } from "@expo/ui/swift-ui";
-import { ModifierConfig } from "@expo/ui/swift-ui/modifiers";
+import {
+  buttonStyle,
+  controlSize,
+  labelStyle,
+  padding,
+  disabled as swiftUIDisabledModifier,
+} from "@expo/ui/swift-ui/modifiers";
+import { useMemo } from "react";
 
 export const Button = ({
-  label,
-  systemImage,
-  modifiers,
-  role,
+  systemImageIos,
+  roleIos,
+  iconOnlyIos,
   onPress,
-}: UIButtonProps & { modifiers?: ModifierConfig[] }) => {
+  variant,
+  size = "regular",
+  disabled,
+  paddingHorizontal = 0,
+  paddingVertical = 0,
+  useFullWidth = false,
+  children,
+}: UIButtonProps) => {
+  const { fullWidthModifier } = useIOSModifiers({ useFullWidth });
+  const disabledModifiers = useMemo(
+    () => (disabled ? [swiftUIDisabledModifier()] : []),
+    [disabled],
+  );
+
+  const buttonType = useMemo(() => {
+    switch (variant) {
+      case "outlined":
+        return [buttonStyle("bordered")];
+      case "filled":
+        return [buttonStyle("borderedProminent")];
+      case "text":
+        return [buttonStyle("plain")];
+      case "elevated":
+        return [buttonStyle("glass")];
+      default:
+        return [];
+    }
+  }, [variant]);
+
+  const isIconOnly = useMemo(
+    () => (iconOnlyIos ? [labelStyle("iconOnly")] : []),
+    [iconOnlyIos],
+  );
+
   return (
     <UIButton
-      systemImage={systemImage}
-      label={label}
-      modifiers={modifiers}
-      role={role}
+      systemImage={systemImageIos}
+      role={roleIos}
       onPress={onPress}
-    />
+      modifiers={[
+        ...disabledModifiers,
+        ...buttonType,
+        ...fullWidthModifier,
+        controlSize(size),
+        ...isIconOnly,
+        padding({
+          horizontal: paddingHorizontal,
+          vertical: paddingVertical,
+        }),
+      ]}
+    >
+      {children}
+    </UIButton>
   );
 };

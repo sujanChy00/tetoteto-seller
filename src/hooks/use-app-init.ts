@@ -1,6 +1,6 @@
 import { useLoading } from "@/context/auth-provider";
 
-import { getUser } from "@/query/auth";
+import { getUser } from "@/queries/auth-query";
 import { useSelectedShop } from "./use-selected-shop";
 import { useUser } from "./use-user";
 

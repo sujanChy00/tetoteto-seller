@@ -1,41 +1,49 @@
 import { useForm } from "@/hooks/use-form";
 import { useSelector } from "@tanstack/react-form";
 import { Image } from "expo-image";
-import { Text, View } from "react-native";
-import { toast } from "../../ui/toast";
+import { View } from "react-native";
 
-import { Host } from "@expo/ui";
+import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
+import { isIOS } from "@/constants/platform";
+import { useHaptics } from "@/hooks/use-haptics";
+import { useLoginMutation } from "@/mutation/auth-mutation";
+import { LoginFormData, LoginSchema } from "@/schema/auth-schema";
+import { Host, Text } from "@expo/ui";
 import { useRouter } from "expo-router";
-import {
-  Keyboard,
-  Platform,
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { ScrollView } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { Button } from "../../ui/button";
 import { ThemedText } from "../../ui/themed-text";
-import { UIText } from "../../ui/ui-text";
 
 export const LoginForm = () => {
   const router = useRouter();
+  const hapticFeedBack = useHaptics();
+
+  const { mutate: login, isPending } = useLoginMutation();
+
   const Form = useForm({
     defaultValues: {
       email: "",
       password: "",
+    } as LoginFormData,
+    validators: {
+      onSubmit: LoginSchema,
     },
-    onSubmit: ({ value }) => {
-      toast.success("Logged in successfully");
-      console.log(value);
+    onSubmit: ({ value, meta }) => {
+      login(value);
+    },
+    onSubmitInvalid: () => {
+      hapticFeedBack("error");
     },
   });
 
   const email = useSelector(Form.store, (state) => state.values.email);
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={isIOS ? "padding" : "height"}
       style={{ flex: 1 }}
     >
+      <FullScreenSpinner isVisible={isPending} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
@@ -43,71 +51,74 @@ export const LoginForm = () => {
         className="py-safe bg-background"
         style={{ flex: 1 }}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="flex-1 pt-28">
-            <View className="items-center gap-y-3">
-              <Image
-                source={require("@/assets/images/logo.png")}
-                style={{ width: 120, height: 120 }}
-                contentFit="contain"
+        <View className="flex-1 pt-28">
+          <View className="items-center gap-y-3">
+            <Image
+              source={require("@/assets/images/logo.png")}
+              style={{ width: 120, height: 120 }}
+              contentFit="contain"
+            />
+            <View className="gap-0.5">
+              <ThemedText className="text-foreground text-2xl font-semibold text-center">
+                Welcome Back!
+              </ThemedText>
+              <ThemedText className="text-muted text-center">
+                Please sign in to continue.
+              </ThemedText>
+            </View>
+          </View>
+          <Form.AppForm>
+            <View className="px-4 gap-6 items-center pt-8">
+              <Form.AppField
+                name="email"
+                children={(field) => (
+                  <field.TextField
+                    useFullWidth
+                    paddingHorizontal={16}
+                    keyboardType="email"
+                    placeholder="email"
+                    label="Email"
+                  />
+                )}
               />
-              <View className="gap-0.5">
-                <ThemedText className="text-foreground text-2xl font-semibold text-center">
-                  Welcome Back!
-                </ThemedText>
-                <Text className="text-muted text-center">
-                  Please sign in to continue.
-                </Text>
+              <Form.AppField
+                name="password"
+                children={(field) => (
+                  <field.PasswordField
+                    useFullWidth
+                    paddingHorizontal={16}
+                    placeholder="password"
+                    label="Password"
+                  />
+                )}
+              />
+              <View>
+                <Form.SubmitButton
+                  buttonText="Login"
+                  useFullWidth
+                  paddingHorizontal={16}
+                />
+                <Host matchContents useViewportSizeMeasurement>
+                  <Button
+                    useFullWidth
+                    paddingHorizontal={16}
+                    onPress={() => {
+                      router.push({
+                        pathname: "/auth/forgot-password",
+                        params: {
+                          email,
+                        },
+                      });
+                    }}
+                    variant="text"
+                  >
+                    <Text>Forgot Password?</Text>
+                  </Button>
+                </Host>
               </View>
             </View>
-            <Form.AppForm>
-              <View className="px-4 gap-6 items-center pt-8">
-                <Form.AppField
-                  name="email"
-                  children={(field) => (
-                    <Host matchContents useViewportSizeMeasurement>
-                      <field.TextField
-                        keyboardType="email"
-                        placeholder="email"
-                        label="Email"
-                      />
-                    </Host>
-                  )}
-                />
-                <Form.AppField
-                  name="password"
-                  children={(field) => (
-                    <field.PasswordField
-                      placeholder="password"
-                      label="Password"
-                    />
-                  )}
-                />
-                <View>
-                  <Host matchContents useViewportSizeMeasurement>
-                    <Form.SubmitButton buttonText="Login" />
-                  </Host>
-                  <Host matchContents useViewportSizeMeasurement>
-                    <Button
-                      onPress={() => {
-                        router.push({
-                          pathname: "/auth/forgot-password",
-                          params: {
-                            email,
-                          },
-                        });
-                      }}
-                      label="Theme"
-                      variant="text"
-                    >
-                      <UIText>Forgot Password?</UIText>
-                    </Button>
-                  </Host>
-                </View>
-              </View>
-            </Form.AppForm>
-          </View>
-        </TouchableWithoutFeedback>
+          </Form.AppForm>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

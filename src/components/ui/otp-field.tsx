@@ -14,6 +14,7 @@ export const OTPField = ({
   className?: string;
 }) => {
   const field = useFieldContext<string | undefined>();
+  const fieldError = field.state.meta.errors?.[0];
 
   return (
     <View className={twMerge("w-full gap-y-1", className)}>
@@ -24,7 +25,7 @@ export const OTPField = ({
         value={field.state.value}
         onChangeText={field.handleChange}
         onBlur={field.handleBlur}
-        error={field.state.meta.errors?.[0]}
+        error={fieldError}
         {...rest}
       />
     </View>
