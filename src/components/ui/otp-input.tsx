@@ -170,7 +170,7 @@ export const InputOTP = forwardRef<InputOTPRef, InputOTPProps>(
               error
                 ? "border-danger"
                 : isActive
-                  ? "border-accent"
+                  ? "border-primary"
                   : "border-foreground",
               disabled && "opacity-60 cursor-not-allowed",
             )}
@@ -186,7 +186,7 @@ export const InputOTP = forwardRef<InputOTPRef, InputOTPProps>(
 
             {showCursor && isActive && !hasValue && (
               <View
-                className="bg-accent"
+                className="bg-primary"
                 style={{
                   position: "absolute",
                   width: 2,

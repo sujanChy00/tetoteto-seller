@@ -41,7 +41,7 @@ export const ShopSelector = () => {
         </View>
         <ThemedText>
           Welcome back,{" "}
-          <ThemedText className="font-semibold text-accent">
+          <ThemedText className="font-semibold text-primary">
             {user?.profileDetails.shopAssistantName}
           </ThemedText>
         </ThemedText>

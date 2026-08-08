@@ -1,3 +1,4 @@
+import { SalesChart } from "@/components/home/sales-chart";
 import { ShopSelector } from "@/components/layout/shop-selector";
 import { useLogoutMutation } from "@/mutation/auth-mutation";
 import { useGetHomeData } from "@/queries/home-query";
@@ -27,6 +28,7 @@ export default function Index() {
       contentContainerClassName="py-safe-offset-8"
     >
       <ShopSelector />
+      <SalesChart isPending={isLoading} data={data?.weeklySales} />
       <Button
         title="logout"
         onPress={() => {
