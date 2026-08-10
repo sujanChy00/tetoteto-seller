@@ -1,7 +1,7 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
-import { Button, Host, Row, Text } from "@expo/ui";
+import { Host } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
@@ -80,13 +80,6 @@ export const ResetPasswordForm = () => {
         }}
       >
         <Form.SubmitButton buttonText="Reset Password" />
-        <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-          <Button onPress={() => router.push("/(auth)")} variant="text">
-            <Row spacing={10} alignment="center">
-              <Text>Login with another account?</Text>
-            </Row>
-          </Button>
-        </Host>
       </KeyboardStickyView>
     </Form.AppForm>
   );

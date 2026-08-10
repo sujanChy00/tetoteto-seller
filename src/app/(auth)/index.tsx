@@ -1,5 +1,5 @@
-import { PasswordExpiredForm } from "@/components/form/auth/password-expired-form";
+import { LoginForm } from "@/components/form/auth/login-form";
 
-const LoginScreen = () => <PasswordExpiredForm />;
+const LoginScreen = () => <LoginForm />;
 
 export default LoginScreen;

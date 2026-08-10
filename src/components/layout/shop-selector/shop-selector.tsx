@@ -93,8 +93,7 @@ export const ShopSelector = () => {
                       isSelected ? "font-medium text-success" : "font-normal",
                     )}
                   >
-                    {shop.label} aldfbjdlsfblajdjvbsdfjghbsjdgfkhsdfjkghsdfjk
-                    aldfbjdlsfblajdjvbsdfjghbsjdgfkhsdfjkghsdfjk
+                    {shop.label}
                   </ThemedText>
                 </Pressable>
               );

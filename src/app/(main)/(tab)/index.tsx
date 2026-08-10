@@ -36,23 +36,7 @@ export default function Index() {
     >
       <ShopSelector />
       {/*<DateRangePicker value={date} onChange={setDate} />*/}
-      {/*<Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-        <Row modifiers={[fillMaxWidth()]} spacing={10}>
-          <Button modifiers={[weight(1)]}>
-            <Text>Button 1</Text>
-          </Button>
-          <Button modifiers={[weight(1)]}>
-            <Text>Button 2</Text>
-          </Button>
-        </Row>
-      </Host>
-      <View className="px-4">
-        <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-          <Button modifiers={[weight(1)]}>
-            <Text>Button 1</Text>
-          </Button>
-        </Host>
-      </View>*/}
+
       <SalesChart isPending={isLoading} data={data?.weeklySales} />
       <Button
         title="logout"
