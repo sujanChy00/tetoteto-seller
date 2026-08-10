@@ -72,36 +72,39 @@ export const LoginForm = () => {
               <Form.AppField
                 name="email"
                 children={(field) => (
-                  <field.TextField
-                    useFullWidth
-                    paddingHorizontal={16}
-                    keyboardType="email"
-                    placeholder="email"
-                    label="Email"
-                  />
+                  <Host
+                    matchContents={{ vertical: true }}
+                    style={{ width: "100%" }}
+                  >
+                    <field.TextField
+                      keyboardType="email"
+                      placeholder="email"
+                      label="Email"
+                    />
+                  </Host>
                 )}
               />
               <Form.AppField
                 name="password"
                 children={(field) => (
-                  <field.PasswordField
-                    useFullWidth
-                    paddingHorizontal={16}
-                    placeholder="password"
-                    label="Password"
-                  />
+                  <Host
+                    matchContents={{ vertical: true }}
+                    style={{ width: "100%" }}
+                  >
+                    <field.PasswordField
+                      placeholder="password"
+                      label="Password"
+                    />
+                  </Host>
                 )}
               />
-              <View>
-                <Form.SubmitButton
-                  buttonText="Login"
-                  useFullWidth
-                  paddingHorizontal={16}
-                />
-                <Host matchContents useViewportSizeMeasurement>
+              <View className="w-full">
+                <Form.SubmitButton buttonText="Login" />
+                <Host
+                  matchContents={{ vertical: true }}
+                  style={{ width: "100%" }}
+                >
                   <Button
-                    useFullWidth
-                    paddingHorizontal={16}
                     onPress={() => {
                       router.push({
                         pathname: "/auth/forgot-password",

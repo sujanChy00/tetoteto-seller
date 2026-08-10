@@ -1,3 +1,4 @@
+import { ObservableState } from "@expo/ui";
 import { ButtonProps } from "@expo/ui/swift-ui";
 
 export interface UIButtonProps {
@@ -6,12 +7,11 @@ export interface UIButtonProps {
   systemImageIos?: ButtonProps["systemImage"];
   roleIos?: ButtonProps["role"];
   onPress?: () => void;
-  paddingHorizontal?: number;
-  useFullWidth?: boolean;
-  paddingVertical?: number;
   size?: "mini" | "small" | "regular" | "large";
   disabled?: boolean;
   iconOnlyIos?: boolean;
+  height?: number;
+  width?: number;
 }
 
 export type UITextProps = {
@@ -35,9 +35,6 @@ export type PasswordFieldProps = {
   label: string;
   placeholder?: string;
   disabled?: boolean;
-  paddingHorizontal?: number;
-  useFullWidth?: boolean;
-  paddingVertical?: number;
   autoFocus?: boolean;
 };
 
@@ -51,9 +48,25 @@ export type TextFieldProps = {
   disabled?: boolean;
   keyboardType?: TextFieldKeyboardType;
   autoFocus?: boolean;
-  paddingHorizontal?: number;
-  useFullWidth?: boolean;
-  paddingVertical?: number;
+  multiLine?: boolean;
+  maxLines?: number;
+};
+export type TextInputProps = {
+  label?: string;
+  placeholder?: string;
+  prefix?: string;
+  suffix?: string;
+  leadingIcon?: string;
+  trailingIcon?: string;
+  disabled?: boolean;
+  keyboardType?: TextFieldKeyboardType;
+  autoFocus?: boolean;
+  isInvalid?: boolean;
+  variant?: "default" | "filled" | "outline";
+  multiLine?: boolean;
+  maxLines?: number;
+  value?: ObservableState<string>;
+  onValueChange?: (text: string) => void;
 };
 
 export type UiSpinnerProps = {

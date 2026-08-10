@@ -1,6 +1,7 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
+import { Button, Host, Row, Text } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
@@ -36,23 +37,29 @@ export const ResetPasswordForm = () => {
             <Form.AppField
               name="newPassword"
               children={(Field) => (
-                <Field.PasswordField
-                  placeholder="********"
-                  label="New Password"
-                  useFullWidth
-                  paddingHorizontal={16}
-                />
+                <Host
+                  matchContents={{ vertical: true }}
+                  style={{ width: "100%" }}
+                >
+                  <Field.PasswordField
+                    placeholder="********"
+                    label="New Password"
+                  />
+                </Host>
               )}
             />
             <Form.AppField
               name="confirmNewPassword"
               children={(Field) => (
-                <Field.PasswordField
-                  placeholder="********"
-                  label="Confirm New Password"
-                  useFullWidth
-                  paddingHorizontal={16}
-                />
+                <Host
+                  matchContents={{ vertical: true }}
+                  style={{ width: "100%" }}
+                >
+                  <Field.PasswordField
+                    placeholder="********"
+                    label="Confirm New Password"
+                  />
+                </Host>
               )}
             />
           </View>
@@ -65,17 +72,21 @@ export const ResetPasswordForm = () => {
           bottom: 0,
           left: 0,
           right: 0,
+          paddingHorizontal: 16,
         }}
         offset={{
           opened: bottom - 20,
           closed: -16,
         }}
       >
-        <Form.SubmitButton
-          buttonText="Reset Password"
-          useFullWidth
-          paddingHorizontal={16}
-        />
+        <Form.SubmitButton buttonText="Reset Password" />
+        <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
+          <Button onPress={() => router.push("/(auth)")} variant="text">
+            <Row spacing={10} alignment="center">
+              <Text>Login with another account?</Text>
+            </Row>
+          </Button>
+        </Host>
       </KeyboardStickyView>
     </Form.AppForm>
   );

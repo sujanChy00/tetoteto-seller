@@ -1,10 +1,20 @@
-import { Text, View } from "react-native";
+import { ItemFilters } from "@/components/item/item-filters";
+import { ThemedText } from "@/components/ui/themed-text";
+import { useLocalSearchParams } from "expo-router";
 
 const ItemScreen = () => {
+  const { query, sort, order } = useLocalSearchParams<{
+    query?: string;
+    sort?: string;
+    order?: string;
+  }>();
   return (
-    <View>
-      <Text>ItemScreen</Text>
-    </View>
+    <>
+      <ThemedText>Query: {query}</ThemedText>
+      <ThemedText>Sort: {sort}</ThemedText>
+      <ThemedText>Order: {order}</ThemedText>
+      <ItemFilters />
+    </>
   );
 };
 

@@ -1,3 +1,4 @@
+import { ILanguageTexts } from "./ILanguageTexts";
 
 export interface PreferredCountry {
   id: number;
@@ -31,4 +32,9 @@ export enum IShopCountry {
   NP = "NP",
   VN = "VN",
   PK = "PK",
+}
+
+export interface ItemSortOption {
+  label: ILanguageTexts;
+  value: string;
 }

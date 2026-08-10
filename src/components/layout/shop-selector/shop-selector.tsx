@@ -1,31 +1,31 @@
 import { ThemedText } from "@/components/ui/themed-text";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { useUser } from "@/hooks/use-user";
-import { truncateString } from "@/utils/truncate-string";
-import { BottomSheet, Host, Icon, RNHostView, ScrollView } from "@expo/ui";
+import BottomSheet, {
+  BottomSheetScrollView,
+} from "@expo/ui/community/bottom-sheet";
 import { SymbolView } from "expo-symbols";
-import { useState } from "react";
+import { useCallback, useRef } from "react";
 import { Pressable, View } from "react-native";
+import { twMerge } from "tailwind-merge";
 import { useCSSVariable } from "uniwind";
 
-const STOREFRONT = Icon.select({
-  android: import("@expo/material-symbols/storefront.xml"),
-  ios: "storefront",
-});
-
 export const ShopSelector = () => {
+  const sheetRef = useRef<BottomSheet>(null);
   const successColor = useCSSVariable("--color-success");
-  const accentColor = useCSSVariable("--color-primary");
-  const mutedColor = useCSSVariable("--color-muted");
-  const [isPresented, setIsPresented] = useState(false);
+  const primaryColor = useCSSVariable("--color-primary");
   const { user } = useUser();
   const { selectedShop, setSelectedShop, shopLists } = useSelectedShop();
+  const onOpen = useCallback(() => {
+    sheetRef.current?.snapToIndex(0);
+  }, []);
+  const onClose = useCallback(() => {
+    sheetRef.current?.close();
+  }, []);
   return (
     <View>
       <Pressable
-        onPress={() => {
-          setIsPresented(true);
-        }}
+        onPress={() => onOpen()}
         className="p-3 border-b border-b-separator/60"
       >
         <View className="flex-row items-center gap-3">
@@ -35,9 +35,14 @@ export const ShopSelector = () => {
           >
             {selectedShop?.shopName}
           </ThemedText>
-          <Host style={{ width: 30, height: 30 }}>
-            <Icon name={STOREFRONT} size={30} color={accentColor as string} />
-          </Host>
+          <SymbolView
+            tintColor={primaryColor as string}
+            size={30}
+            name={{
+              android: "storefront",
+              ios: "storefront",
+            }}
+          />
         </View>
         <ThemedText>
           Welcome back,{" "}
@@ -46,64 +51,57 @@ export const ShopSelector = () => {
           </ThemedText>
         </ThemedText>
       </Pressable>
-      <Host style={{ flex: 1 }}>
-        <BottomSheet
-          snapPoints={["half", "full"]}
-          isPresented={isPresented}
-          onDismiss={() => setIsPresented(false)}
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={["90%"]}
+        index={-1}
+        enablePanDownToClose
+      >
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerClassName="pb-safe-offset-12"
         >
-          <ScrollView showsIndicators={false}>
-            <RNHostView matchContents>
-              <View style={{ flex: 1, paddingBottom: 20 }}>
-                {shopLists.map((shop) => {
-                  const isSelected = selectedShop?.shopId === shop.value;
-                  return (
-                    <Pressable
-                      style={{
-                        paddingVertical: 12,
-                        flexDirection: "row",
-                        gap: 3,
-                        alignItems: "center",
+          <View className="px-4">
+            {shopLists.map((shop) => {
+              const isSelected = selectedShop?.shopId === shop.value;
+              return (
+                <Pressable
+                  className="py-4 flex-row items-center gap-1"
+                  key={shop.value}
+                  onPress={() => {
+                    const currentShop = user?.shopDetails.find(
+                      (s) => s.shopId == shop.value,
+                    );
+                    currentShop && setSelectedShop(currentShop);
+                    onClose();
+                  }}
+                >
+                  {isSelected && (
+                    <SymbolView
+                      name={{
+                        ios: "checkmark",
+                        android: "check",
                       }}
-                      key={shop.value}
-                      onPress={() => {
-                        const currentShop = user?.shopDetails.find(
-                          (s) => s.shopId == shop.value,
-                        );
-                        currentShop && setSelectedShop(currentShop);
-                        setIsPresented(false);
-                      }}
-                    >
-                      {isSelected && (
-                        <SymbolView
-                          name={{
-                            ios: "checkmark",
-                            android: "check",
-                          }}
-                          size={20}
-                          tintColor={successColor as string}
-                        />
-                      )}
-                      <ThemedText
-                        numberOfLines={2}
-                        style={{
-                          fontSize: 16,
-                          fontWeight: isSelected ? "500" : "400",
-                          color: isSelected
-                            ? (successColor as string)
-                            : undefined,
-                        }}
-                      >
-                        {truncateString(shop.label, 35)}
-                      </ThemedText>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </RNHostView>
-          </ScrollView>
-        </BottomSheet>
-      </Host>
+                      size={20}
+                      tintColor={successColor as string}
+                    />
+                  )}
+                  <ThemedText
+                    numberOfLines={2}
+                    className={twMerge(
+                      "text-base flex-1",
+                      isSelected ? "font-medium text-success" : "font-normal",
+                    )}
+                  >
+                    {shop.label} aldfbjdlsfblajdjvbsdfjghbsjdgfkhsdfjkghsdfjk
+                    aldfbjdlsfblajdjvbsdfjghbsjdgfkhsdfjkghsdfjk
+                  </ThemedText>
+                </Pressable>
+              );
+            })}
+          </View>
+        </BottomSheetScrollView>
+      </BottomSheet>
     </View>
   );
 };

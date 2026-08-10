@@ -1,4 +1,3 @@
-import { useAndroidModifiers } from "@/hooks/use-android-modifiers";
 import { UIButtonProps } from "@/types/components";
 import {
   ElevatedButton,
@@ -7,31 +6,22 @@ import {
   TextButton,
   Button as UIButton,
 } from "@expo/ui/jetpack-compose";
-import { padding } from "@expo/ui/jetpack-compose/modifiers";
+import { weight } from "@expo/ui/jetpack-compose/modifiers";
 
 export const Button = ({
   variant = "default",
   onPress,
-  paddingHorizontal = 0,
-  paddingVertical = 0,
-  useFullWidth = false,
   children,
+  height,
+  width,
+  disabled,
 }: UIButtonProps) => {
-  const { fullWidthModifier } = useAndroidModifiers({ useFullWidth });
-
   if (variant === "filled")
     return (
       <FilledTonalButton
+        enabled={!disabled}
         onClick={onPress}
-        modifiers={[
-          ...fullWidthModifier,
-          padding(
-            paddingHorizontal,
-            paddingVertical,
-            paddingHorizontal,
-            paddingVertical,
-          ),
-        ]}
+        modifiers={[weight(1)]}
       >
         {children}
       </FilledTonalButton>
@@ -40,15 +30,8 @@ export const Button = ({
     return (
       <OutlinedButton
         onClick={onPress}
-        modifiers={[
-          ...fullWidthModifier,
-          padding(
-            paddingHorizontal,
-            paddingVertical,
-            paddingHorizontal,
-            paddingVertical,
-          ),
-        ]}
+        enabled={!disabled}
+        modifiers={[weight(1)]}
       >
         {children}
       </OutlinedButton>
@@ -56,51 +39,22 @@ export const Button = ({
   if (variant === "elevated")
     return (
       <ElevatedButton
+        enabled={!disabled}
         onClick={onPress}
-        modifiers={[
-          ...fullWidthModifier,
-          padding(
-            paddingHorizontal,
-            paddingVertical,
-            paddingHorizontal,
-            paddingVertical,
-          ),
-        ]}
+        modifiers={[weight(1)]}
       >
         {children}
       </ElevatedButton>
     );
   if (variant === "text")
     return (
-      <TextButton
-        onClick={onPress}
-        modifiers={[
-          ...fullWidthModifier,
-          padding(
-            paddingHorizontal,
-            paddingVertical,
-            paddingHorizontal,
-            paddingVertical,
-          ),
-        ]}
-      >
+      <TextButton enabled={!disabled} onClick={onPress} modifiers={[weight(1)]}>
         {children}
       </TextButton>
     );
 
   return (
-    <UIButton
-      onClick={onPress}
-      modifiers={[
-        ...fullWidthModifier,
-        padding(
-          paddingHorizontal,
-          paddingVertical,
-          paddingHorizontal,
-          paddingVertical,
-        ),
-      ]}
-    >
+    <UIButton enabled={!disabled} onClick={onPress} modifiers={[weight(1)]}>
       {children}
     </UIButton>
   );

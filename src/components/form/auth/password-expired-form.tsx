@@ -45,23 +45,29 @@ export const PasswordExpiredForm = () => {
             <Form.AppField
               name="oldPassword"
               children={(Field) => (
-                <Field.PasswordField
-                  placeholder="********"
-                  label="Old Password"
-                  useFullWidth
-                  paddingHorizontal={16}
-                />
+                <Host
+                  matchContents={{ vertical: true }}
+                  style={{ width: "100%" }}
+                >
+                  <Field.PasswordField
+                    placeholder="********"
+                    label="Old Password"
+                  />
+                </Host>
               )}
             />
             <Form.AppField
               name="newPassword"
               children={(Field) => (
-                <Field.PasswordField
-                  placeholder="********"
-                  label="New Password"
-                  useFullWidth
-                  paddingHorizontal={16}
-                />
+                <Host
+                  matchContents={{ vertical: true }}
+                  style={{ width: "100%" }}
+                >
+                  <Field.PasswordField
+                    placeholder="********"
+                    label="New Password"
+                  />
+                </Host>
               )}
             />
           </View>
@@ -74,25 +80,17 @@ export const PasswordExpiredForm = () => {
           bottom: 0,
           left: 0,
           right: 0,
+          paddingHorizontal: 16,
         }}
         offset={{
           opened: bottom - 20,
           closed: -16,
         }}
       >
-        <View className="items-center gap-y-3 bg-background">
-          <Form.SubmitButton
-            buttonText="Reset Password"
-            useFullWidth
-            paddingHorizontal={16}
-          />
-          <Host matchContents>
-            <Button
-              onPress={logout}
-              variant="text"
-              useFullWidth
-              paddingHorizontal={16}
-            >
+        <View className="gap-y-3 bg-background w-full">
+          <Form.SubmitButton buttonText="Reset Password" />
+          <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
+            <Button onPress={logout} variant="text">
               <Row spacing={10} alignment="center">
                 {isPending && <UISpinner size={20} />}
                 <Text>Login with another account?</Text>

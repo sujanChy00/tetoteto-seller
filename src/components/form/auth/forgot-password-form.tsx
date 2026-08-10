@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
+import { Host } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
@@ -35,14 +36,17 @@ export const ForgotPasswordForm = () => {
           <Form.AppField
             name="email"
             children={(Field) => (
-              <Field.TextField
-                autoFocus
-                placeholder="tetoteto@gmail.com"
-                label="Email"
-                keyboardType="email"
-                useFullWidth
-                paddingHorizontal={16}
-              />
+              <Host
+                matchContents={{ vertical: true }}
+                style={{ width: "100%" }}
+              >
+                <Field.TextField
+                  autoFocus
+                  placeholder="tetoteto@gmail.com"
+                  label="Email"
+                  keyboardType="email"
+                />
+              </Host>
             )}
           />
         </View>
@@ -53,17 +57,14 @@ export const ForgotPasswordForm = () => {
           bottom: 0,
           left: 0,
           right: 0,
+          paddingHorizontal: 16,
         }}
         offset={{
           opened: bottom - 20,
           closed: -16,
         }}
       >
-        <Form.SubmitButton
-          buttonText="Send Reset Link"
-          useFullWidth
-          paddingHorizontal={16}
-        />
+        <Form.SubmitButton buttonText="Send Reset Link" />
       </KeyboardStickyView>
     </Form.AppForm>
   );

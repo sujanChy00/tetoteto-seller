@@ -96,3 +96,22 @@ export const shipmentFilterOptions = [
     value: "all",
   },
 ];
+
+export const ItemSortOptions = [
+  {
+    label: "Price",
+    value: "price",
+  },
+  {
+    label: "Stock",
+    value: "stock",
+  },
+  {
+    label: "Updated",
+    value: "updated_at",
+  },
+  {
+    label: "Added",
+    value: "created_at",
+  },
+];

@@ -1,6 +1,7 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
+import { Host } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
@@ -50,13 +51,16 @@ export const OtpForm = () => {
             <Form.AppField
               name="email"
               children={(Field) => (
-                <Field.TextField
-                  placeholder="tetoteto@gmail.com"
-                  label="Email"
-                  keyboardType="email"
-                  useFullWidth
-                  paddingHorizontal={16}
-                />
+                <Host
+                  matchContents={{ vertical: true }}
+                  style={{ width: "100%" }}
+                >
+                  <Field.TextField
+                    placeholder="tetoteto@gmail.com"
+                    label="Email"
+                    keyboardType="email"
+                  />
+                </Host>
               )}
             />
             <Form.AppField
@@ -73,17 +77,14 @@ export const OtpForm = () => {
           bottom: 0,
           left: 0,
           right: 0,
+          paddingHorizontal: 16,
         }}
         offset={{
           opened: bottom - 20,
           closed: -16,
         }}
       >
-        <Form.SubmitButton
-          buttonText="Send Reset Link"
-          useFullWidth
-          paddingHorizontal={16}
-        />
+        <Form.SubmitButton buttonText="Send Reset Link" />
       </KeyboardStickyView>
     </Form.AppForm>
   );
