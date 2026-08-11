@@ -1,5 +1,8 @@
-export const truncateString = (str: string | undefined, num: number) => {
-  if (!str) return null;
+export const truncateString = (
+  str: string | undefined,
+  num: number,
+): string => {
+  if (!str) return "";
   if (str.length <= num) {
     return str;
   }

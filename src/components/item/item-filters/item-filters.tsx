@@ -1,5 +1,6 @@
 import { Host } from "@/components/ui/host";
 import { ItemSortOptions } from "@/constants/data";
+import { useAppTheme } from "@/context/app-theme-provider";
 import { useSortItems } from "@/hooks/use-sort-items";
 import { ItemSortOption } from "@/types";
 import Close from "@expo/material-symbols/close.xml";
@@ -23,6 +24,7 @@ import { Stack } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 
 export const ItemFilters = ({ options }: { options?: ItemSortOption[] }) => {
+  const { colors } = useAppTheme();
   const { onSort, params, router } = useSortItems();
   const [showSearch, setShowSearch] = useState(false);
   const query = useNativeState(params.query ?? "");
@@ -37,13 +39,13 @@ export const ItemFilters = ({ options }: { options?: ItemSortOption[] }) => {
   const sortOptions = useMemo(() => options || ItemSortOptions, [options]);
 
   return (
-    <Stack.Toolbar>
+    <Stack.Toolbar placement="bottom" backgroundColor={colors.border}>
       <Stack.Toolbar.View hidden={!showSearch}>
         <Host matchContents ignoreSafeArea="all">
           <BasicTextField
             modifiers={[
               clip(Shapes.RoundedCorner(100)),
-              background("#FFFFFF"),
+              background(colors.background),
               height(40),
               width(200),
               padding(12, 0, 12, 0),

@@ -18,6 +18,7 @@ export const SalesChart = ({ isPending, data }: SalesChartProps) => {
       />
     );
   if (!data || data.length === 0) return null;
+
   return (
     <LineChart
       config={{

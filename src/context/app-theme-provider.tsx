@@ -1,11 +1,12 @@
 import { THEME_STORAGE_KEY } from "@/constants/query-keys";
+import { NAV_THEME } from "@/constants/theme";
 import { storage } from "@/utils/storage";
 import React, {
-    createContext,
-    useCallback,
-    useContext,
-    useMemo,
-    useState,
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
 } from "react";
 import { Uniwind } from "uniwind";
 
@@ -79,5 +80,6 @@ export function useAppTheme() {
   if (!context) {
     throw new Error("useAppTheme must be used within AppThemeProvider");
   }
-  return context;
+  const { colors } = NAV_THEME[context.currentTheme];
+  return { ...context, colors };
 }

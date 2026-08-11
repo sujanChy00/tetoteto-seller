@@ -1,10 +1,6 @@
 import { Host } from "@/components/ui/host";
 import { useAppTheme } from "@/context/app-theme-provider";
-import {
-  dateOnlyFormatter,
-  formatShortDate,
-  formatShortDateWithMonth,
-} from "@/utils/date";
+import { dateOnlyFormatter, formatShortDate } from "@/utils/date";
 import { RNHostView, Text } from "@expo/ui";
 import BottomSheet, { BottomSheetView } from "@expo/ui/community/bottom-sheet";
 import { SymbolView } from "expo-symbols";
@@ -29,7 +25,7 @@ interface Props extends Omit<DatePickerBaseProps, "mode" | "onChange"> {
 }
 
 export const DateRangePicker = ({ onChange, value }: Props) => {
-  const { currentTheme } = useAppTheme();
+  const { isDark } = useAppTheme();
   const sheetRef = useRef<BottomSheet>(null);
   const defaultClassNames = useDefaultClassNames();
   const [date, setDate] = useState<DateRangeType>({
@@ -54,7 +50,7 @@ export const DateRangePicker = ({ onChange, value }: Props) => {
         <Button variant="elevated" onPress={onOpen}>
           <Text>
             {value.startDate && value.endDate
-              ? `${formatShortDateWithMonth(new Date(value.startDate as string))} - ${formatShortDate(new Date(value.endDate as string))}`
+              ? `${formatShortDate(new Date(value.startDate as string))} - ${formatShortDate(new Date(value.endDate as string))}`
               : "Select Date"}
           </Text>
         </Button>
@@ -74,25 +70,33 @@ export const DateRangePicker = ({ onChange, value }: Props) => {
               today_label: "text-white",
               range_end: "bg-primary",
               range_start: "bg-primary",
-              range_fill: "bg-primary/10",
+              range_fill: isDark ? "bg-primary/20" : "bg-primary/10",
               range_start_label: "text-white",
               range_end_label: "text-white",
               selected_month: "bg-primary rounded-full",
               selected_month_label: "text-white",
               selected_year: "bg-primary rounded-full",
               selected_year_label: "text-white",
+              range_middle_label: isDark ? "text-white" : "text-black",
+              weekday_label: isDark ? "text-white" : "text-black",
             }}
             components={{
               MonthSelector: (props) => (
                 <Host matchContents>
-                  <Button onPress={props.onPress} variant="elevated">
+                  <Button
+                    onPress={props.onPress}
+                    variant={isDark ? "outlined" : "elevated"}
+                  >
                     <Text>{props.text}</Text>
                   </Button>
                 </Host>
               ),
               YearSelector: (props) => (
                 <Host matchContents>
-                  <Button onPress={props.onPress} variant="elevated">
+                  <Button
+                    onPress={props.onPress}
+                    variant={isDark ? "outlined" : "elevated"}
+                  >
                     <Text>{props.year}</Text>
                   </Button>
                 </Host>
