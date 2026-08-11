@@ -1,7 +1,6 @@
 import { LineChart } from "@/components/ui/line-chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChartResponse } from "@/types";
-import { View } from "react-native";
 
 interface SalesChartProps {
   data?: ChartResponse[];
@@ -11,14 +10,12 @@ interface SalesChartProps {
 export const SalesChart = ({ isPending, data }: SalesChartProps) => {
   if (isPending)
     return (
-      <View className="px-4">
-        <Skeleton
-          style={{
-            borderRadius: 10,
-            height: 250,
-          }}
-        />
-      </View>
+      <Skeleton
+        style={{
+          borderRadius: 24,
+          height: 250,
+        }}
+      />
     );
   if (!data || data.length === 0) return null;
   return (

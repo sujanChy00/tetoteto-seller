@@ -1,3 +1,4 @@
+import { Host } from "@/components/ui/host";
 import { ItemSortOptions } from "@/constants/data";
 import { useSortItems } from "@/hooks/use-sort-items";
 import { ItemSortOption } from "@/types";
@@ -7,7 +8,6 @@ import Sort from "@expo/material-symbols/sort.xml";
 import {
   BasicTextField,
   Box,
-  Host,
   Text,
   useNativeState,
 } from "@expo/ui/jetpack-compose";
@@ -39,7 +39,7 @@ export const ItemFilters = ({ options }: { options?: ItemSortOption[] }) => {
   return (
     <Stack.Toolbar>
       <Stack.Toolbar.View hidden={!showSearch}>
-        <Host matchContents ignoreSafeAreaKeyboardInsets>
+        <Host matchContents ignoreSafeArea="all">
           <BasicTextField
             modifiers={[
               clip(Shapes.RoundedCorner(100)),

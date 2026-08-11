@@ -1,12 +1,13 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
+import { Host } from "@/components/ui/host";
 import { UISpinner } from "@/components/ui/spinner";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useAppTheme } from "@/context/app-theme-provider";
 import { useForm } from "@/hooks/use-form";
 import { useUser } from "@/hooks/use-user";
 import { useLogoutMutation } from "@/mutation/auth-mutation";
-import { Host, Row, Text } from "@expo/ui";
+import { Row, Text } from "@expo/ui";
 import { ScrollView, View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

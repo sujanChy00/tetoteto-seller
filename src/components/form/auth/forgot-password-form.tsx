@@ -1,6 +1,6 @@
+import { Host } from "@/components/ui/host";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
-import { Host } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";

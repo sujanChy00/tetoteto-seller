@@ -1,7 +1,7 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
+import { Host } from "@/components/ui/host";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
-import { Host } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";

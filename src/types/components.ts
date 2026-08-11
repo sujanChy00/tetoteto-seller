@@ -1,4 +1,4 @@
-import { ObservableState } from "@expo/ui";
+import { ObservableState, Row } from "@expo/ui";
 import { ButtonProps } from "@expo/ui/swift-ui";
 
 export interface UIButtonProps {
@@ -73,4 +73,10 @@ export type UiSpinnerProps = {
   size?: number;
   color?: string;
   strokeWidth?: number;
+};
+
+export type UIRowProps = Omit<React.ComponentProps<typeof Row>, "modifiers"> & {
+  fillFullWidth?: boolean;
+  paddingVertical?: number;
+  paddingHorizontal?: number;
 };

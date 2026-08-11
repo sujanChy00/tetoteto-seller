@@ -1,19 +1,13 @@
+import { HomeLinks } from "@/components/home/home-links";
 import { SalesChart } from "@/components/home/sales-chart";
+import { SalesData } from "@/components/home/sales-data";
 import { ShopSelector } from "@/components/layout/shop-selector";
-// import DateRangePicker from "@/components/ui/date-range-picker";
-import { useLogoutMutation } from "@/mutation/auth-mutation";
+import { ThemeToggler } from "@/components/layout/theme-toggler";
 import { useGetHomeData } from "@/queries/home-query";
 import { useState } from "react";
-import { Button, RefreshControl, ScrollView } from "react-native";
-import { DateType } from "react-native-ui-datepicker";
+import { RefreshControl, ScrollView, View } from "react-native";
 
 export default function Index() {
-  const { mutate: logout } = useLogoutMutation();
-  const [date, setDate] = useState<{
-    endDate?: DateType;
-    startDate?: DateType;
-  }>({});
-
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, isRefetching, refetch } = useGetHomeData();
 
@@ -35,15 +29,12 @@ export default function Index() {
       contentContainerClassName="py-safe-offset-8"
     >
       <ShopSelector />
-      {/*<DateRangePicker value={date} onChange={setDate} />*/}
-
-      <SalesChart isPending={isLoading} data={data?.weeklySales} />
-      <Button
-        title="logout"
-        onPress={() => {
-          logout();
-        }}
-      />
+      <ThemeToggler />
+      <View className="px-2 pt-6 gap-6">
+        <SalesData />
+        <HomeLinks />
+        <SalesChart isPending={isLoading} data={data?.weeklySales} />
+      </View>
     </ScrollView>
   );
 }

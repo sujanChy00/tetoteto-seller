@@ -6,14 +6,14 @@ import {
   TextButton,
   Button as UIButton,
 } from "@expo/ui/jetpack-compose";
-import { weight } from "@expo/ui/jetpack-compose/modifiers";
+import { height, weight, width } from "@expo/ui/jetpack-compose/modifiers";
 
 export const Button = ({
   variant = "default",
   onPress,
   children,
-  height,
-  width,
+  height: buttonHeight,
+  width: buttonWidth,
   disabled,
 }: UIButtonProps) => {
   if (variant === "filled")
@@ -21,7 +21,11 @@ export const Button = ({
       <FilledTonalButton
         enabled={!disabled}
         onClick={onPress}
-        modifiers={[weight(1)]}
+        modifiers={[
+          weight(1),
+          ...(buttonHeight ? [height(buttonHeight)] : []),
+          ...(buttonWidth ? [width(buttonWidth)] : []),
+        ]}
       >
         {children}
       </FilledTonalButton>
@@ -31,7 +35,11 @@ export const Button = ({
       <OutlinedButton
         onClick={onPress}
         enabled={!disabled}
-        modifiers={[weight(1)]}
+        modifiers={[
+          weight(1),
+          ...(buttonHeight ? [height(buttonHeight)] : []),
+          ...(buttonWidth ? [width(buttonWidth)] : []),
+        ]}
       >
         {children}
       </OutlinedButton>
@@ -41,20 +49,40 @@ export const Button = ({
       <ElevatedButton
         enabled={!disabled}
         onClick={onPress}
-        modifiers={[weight(1)]}
+        modifiers={[
+          weight(1),
+          ...(buttonHeight ? [height(buttonHeight)] : []),
+          ...(buttonWidth ? [width(buttonWidth)] : []),
+        ]}
       >
         {children}
       </ElevatedButton>
     );
   if (variant === "text")
     return (
-      <TextButton enabled={!disabled} onClick={onPress} modifiers={[weight(1)]}>
+      <TextButton
+        enabled={!disabled}
+        onClick={onPress}
+        modifiers={[
+          weight(1),
+          ...(buttonHeight ? [height(buttonHeight)] : []),
+          ...(buttonWidth ? [width(buttonWidth)] : []),
+        ]}
+      >
         {children}
       </TextButton>
     );
 
   return (
-    <UIButton enabled={!disabled} onClick={onPress} modifiers={[weight(1)]}>
+    <UIButton
+      enabled={!disabled}
+      onClick={onPress}
+      modifiers={[
+        weight(1),
+        ...(buttonHeight ? [height(buttonHeight)] : []),
+        ...(buttonWidth ? [width(buttonWidth)] : []),
+      ]}
+    >
       {children}
     </UIButton>
   );

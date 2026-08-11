@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { toast } from "../../../utils/toast";
 
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
-import { Host } from "@expo/ui";
+import { Host } from "@/components/ui/host";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";

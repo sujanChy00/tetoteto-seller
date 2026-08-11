@@ -4,11 +4,12 @@ import { Image } from "expo-image";
 import { View } from "react-native";
 
 import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
+import { Host } from "@/components/ui/host";
 import { isIOS } from "@/constants/platform";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLoginMutation } from "@/mutation/auth-mutation";
 import { LoginFormData, LoginSchema } from "@/schema/auth-schema";
-import { Host, Text } from "@expo/ui";
+import { Text } from "@expo/ui";
 import { useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
