@@ -2,7 +2,6 @@ import { HomeLinks } from "@/components/home/home-links";
 import { SalesChart } from "@/components/home/sales-chart";
 import { SalesData } from "@/components/home/sales-data";
 import { ShopSelector } from "@/components/layout/shop-selector";
-import { ThemeToggler } from "@/components/layout/theme-toggler";
 import { useGetHomeData } from "@/queries/home-query";
 import { useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
@@ -29,7 +28,6 @@ export default function Index() {
       contentContainerClassName="py-safe-offset-8"
     >
       <ShopSelector />
-      <ThemeToggler />
       <View className="px-2 pt-6 gap-6">
         <SalesData />
         <HomeLinks />

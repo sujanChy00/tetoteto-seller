@@ -27,7 +27,7 @@ export const SalesData = () => {
 
   return (
     <View className="gap-6">
-      <View className="flex-row items-center justify-between gap-6">
+      <View className="flex-row items-center justify-between">
         <ThemedText className="font-semibold text-muted">
           Monthly Overview
         </ThemedText>

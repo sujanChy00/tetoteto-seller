@@ -46,3 +46,5 @@ export const GET_ALL_ORDERS_QUERY_KEY = "all_orders";
 export const GET_ALL_USER_CHAT_QUERY_KEY = "chat";
 export const GET_UNSEEN_CHAT_COUNT_QUERY_KEY = "unseen_count";
 export const GET_USER_CHAT_DETAILS_QUERY_KEY = "user_chat";
+
+export const GET_PROFILE_QUERY_KEY = "profile";

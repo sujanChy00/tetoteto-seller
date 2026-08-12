@@ -1,8 +1,8 @@
 import { TextFieldProps } from "@/types/components";
 import { useFieldContext } from "@/utils/form-hook-context";
 import {
-  OutlinedTextField,
   Text,
+  TextField as UITextField,
   useNativeState,
 } from "@expo/ui/jetpack-compose";
 import { weight } from "@expo/ui/jetpack-compose/modifiers";
@@ -21,6 +21,7 @@ export const TextField = ({
   autoFocus = false,
   maxLines = 5,
   multiLine,
+  onSubmit,
 }: TextFieldProps) => {
   const field = useFieldContext<string | undefined>();
   const nativeValue = useNativeState(field.state.value ?? "");
@@ -45,7 +46,7 @@ export const TextField = ({
   );
 
   return (
-    <OutlinedTextField
+    <UITextField
       singleLine={!multiLine}
       maxLines={maxLines}
       autoFocus={autoFocus}
@@ -54,45 +55,47 @@ export const TextField = ({
       modifiers={[weight(1)]}
       value={nativeValue}
       onValueChange={handleValueChange}
+      keyboardActions={onSubmit ? { onDone: onSubmit } : undefined}
       keyboardOptions={{
         keyboardType,
         capitalization: "none",
         autoCorrectEnabled: false,
+        imeAction: onSubmit ? "done" : "default",
       }}
     >
-      <OutlinedTextField.Label>
+      <UITextField.Label>
         <Text>{label}</Text>
-      </OutlinedTextField.Label>
-      {placeholder ? (
-        <OutlinedTextField.Placeholder>
+      </UITextField.Label>
+      {/*{placeholder ? (
+        <UITextField.Placeholder>
           <Text>{placeholder}</Text>
-        </OutlinedTextField.Placeholder>
-      ) : null}
+        </UITextField.Placeholder>
+      ) : null}*/}
       {leadingIcon ? (
-        <OutlinedTextField.LeadingIcon>
+        <UITextField.LeadingIcon>
           <Text>{leadingIcon}</Text>
-        </OutlinedTextField.LeadingIcon>
+        </UITextField.LeadingIcon>
       ) : null}
       {trailingIcon ? (
-        <OutlinedTextField.TrailingIcon>
+        <UITextField.TrailingIcon>
           <Text>{trailingIcon}</Text>
-        </OutlinedTextField.TrailingIcon>
+        </UITextField.TrailingIcon>
       ) : null}
       {prefix ? (
-        <OutlinedTextField.Prefix>
+        <UITextField.Prefix>
           <Text>{prefix}</Text>
-        </OutlinedTextField.Prefix>
+        </UITextField.Prefix>
       ) : null}
       {suffix ? (
-        <OutlinedTextField.Suffix>
+        <UITextField.Suffix>
           <Text>{suffix}</Text>
-        </OutlinedTextField.Suffix>
+        </UITextField.Suffix>
       ) : null}
       {fieldError ? (
-        <OutlinedTextField.SupportingText>
+        <UITextField.SupportingText>
           <Text>{fieldError?.message}</Text>
-        </OutlinedTextField.SupportingText>
+        </UITextField.SupportingText>
       ) : null}
-    </OutlinedTextField>
+    </UITextField>
   );
 };

@@ -5,6 +5,8 @@ import {
   autocorrectionDisabled,
   border,
   disabled as disabledModifier,
+  submitLabel,
+  onSubmit as swiftOnSubmitModifier,
   textInputAutocapitalization,
 } from "@expo/ui/swift-ui/modifiers";
 import { useCallback, useMemo } from "react";
@@ -15,6 +17,7 @@ export const PasswordField = ({
   placeholder,
   disabled,
   autoFocus = false,
+  onSubmit,
 }: PasswordFieldProps) => {
   const colorDanger = useCSSVariable("--color-danger");
   const field = useFieldContext<string | undefined>();
@@ -44,6 +47,12 @@ export const PasswordField = ({
       isInvalid ? [border({ color: colorDanger as string, width: 1 })] : [],
     [isInvalid],
   );
+
+  const submitModifiers = useMemo(() => {
+    if (onSubmit) return [submitLabel("done"), swiftOnSubmitModifier(onSubmit)];
+    return [];
+  }, [onSubmit]);
+
   return (
     <SecureField
       placeholder={placeholder}
@@ -55,6 +64,7 @@ export const PasswordField = ({
         textInputAutocapitalization("never"),
         ...invalidBorderModifiers,
         disabledModifier(!!disabled),
+        ...submitModifiers,
       ]}
     />
   );

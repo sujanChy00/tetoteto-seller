@@ -53,7 +53,7 @@ export const ShopSelector = () => {
       </Pressable>
       <BottomSheet
         ref={sheetRef}
-        snapPoints={["90%"]}
+        snapPoints={["50%", "75%", "90%"]}
         index={-1}
         enablePanDownToClose
       >

@@ -4,9 +4,9 @@ import Visibility from "@expo/material-symbols/visibility.xml";
 import VisibilityOff from "@expo/material-symbols/visibility_off.xml";
 import {
   Icon,
-  OutlinedTextField,
   Text,
   TextButton,
+  TextField as UITextField,
   useNativeState,
 } from "@expo/ui/jetpack-compose";
 import { weight } from "@expo/ui/jetpack-compose/modifiers";
@@ -16,8 +16,8 @@ import { scheduleOnRN } from "react-native-worklets";
 
 export const PasswordField = ({
   label,
-  placeholder,
   disabled,
+  onSubmit,
 }: PasswordFieldProps) => {
   const field = useFieldContext<string | undefined>();
   const nativeValue = useNativeState(field.state.value ?? "");
@@ -47,35 +47,37 @@ export const PasswordField = ({
   };
 
   return (
-    <OutlinedTextField
+    <UITextField
       value={nativeValue}
       onValueChange={handleValueChange}
       isError={isInvalid}
       enabled={!disabled}
       modifiers={[weight(1)]}
       visualTransformation={isPasswordVisible ? "none" : "password"}
+      keyboardActions={onSubmit ? { onDone: onSubmit } : undefined}
+      keyboardOptions={onSubmit ? { imeAction: "done" } : undefined}
     >
-      <OutlinedTextField.Label>
+      <UITextField.Label>
         <Text>{label}</Text>
-      </OutlinedTextField.Label>
-      {placeholder && (
-        <OutlinedTextField.Placeholder>
+      </UITextField.Label>
+      {/*{placeholder && (
+        <UITextField.Placeholder>
           <Text>{placeholder}</Text>
-        </OutlinedTextField.Placeholder>
-      )}
-      <OutlinedTextField.TrailingIcon>
+        </UITextField.Placeholder>
+      )}*/}
+      <UITextField.TrailingIcon>
         <TextButton onClick={togglePasswordVisibility}>
           <Icon
             source={isPasswordVisible ? Visibility : VisibilityOff}
             contentDescription="toggle password visiblity"
           />
         </TextButton>
-      </OutlinedTextField.TrailingIcon>
+      </UITextField.TrailingIcon>
       {fieldError && (
-        <OutlinedTextField.SupportingText>
+        <UITextField.SupportingText>
           <Text>{fieldError?.message}</Text>
-        </OutlinedTextField.SupportingText>
+        </UITextField.SupportingText>
       )}
-    </OutlinedTextField>
+    </UITextField>
   );
 };

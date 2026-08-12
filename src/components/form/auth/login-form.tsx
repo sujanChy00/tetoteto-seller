@@ -5,11 +5,12 @@ import { View } from "react-native";
 
 import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
 import { Host } from "@/components/ui/host";
+import { Spinner } from "@/components/ui/spinner";
 import { isIOS } from "@/constants/platform";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLoginMutation } from "@/mutation/auth-mutation";
 import { LoginFormData, LoginSchema } from "@/schema/auth-schema";
-import { Text } from "@expo/ui";
+import { Row, Text } from "@expo/ui";
 import { useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
@@ -93,6 +94,7 @@ export const LoginForm = () => {
                     style={{ width: "100%" }}
                   >
                     <field.PasswordField
+                      onSubmit={() => Form.handleSubmit()}
                       placeholder="password"
                       label="Password"
                     />
@@ -100,7 +102,12 @@ export const LoginForm = () => {
                 )}
               />
               <View className="w-full">
-                <Form.SubmitButton buttonText="Login" />
+                <Form.SubmitButton>
+                  <Row alignment="center" spacing={6}>
+                    {isPending && <Spinner size={16} />}
+                    <Text>Login</Text>
+                  </Row>
+                </Form.SubmitButton>
                 <Host
                   matchContents={{ vertical: true }}
                   style={{ width: "100%" }}

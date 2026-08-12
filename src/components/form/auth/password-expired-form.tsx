@@ -1,7 +1,8 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
+import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
 import { Host } from "@/components/ui/host";
-import { UISpinner } from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useAppTheme } from "@/context/app-theme-provider";
 import { useForm } from "@/hooks/use-form";
@@ -9,7 +10,6 @@ import { useUser } from "@/hooks/use-user";
 import { useLogoutMutation } from "@/mutation/auth-mutation";
 import { Row, Text } from "@expo/ui";
 import { ScrollView, View } from "react-native";
-import { KeyboardStickyView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const PasswordExpiredForm = () => {
@@ -75,31 +75,24 @@ export const PasswordExpiredForm = () => {
         </View>
         <AnimatedSpacer height={450} />
       </ScrollView>
-      <KeyboardStickyView
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          paddingHorizontal: 16,
-        }}
-        offset={{
-          opened: bottom - 20,
-          closed: -16,
-        }}
-      >
+      <FormStickySubmitButtonWrapper>
         <View className="gap-y-3 bg-background w-full">
-          <Form.SubmitButton buttonText="Reset Password" />
+          <Form.SubmitButton>
+            <Row alignment="center" spacing={6}>
+              <Spinner size={16} />
+              <Text>Reset Password</Text>
+            </Row>
+          </Form.SubmitButton>
           <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
             <Button onPress={logout} variant="text">
               <Row spacing={10} alignment="center">
-                {isPending && <UISpinner size={20} />}
+                {isPending && <Spinner size={20} />}
                 <Text>Login with another account?</Text>
               </Row>
             </Button>
           </Host>
         </View>
-      </KeyboardStickyView>
+      </FormStickySubmitButtonWrapper>
     </Form.AppForm>
   );
 };

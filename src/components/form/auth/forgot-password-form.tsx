@@ -1,6 +1,7 @@
 import { Host } from "@/components/ui/host";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
+import { Row, Text } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
@@ -64,7 +65,12 @@ export const ForgotPasswordForm = () => {
           closed: -16,
         }}
       >
-        <Form.SubmitButton buttonText="Send Reset Link" />
+        <Form.SubmitButton>
+          <Row alignment="center" spacing={6}>
+            {/*{isPending && <Spinner size={16} />}*/}
+            <Text>Send Reset Link</Text>
+          </Row>
+        </Form.SubmitButton>
       </KeyboardStickyView>
     </Form.AppForm>
   );

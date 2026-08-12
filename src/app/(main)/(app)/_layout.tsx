@@ -1,7 +1,9 @@
+import { isAndroid } from "@/constants/platform";
+import { useLanguage } from "@/hooks/use-language";
 import { Stack } from "expo-router";
 
 const AppLayout = () => {
-  // const { t } = useLanguage();
+  const { t } = useLanguage();
   return (
     <Stack
       screenOptions={{
@@ -11,11 +13,11 @@ const AppLayout = () => {
       <Stack.Screen
         name="privacy-policy"
         options={{
-          title: "Privacy Policy",
+          title: t("privacy_policy"),
           headerShown: false,
         }}
       />
-      {/*<Stack.Screen
+      <Stack.Screen
         name="shipments/index"
         options={{
           headerTitle: "This list is updated every 2 hours",
@@ -27,34 +29,34 @@ const AppLayout = () => {
       <Stack.Screen
         name="terms-condition"
         options={{
-          title: "Terms & Conditions",
+          title: t("terms_condition"),
           headerShown: false,
         }}
       />
       <Stack.Screen
         name="shop-users"
         options={{
-          title: "Shop Users",
+          title: t("shop_users"),
         }}
       />
       <Stack.Screen
         name="delivery-times"
         options={{
-          title: "Delivery Time Slots",
+          title: t("delivery_time_slots"),
         }}
       />
       <Stack.Screen
         name="shipping-campaign/index"
         options={{
-          title: "Shipping Campaigns",
+          title: t("shipping_campaigns"),
         }}
       />
       <Stack.Screen
         name="shipping-fee/index"
-        options={{
-          title: "Shipping Fees",
-          // headerRight: () => <ResetShippingFee />,
-        }}
+        // options={{
+        //   title: t("shipping_fees"),
+        //   headerRight: () => <ResetShippingFee />,
+        // }}
       />
       <Stack.Screen
         name="shop/index"
@@ -63,20 +65,48 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
+        name="profile/update"
+        options={{
+          title: t("update_profile"),
+        }}
+      />
+      <Stack.Screen
+        name="profile/update-password"
+        options={{
+          title: "Update Password",
+        }}
+      />
+      <Stack.Screen
+        name="image/[image]"
+        options={
+          isAndroid
+            ? {
+                headerShown: false,
+                presentation: "formSheet",
+                gestureDirection: "vertical",
+                animation: "slide_from_bottom",
+                sheetAllowedDetents: [1],
+                sheetInitialDetentIndex: 0,
+                sheetExpandsWhenScrolledToEdge: true,
+              }
+            : { headerShown: false }
+        }
+      />
+      {/*<Stack.Screen
         name="image/[image]"
         options={{
           headerShown: false,
           presentation: "modal",
           animation: "slide_from_bottom",
         }}
-      />
+      />*/}
       <Stack.Screen
         name="shop/[shopId]/index"
         options={{
           headerTitle: "Shop Profile",
         }}
       />
-      <Stack.Screen
+      {/*<Stack.Screen
         name="order/[orderId]/track"
         options={{
           headerTitle: "Tracking Details",

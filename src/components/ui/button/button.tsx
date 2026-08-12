@@ -21,6 +21,9 @@ export const Button = ({
   height: buttonHeight,
   width: buttonWidth,
   disabled,
+  backgroundColor,
+  paddingHorizontal,
+  paddingVertical,
 }: UIButtonProps) => {
   const butonModifiers = useMemo(() => {
     if (buttonHeight && buttonWidth) {
@@ -33,12 +36,25 @@ export const Button = ({
     ];
   }, [buttonHeight, buttonWidth]);
 
+  const contentPadding = useMemo(() => {
+    return {
+      bottom: paddingVertical,
+      end: paddingHorizontal,
+      start: paddingHorizontal,
+      top: paddingVertical,
+    };
+  }, [paddingHorizontal, paddingVertical]);
+
   if (variant === "filled")
     return (
       <FilledTonalButton
+        contentPadding={contentPadding}
         enabled={!disabled}
         onClick={onPress}
         modifiers={butonModifiers}
+        colors={{
+          containerColor: backgroundColor,
+        }}
       >
         {children}
       </FilledTonalButton>
@@ -46,9 +62,13 @@ export const Button = ({
   if (variant === "outlined")
     return (
       <OutlinedButton
+        contentPadding={contentPadding}
         onClick={onPress}
         enabled={!disabled}
         modifiers={butonModifiers}
+        colors={{
+          containerColor: backgroundColor,
+        }}
       >
         {children}
       </OutlinedButton>
@@ -56,9 +76,13 @@ export const Button = ({
   if (variant === "elevated")
     return (
       <ElevatedButton
+        contentPadding={contentPadding}
         enabled={!disabled}
         onClick={onPress}
         modifiers={butonModifiers}
+        colors={{
+          containerColor: backgroundColor,
+        }}
       >
         {children}
       </ElevatedButton>
@@ -66,16 +90,28 @@ export const Button = ({
   if (variant === "text")
     return (
       <TextButton
+        contentPadding={contentPadding}
         enabled={!disabled}
         onClick={onPress}
         modifiers={butonModifiers}
+        colors={{
+          containerColor: backgroundColor,
+        }}
       >
         {children}
       </TextButton>
     );
 
   return (
-    <UIButton enabled={!disabled} onClick={onPress} modifiers={butonModifiers}>
+    <UIButton
+      contentPadding={contentPadding}
+      enabled={!disabled}
+      onClick={onPress}
+      modifiers={butonModifiers}
+      colors={{
+        containerColor: backgroundColor,
+      }}
+    >
       {children}
     </UIButton>
   );

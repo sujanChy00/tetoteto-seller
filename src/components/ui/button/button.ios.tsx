@@ -3,7 +3,9 @@ import { Button as UIButton } from "@expo/ui/swift-ui";
 import {
   buttonStyle,
   controlSize,
+  frame,
   labelStyle,
+  padding,
   disabled as swiftUIDisabledModifier,
 } from "@expo/ui/swift-ui/modifiers";
 import { useMemo } from "react";
@@ -17,6 +19,10 @@ export const Button = ({
   size = "regular",
   disabled,
   children,
+  paddingHorizontal,
+  paddingVertical,
+  height,
+  width,
 }: UIButtonProps) => {
   const disabledModifiers = useMemo(
     () => (disabled ? [swiftUIDisabledModifier()] : []),
@@ -43,6 +49,21 @@ export const Button = ({
     [iconOnlyIos],
   );
 
+  const contentPadding = useMemo(() => {
+    return [
+      padding({ bottom: paddingVertical, horizontal: paddingHorizontal }),
+    ];
+  }, [paddingHorizontal, paddingVertical]);
+
+  const buttonSizeModifiers = useMemo(() => {
+    return [
+      frame({
+        height,
+        width,
+      }),
+    ];
+  }, [height, width]);
+
   return (
     <UIButton
       systemImage={systemImageIos}
@@ -52,7 +73,9 @@ export const Button = ({
         ...disabledModifiers,
         ...buttonType,
         controlSize(size),
+        ...buttonSizeModifiers,
         ...isIconOnly,
+        ...contentPadding,
       ]}
     >
       {children}

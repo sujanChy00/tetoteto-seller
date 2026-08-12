@@ -24,7 +24,6 @@ export const FullScreenSpinner = ({
       <View className="flex-1 items-center justify-center bg-black/50">
         <View className="items-center rounded-lg bg-background px-6 py-5">
           <ActivityIndicator size="large" />
-
           <ThemedText className="mt-3">{loadingText}</ThemedText>
         </View>
       </View>

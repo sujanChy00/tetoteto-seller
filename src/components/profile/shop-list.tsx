@@ -1,13 +1,14 @@
 import { useAppTheme } from "@/context/app-theme-provider";
 import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
-import { Icon, ListItem, RNHostView } from "@expo/ui";
+import { Icon } from "@expo/ui";
 import { useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import { Pressable, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Fragment } from "react/jsx-runtime";
 import { useCSSVariable } from "uniwind";
 import { Avatar } from "../ui/avatar";
+import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { ThemedText } from "../ui/themed-text";
 
@@ -31,20 +32,17 @@ export const ShopList = () => {
       : user.shopDetails;
 
   return (
-    <>
-      <RNHostView matchContents>
-        <View className="flex-row items-center justify-between px-2.5 pb-2.5">
-          <ThemedText className="text-base font-medium">
-            Manage Stores
-          </ThemedText>
-          <Pressable
-            onPress={() => {
-              router.push({
-                pathname: "/shop",
-              });
-            }}
-            className="flex-row items-center gap-1"
-          >
+    <View>
+      <View className="flex-row items-center justify-between px-2.5 pb-2.5">
+        <ThemedText className="text-base font-medium">Manage Stores</ThemedText>
+        <TouchableOpacity
+          onPress={() => {
+            router.push({
+              pathname: "/shop",
+            });
+          }}
+        >
+          <View className="flex-row items-center gap-1">
             <ThemedText>view all</ThemedText>
             <SymbolView
               name={{
@@ -54,24 +52,14 @@ export const ShopList = () => {
               size={16}
               tintColor={mutedColor as string}
             />
-          </Pressable>
-        </View>
-      </RNHostView>
+          </View>
+        </TouchableOpacity>
+      </View>
+
       {shops.map((shop) => (
         <Fragment key={shop.shopId}>
-          <ListItem
-            trailing={
-              <Icon name={CHEVRON} color={mutedColor as string} size={20} />
-            }
-            leading={
-              <RNHostView matchContents>
-                <Avatar.Root>
-                  <Avatar.Fallback>
-                    {getAvatarName(shop.shopName)}
-                  </Avatar.Fallback>
-                </Avatar.Root>
-              </RNHostView>
-            }
+          <TouchableOpacity
+            className="px-4 py-2"
             onPress={() => {
               router.push({
                 pathname: "/shop/[shopId]",
@@ -81,11 +69,32 @@ export const ShopList = () => {
               });
             }}
           >
-            {shop.shopName}
-          </ListItem>
-          <Separator />
+            <View className="flex-row items-center justify-between gap-3">
+              <View className="flex-row items-center gap-1 flex-1">
+                <Avatar.Root>
+                  <Avatar.Fallback source={undefined}>
+                    {getAvatarName(shop.shopName)}
+                  </Avatar.Fallback>
+                </Avatar.Root>
+                <ThemedText numberOfLines={1} className="flex-1">
+                  {shop.shopName}
+                </ThemedText>
+              </View>
+              <SymbolView
+                size={20}
+                tintColor={mutedColor as string}
+                name={{
+                  android: "chevron_right",
+                  ios: "chevron.right",
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+          <Host matchContents={{ vertical: true }}>
+            <Separator />
+          </Host>
         </Fragment>
       ))}
-    </>
+    </View>
   );
 };

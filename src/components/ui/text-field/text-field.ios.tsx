@@ -7,7 +7,9 @@ import {
   disabled as disabledModifier,
   fixedSize,
   lineLimit,
+  submitLabel,
   keyboardType as swiftKeyboardTypeModifier,
+  onSubmit as swiftOnSubmitModifier,
   textInputAutocapitalization,
 } from "@expo/ui/swift-ui/modifiers";
 import { useCallback, useMemo } from "react";
@@ -21,6 +23,7 @@ export const TextField = ({
   keyboardType,
   multiLine,
   maxLines = 5,
+  onSubmit,
 }: TextFieldProps) => {
   const field = useFieldContext<string | undefined>();
   const nativeValue = useNativeState(field.state.value ?? "");
@@ -78,6 +81,11 @@ export const TextField = ({
     return [];
   }, [keyboardType]);
 
+  const submitModifiers = useMemo(() => {
+    if (onSubmit) return [submitLabel("done"), swiftOnSubmitModifier(onSubmit)];
+    return [];
+  }, [onSubmit]);
+
   return (
     <SwiftTextField
       placeholder={placeholder}
@@ -91,6 +99,7 @@ export const TextField = ({
         ...keyboardTypeModifiers,
         ...multiLineModifiers,
         disabledModifier(!!disabled),
+        ...submitModifiers,
       ]}
     />
   );

@@ -1,17 +1,22 @@
-import { ObservableState, Row } from "@expo/ui";
-import { ButtonProps } from "@expo/ui/swift-ui";
+import { IconName, ObservableState, Row } from "@expo/ui";
+import { ButtonRole } from "@expo/ui/swift-ui";
+import { SFSymbol } from "expo-symbols";
+import { ILanguageTexts } from "./ILanguageTexts";
 
 export interface UIButtonProps {
   variant?: "filled" | "outlined" | "elevated" | "text" | "default";
   children?: React.ReactElement;
-  systemImageIos?: ButtonProps["systemImage"];
-  roleIos?: ButtonProps["role"];
+  systemImageIos?: SFSymbol;
+  roleIos?: ButtonRole;
   onPress?: () => void;
   size?: "mini" | "small" | "regular" | "large";
   disabled?: boolean;
   iconOnlyIos?: boolean;
   height?: number;
   width?: number;
+  backgroundColor?: string;
+  paddingHorizontal?: number;
+  paddingVertical?: number;
 }
 
 export type UITextProps = {
@@ -36,6 +41,7 @@ export type PasswordFieldProps = {
   placeholder?: string;
   disabled?: boolean;
   autoFocus?: boolean;
+  onSubmit?: () => void;
 };
 
 export type TextFieldProps = {
@@ -50,6 +56,7 @@ export type TextFieldProps = {
   autoFocus?: boolean;
   multiLine?: boolean;
   maxLines?: number;
+  onSubmit?: () => void;
 };
 export type TextInputProps = {
   label?: string;
@@ -79,4 +86,36 @@ export type UIRowProps = Omit<React.ComponentProps<typeof Row>, "modifiers"> & {
   fillFullWidth?: boolean;
   paddingVertical?: number;
   paddingHorizontal?: number;
+};
+
+export type DropdownMenuProps = {
+  options: DropdownMenuOptions[];
+  onSelect?: (v: string) => void;
+  value?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  IOSSystemImage?: SFSymbol;
+  customLabel?: React.ReactNode;
+  androidIcon?: IconName;
+};
+
+export type DropdownMenuOptions = {
+  label: string;
+  value: string;
+  disabled?: boolean;
+  leadingIcon?: React.ReactNode;
+  trailingIcon?: React.ReactNode;
+  IOSSystemImage?: SFSymbol;
+  IOSRole?: ButtonRole;
+};
+
+export type AlertDialogProps = {
+  title: string;
+  message?: string;
+  trigger: (open: () => void) => React.ReactNode;
+  cancelButtonText?: ILanguageTexts;
+  confirmButtonText?: ILanguageTexts;
+  confirmButtonRole?: "default" | "destructive";
+  onConfirm: () => void;
+  isConfirming?: boolean;
 };

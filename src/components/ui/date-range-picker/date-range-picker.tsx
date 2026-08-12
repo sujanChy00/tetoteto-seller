@@ -47,7 +47,12 @@ export const DateRangePicker = ({ onChange, value }: Props) => {
   return (
     <View>
       <Host matchContents>
-        <Button variant="elevated" onPress={onOpen}>
+        <Button
+          variant="elevated"
+          onPress={onOpen}
+          paddingHorizontal={12}
+          height={35}
+        >
           <Text>
             {value.startDate && value.endDate
               ? `${formatShortDate(new Date(value.startDate as string))} - ${formatShortDate(new Date(value.endDate as string))}`
