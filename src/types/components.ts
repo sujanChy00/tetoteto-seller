@@ -17,6 +17,7 @@ export interface UIButtonProps {
   backgroundColor?: string;
   paddingHorizontal?: number;
   paddingVertical?: number;
+  fillFullWidth?: boolean;
 }
 
 export type UITextProps = {

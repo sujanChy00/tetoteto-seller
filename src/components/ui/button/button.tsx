@@ -24,13 +24,13 @@ export const Button = ({
   backgroundColor,
   paddingHorizontal,
   paddingVertical,
+  fillFullWidth = true,
 }: UIButtonProps) => {
-  const butonModifiers = useMemo(() => {
+  const buttonSizeModifiers = useMemo(() => {
     if (buttonHeight && buttonWidth) {
-      return [weight(1), size(buttonHeight, buttonWidth)];
+      return [size(buttonHeight, buttonWidth)];
     }
     return [
-      weight(1),
       ...(buttonHeight ? [height(buttonHeight)] : []),
       ...(buttonWidth ? [width(buttonWidth)] : []),
     ];
@@ -45,13 +45,20 @@ export const Button = ({
     };
   }, [paddingHorizontal, paddingVertical]);
 
+  const buttonWidthModifiers = useMemo(() => {
+    if (fillFullWidth) {
+      return [weight(1)];
+    }
+    return [];
+  }, [fillFullWidth]);
+
   if (variant === "filled")
     return (
       <FilledTonalButton
         contentPadding={contentPadding}
         enabled={!disabled}
         onClick={onPress}
-        modifiers={butonModifiers}
+        modifiers={[...buttonSizeModifiers, ...buttonWidthModifiers]}
         colors={{
           containerColor: backgroundColor,
         }}
@@ -65,7 +72,7 @@ export const Button = ({
         contentPadding={contentPadding}
         onClick={onPress}
         enabled={!disabled}
-        modifiers={butonModifiers}
+        modifiers={[...buttonSizeModifiers, ...buttonWidthModifiers]}
         colors={{
           containerColor: backgroundColor,
         }}
@@ -79,7 +86,7 @@ export const Button = ({
         contentPadding={contentPadding}
         enabled={!disabled}
         onClick={onPress}
-        modifiers={butonModifiers}
+        modifiers={[...buttonSizeModifiers, ...buttonWidthModifiers]}
         colors={{
           containerColor: backgroundColor,
         }}
@@ -93,7 +100,7 @@ export const Button = ({
         contentPadding={contentPadding}
         enabled={!disabled}
         onClick={onPress}
-        modifiers={butonModifiers}
+        modifiers={[...buttonSizeModifiers, ...buttonWidthModifiers]}
         colors={{
           containerColor: backgroundColor,
         }}
@@ -107,7 +114,7 @@ export const Button = ({
       contentPadding={contentPadding}
       enabled={!disabled}
       onClick={onPress}
-      modifiers={butonModifiers}
+      modifiers={[...buttonSizeModifiers, ...buttonWidthModifiers]}
       colors={{
         containerColor: backgroundColor,
       }}

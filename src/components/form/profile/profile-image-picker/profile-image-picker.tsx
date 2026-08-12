@@ -1,15 +1,24 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Host } from "@/components/ui/host";
-import { Row } from "@/components/ui/row";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
-import { Spacer, Text } from "@expo/ui";
+import { Icon, Row, Spacer, Text } from "@expo/ui";
 import * as ImagePicker from "expo-image-picker";
 import { Link } from "expo-router";
 import { useCallback } from "react";
 import { View } from "react-native";
+
+const GALLERY_ICON = Icon.select({
+  android: import("@expo/material-symbols/photo_library.xml"),
+  ios: "photo.on.rectangle",
+});
+
+const CAMERA_ICON = Icon.select({
+  android: import("@expo/material-symbols/photo_camera.xml"),
+  ios: "camera",
+});
 
 interface ProfileImagePickerProps {
   value: string | undefined;
@@ -59,7 +68,7 @@ export const ProfileImagePicker = ({
   };
 
   return (
-    <View className="w-full gap-y-6">
+    <View className="w-full gap-y-3">
       <View className="gap-y-1 items-center">
         <Link
           href={{
@@ -92,14 +101,28 @@ export const ProfileImagePicker = ({
         </View>
       </View>
       <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-        <Row>
-          <Button variant="outlined" onPress={takePicture}>
-            <Text>Camera</Text>
+        <Row alignment="center">
+          <Spacer flexible />
+          <Button
+            fillFullWidth={false}
+            variant="outlined"
+            onPress={takePicture}
+          >
+            <Row alignment="center">
+              <Icon name={CAMERA_ICON} size={16} />
+              <Spacer size={3} />
+              <Text>Camera</Text>
+            </Row>
           </Button>
           <Spacer size={6} />
-          <Button variant="outlined" onPress={pickImage}>
-            <Text>Gallery</Text>
+          <Button fillFullWidth={false} variant="outlined" onPress={pickImage}>
+            <Row alignment="center">
+              <Icon name={GALLERY_ICON} size={16} />
+              <Spacer size={3} />
+              <Text>Gallery</Text>
+            </Row>
           </Button>
+          <Spacer flexible />
         </Row>
       </Host>
     </View>
