@@ -1,6 +1,7 @@
 import { IconName, ObservableState, Row } from "@expo/ui";
 import { ButtonRole } from "@expo/ui/swift-ui";
 import { SFSymbol } from "expo-symbols";
+import { ViewProps } from "react-native";
 import { ILanguageTexts } from "./ILanguageTexts";
 
 export interface UIButtonProps {
@@ -120,3 +121,7 @@ export type AlertDialogProps = {
   onConfirm: () => void;
   isConfirming?: boolean;
 };
+
+export interface SurfaceProps extends ViewProps {
+  variant?: "default" | "secondary" | "tertiary" | "outlined" | "transparent";
+}
