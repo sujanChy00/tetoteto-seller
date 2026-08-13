@@ -1,20 +1,19 @@
 import { ItemFilters } from "@/components/item/item-filters";
-import { ThemedText } from "@/components/ui/themed-text";
+import { useNativeState } from "@expo/ui/jetpack-compose";
 import { useLocalSearchParams } from "expo-router";
+import { View } from "react-native";
 
 const ItemScreen = () => {
+  const text = useNativeState("");
   const { query, sort, order } = useLocalSearchParams<{
     query?: string;
     sort?: string;
     order?: string;
   }>();
   return (
-    <>
-      <ThemedText>Query: {query}</ThemedText>
-      <ThemedText>Sort: {sort}</ThemedText>
-      <ThemedText>Order: {order}</ThemedText>
+    <View className="flex-1">
       <ItemFilters />
-    </>
+    </View>
   );
 };
 

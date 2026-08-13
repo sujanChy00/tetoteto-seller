@@ -66,6 +66,7 @@ export const ItemFilters = ({ options }: { options?: ItemSortOption[] }) => {
             );
           })}
         </Stack.Toolbar.Menu>
+        <Stack.Toolbar.Button icon={"plus"} />
       </Stack.Toolbar>
     </>
   );

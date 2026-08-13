@@ -8,22 +8,24 @@ import { storage } from "@/utils/storage";
 export const useLanguage = () => {
   const [language, setLanguage] = useMMKVString(LANGUAGE_KEY, storage);
 
-  function t(key: ILanguageTexts, defaultText?: string) {
+  function t(key: ILanguageTexts, defaultText?: string): string {
     if (languageData) {
       if (language) {
         if (
           languageData[language as ILanguageCode] &&
           languageData[language as ILanguageCode][key]
         ) {
-          return languageData[language as ILanguageCode][key] || defaultText;
+          return (
+            languageData[language as ILanguageCode][key] ?? defaultText ?? ""
+          );
         }
       } else {
         if (languageData["en_US"] && languageData["en_US"][key]) {
-          return languageData["en_US"][key] || defaultText;
+          return languageData["en_US"][key] ?? defaultText ?? "";
         }
       }
     }
-    return defaultText;
+    return defaultText ?? "";
   }
 
   const selectedLanguage = language || "en_US";
