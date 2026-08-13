@@ -1,0 +1,25 @@
+import { ILanguageTexts } from "@/types";
+import React from "react";
+import { ActivityIndicator, View } from "react-native";
+import { twMerge } from "tailwind-merge";
+import { FalllBackMesage } from "../fallback-message";
+
+interface Props {
+  isPending: boolean;
+  className?: string;
+  emptyStateMessage?: ILanguageTexts;
+}
+
+export const ListEmpty = React.memo(
+  ({ className, isPending, emptyStateMessage }: Props) => {
+    if (isPending)
+      return (
+        <View
+          className={twMerge("h-40 items-center justify-center", className)}
+        >
+          <ActivityIndicator />
+        </View>
+      );
+    return <FalllBackMesage className="pt-20" message={emptyStateMessage} />;
+  },
+);
