@@ -53,10 +53,10 @@ const AppLayout = () => {
       />
       <Stack.Screen
         name="shipping-fee/index"
-        // options={{
-        //   title: t("shipping_fees"),
-        //   headerRight: () => <ResetShippingFee />,
-        // }}
+        options={{
+          title: t("shipping_fees"),
+          // headerRight: () => <ResetShippingFee />,
+        }}
       />
       <Stack.Screen
         name="shop/index"

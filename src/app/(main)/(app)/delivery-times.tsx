@@ -8,10 +8,9 @@ import {
   useGetShopAvailableDeliveryTimes,
 } from "@/queries/delivery-slots-query";
 import { IShopDeliveryTimes } from "@/types";
-import { AnimatedLegendList } from "@legendapp/list/reanimated";
+import { LegendList } from "@legendapp/list/react-native";
 import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
-import { LinearTransition } from "react-native-reanimated";
 
 const renderSeparator = () => <ListSeparator />;
 
@@ -59,8 +58,7 @@ const DeliveryTimeScreen = () => {
   );
 
   return (
-    <AnimatedLegendList
-      itemLayoutAnimation={LinearTransition.duration(280)}
+    <LegendList
       key={numColumns}
       numColumns={numColumns}
       columnWrapperStyle={numColumns > 1 ? { gap: 10 } : undefined}

@@ -25,7 +25,7 @@ export default function Index() {
           }}
         />
       }
-      contentContainerClassName="py-safe-offset-8"
+      contentContainerClassName="py-safe-offset-14"
     >
       <ShopSelector />
       <View className="px-2 pt-6 gap-6">

@@ -2,6 +2,7 @@ import { IShopUser } from "@/types";
 import { getAvatarName } from "@/utils/avatar-name";
 import { dateTimeFormatterWithouTLocale } from "@/utils/date";
 import { SymbolView } from "expo-symbols";
+import { memo } from "react";
 import { View } from "react-native";
 import { useCSSVariable } from "uniwind";
 import { Avatar } from "../ui/avatar";
@@ -9,7 +10,7 @@ import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
 import { ThemedText } from "../ui/themed-text";
 
-export const ShopUserCard = ({ data }: { data: IShopUser }) => {
+export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
   const successColor = useCSSVariable("--color-success");
   const dangerColor = useCSSVariable("--color-danger");
 
@@ -71,4 +72,4 @@ export const ShopUserCard = ({ data }: { data: IShopUser }) => {
       </Card.Footer>
     </Card.Root>
   );
-};
+});

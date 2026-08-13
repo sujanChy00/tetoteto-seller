@@ -5,9 +5,8 @@ import { ListSeparator } from "@/components/ui/list/list-separator";
 import { useResponsiveListColumns } from "@/hooks/use-responsive-list-columns";
 import { useUser } from "@/hooks/use-user";
 import { ISellerShopDetail } from "@/types";
-import { AnimatedLegendList } from "@legendapp/list/reanimated";
+import { LegendList } from "@legendapp/list/react-native";
 import { useCallback, useMemo } from "react";
-import { LinearTransition } from "react-native-reanimated";
 
 const renderSeparator = () => <ListSeparator />;
 
@@ -30,9 +29,9 @@ const ShopScreen = () => {
     () => <ListEmpty isPending={false} />,
     [],
   );
+
   return (
-    <AnimatedLegendList
-      itemLayoutAnimation={LinearTransition.duration(280)}
+    <LegendList
       key={numColumns}
       numColumns={numColumns}
       columnWrapperStyle={numColumns > 1 ? { gap: 10 } : undefined}
@@ -45,6 +44,8 @@ const ShopScreen = () => {
       ListFooterComponent={<ListFooter />}
       keyExtractor={keyExtractor}
       ListEmptyComponent={ListEmptyComponent}
+      estimatedItemSize={311}
+      drawDistance={500}
       data={data}
       renderItem={renderItem}
     />

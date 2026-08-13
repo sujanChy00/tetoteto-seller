@@ -125,3 +125,8 @@ export type AlertDialogProps = {
 export interface SurfaceProps extends ViewProps {
   variant?: "default" | "secondary" | "tertiary" | "outlined" | "transparent";
 }
+
+export type FabButtonProps = {
+  onPress: () => void;
+  className?: string;
+};
