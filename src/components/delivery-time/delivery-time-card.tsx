@@ -1,15 +1,12 @@
 import { useLanguage } from "@/hooks/use-language";
 import { useUpdateShopDeliveryTime } from "@/mutation/delivery-slot-mutation";
 import { IShopDeliveryTimes } from "@/types";
-import { Spacer, Text } from "@expo/ui";
 import { memo } from "react";
+import { ActivityIndicator } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
-import { Host } from "../ui/host";
-import { Row } from "../ui/row";
-import { Spinner } from "../ui/spinner";
 import { ThemedText } from "../ui/themed-text";
 
 type Props = { timeSlots: IShopDeliveryTimes; default?: boolean };
@@ -48,21 +45,16 @@ export const DeliverTimeSlotCard = memo(
               {t("selected")}
             </ThemedText>
           ) : (
-            <Host matchContents={{ vertical: true }}>
-              <Button
-                onPress={async () => {
-                  await mutateAsync({
-                    shippingCompanyId: timeSlots.shippingCompanyId,
-                  });
-                }}
-              >
-                <Row alignment="center">
-                  {isPending && <Spinner size={16} />}
-                  <Spacer size={4} />
-                  <Text>{t("select")}</Text>
-                </Row>
-              </Button>
-            </Host>
+            <Button.Primary
+              onPress={async () => {
+                await mutateAsync({
+                  shippingCompanyId: timeSlots.shippingCompanyId,
+                });
+              }}
+            >
+              {isPending && <ActivityIndicator size={16} />}
+              <Button.PrimaryLabel>{t("select")}</Button.PrimaryLabel>
+            </Button.Primary>
           )}
         </Card.Footer>
       </Card.Root>

@@ -1,24 +1,14 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Host } from "@/components/ui/host";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
-import { Icon, Row, Spacer, Text } from "@expo/ui";
 import * as ImagePicker from "expo-image-picker";
 import { Link } from "expo-router";
+import { SymbolView } from "expo-symbols";
 import { useCallback } from "react";
 import { View } from "react-native";
-
-const GALLERY_ICON = Icon.select({
-  android: import("@expo/material-symbols/photo_library.xml"),
-  ios: "photo.on.rectangle",
-});
-
-const CAMERA_ICON = Icon.select({
-  android: import("@expo/material-symbols/photo_camera.xml"),
-  ios: "camera",
-});
+import { useCSSVariable } from "uniwind";
 
 interface ProfileImagePickerProps {
   value: string | undefined;
@@ -30,6 +20,9 @@ export const ProfileImagePicker = ({
   onChange,
 }: ProfileImagePickerProps) => {
   const { user } = useUser();
+  const defaultForegroundColor = useCSSVariable(
+    "--color-default-foreground",
+  ) as string;
 
   const pickImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -100,31 +93,30 @@ export const ProfileImagePicker = ({
           </ThemedText>
         </View>
       </View>
-      <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-        <Row alignment="center">
-          <Spacer flexible />
-          <Button
-            fillFullWidth={false}
-            variant="outlined"
-            onPress={takePicture}
-          >
-            <Row alignment="center">
-              <Icon name={CAMERA_ICON} size={16} />
-              <Spacer size={3} />
-              <Text>Camera</Text>
-            </Row>
-          </Button>
-          <Spacer size={6} />
-          <Button fillFullWidth={false} variant="outlined" onPress={pickImage}>
-            <Row alignment="center">
-              <Icon name={GALLERY_ICON} size={16} />
-              <Spacer size={3} />
-              <Text>Gallery</Text>
-            </Row>
-          </Button>
-          <Spacer flexible />
-        </Row>
-      </Host>
+      <View className="justify-center flex-row items-center gap-3">
+        <Button.Outline onPress={takePicture}>
+          <SymbolView
+            tintColor={defaultForegroundColor}
+            name={{
+              android: "photo_camera",
+              ios: "camera",
+            }}
+            size={16}
+          />
+          <Button.OutlineLabel>Camera</Button.OutlineLabel>
+        </Button.Outline>
+        <Button.Outline onPress={pickImage}>
+          <SymbolView
+            tintColor={defaultForegroundColor}
+            name={{
+              android: "photo_library",
+              ios: "photo.on.rectangle",
+            }}
+            size={16}
+          />
+          <Button.OutlineLabel>Gallery</Button.OutlineLabel>
+        </Button.Outline>
+      </View>
     </View>
   );
 };

@@ -26,7 +26,7 @@ export const ShopPrefectures = ({
         >
           <RNHostView matchContents>
             {prefectures?.length ? (
-              <View className="p-3 flex-row items-center gap-3 flex-wrap border-t border-t-separator">
+              <View className="p-3 flex-row items-center gap-3 flex-wrap border-t-hairline border-t-separator">
                 {prefectures?.map((prefecture) => (
                   <Chip.Root
                     variant="soft"

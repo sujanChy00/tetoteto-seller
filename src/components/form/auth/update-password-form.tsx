@@ -3,10 +3,9 @@ import { View } from "react-native";
 import { toast } from "../../../utils/toast";
 
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
+import { Button } from "@/components/ui/button";
 import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
 import { Host } from "@/components/ui/host";
-import { Spinner } from "@/components/ui/spinner";
-import { Row, Text } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -94,10 +93,8 @@ export const UpdatePasswordForm = () => {
       </ScrollView>
       <FormStickySubmitButtonWrapper>
         <Form.SubmitButton>
-          <Row alignment="center" spacing={6}>
-            <Spinner size={16} />
-            <Text>Update Password</Text>
-          </Row>
+          {/*<Spinner size={16} />*/}
+          <Button.PrimaryLabel>Update Password</Button.PrimaryLabel>
         </Form.SubmitButton>
       </FormStickySubmitButtonWrapper>
     </Form.AppForm>

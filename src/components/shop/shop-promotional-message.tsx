@@ -1,7 +1,6 @@
 import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
 import { useCSSVariable } from "uniwind";
-import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { Surface } from "../ui/surface";
 import { ThemedText } from "../ui/themed-text";
@@ -11,7 +10,7 @@ export const ShopPromotionalMessage = ({
 }: {
   promotionalMessage: string | undefined;
 }) => {
-  const primaryColor = useCSSVariable("--primary-color") as string;
+  const primaryColor = useCSSVariable("--color-primary") as string;
   if (!promotionalMessage) return null;
 
   return (
@@ -27,9 +26,7 @@ export const ShopPromotionalMessage = ({
         />
         <ThemedText className="font-semibold">Promotional Message</ThemedText>
       </View>
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="p-3">
         <ThemedText className="text-muted text-xs">
           {promotionalMessage}

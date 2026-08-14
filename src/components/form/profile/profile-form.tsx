@@ -1,20 +1,23 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
+import { Button } from "@/components/ui/button";
 import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
 import { Host } from "@/components/ui/host";
-import { Spinner } from "@/components/ui/spinner";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUploadImageAndCall } from "@/hooks/use-image-upload";
+import { useIsKeyboardVisible } from "@/hooks/use-keyboard-visible";
 import { useUser } from "@/hooks/use-user";
 import {
   useChangeProfileImage,
   useUpdateProfile,
 } from "@/mutation/profile-mutation";
-import { Row, Text } from "@expo/ui";
-import { ScrollView, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import { ProfileImagePicker } from "./profile-image-picker";
 
 export const ProfileForm = () => {
+  const isKeyboardVisible = useIsKeyboardVisible();
+  const scrollViewRef = useRef<ScrollView>(null);
   const hapticFeedBack = useHaptics();
   const { user } = useUser();
   const { mutateAsync: updateProfileSync, isPending: isProfilePending } =
@@ -43,9 +46,17 @@ export const ProfileForm = () => {
 
   const isPending = isProfilePending || isProfileImagePending || isUploading;
 
+  useEffect(() => {
+    if (!scrollViewRef.current) return;
+    if (isKeyboardVisible) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  }, [isKeyboardVisible]);
+
   return (
     <Form.AppForm>
       <ScrollView
+        ref={scrollViewRef}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1 }}
         contentContainerClassName="pt-20 px-2"
@@ -74,10 +85,8 @@ export const ProfileForm = () => {
       </ScrollView>
       <FormStickySubmitButtonWrapper>
         <Form.SubmitButton disabled={isPending}>
-          <Row alignment="center" spacing={6}>
-            {isPending && <Spinner size={16} />}
-            <Text>Update Profile</Text>
-          </Row>
+          {isPending && <ActivityIndicator size={16} />}
+          <Button.PrimaryLabel>Update Profile</Button.PrimaryLabel>
         </Form.SubmitButton>
       </FormStickySubmitButtonWrapper>
     </Form.AppForm>

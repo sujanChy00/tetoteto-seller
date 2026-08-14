@@ -1,4 +1,5 @@
-import { isAndroid } from "@/constants/platform";
+import { IosShippingCampaignHeaderButton } from "@/components/shipping-campaign/ios-shipping-campaign-header-button";
+import { isAndroid, isIOS } from "@/constants/platform";
 import { useLanguage } from "@/hooks/use-language";
 import { Stack } from "expo-router";
 
@@ -49,6 +50,8 @@ const AppLayout = () => {
         name="shipping-campaign/index"
         options={{
           title: t("shipping_campaigns"),
+          headerRight: () =>
+            isIOS ? <IosShippingCampaignHeaderButton /> : null,
         }}
       />
       <Stack.Screen
@@ -92,18 +95,11 @@ const AppLayout = () => {
             : { headerShown: false }
         }
       />
-      {/*<Stack.Screen
-        name="image/[image]"
-        options={{
-          headerShown: false,
-          presentation: "modal",
-          animation: "slide_from_bottom",
-        }}
-      />*/}
+
       <Stack.Screen
         name="shop/[shopId]/index"
         options={{
-          headerTitle: "Shop Profile",
+          headerShown: false,
         }}
       />
       {/*<Stack.Screen

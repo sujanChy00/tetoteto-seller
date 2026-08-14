@@ -3,6 +3,7 @@ import { FabButton } from "@/components/ui/fab-button";
 import { ListEmpty } from "@/components/ui/list/list-empty";
 import { ListFooter } from "@/components/ui/list/list-footer";
 import { ListSeparator } from "@/components/ui/list/list-separator";
+import { isAndroid } from "@/constants/platform";
 import { useResponsiveListColumns } from "@/hooks/use-responsive-list-columns";
 import { useGetAllShippingCampaigns } from "@/queries/campaign-query";
 import { IShipppingCampaign } from "@/types";
@@ -72,13 +73,15 @@ const ShippingCampaignScreen = () => {
         drawDistance={500}
       />
 
-      <FabButton
-        onPress={() => {
-          router.push({
-            pathname: "/shipping-campaign/add",
-          });
-        }}
-      />
+      {isAndroid ? (
+        <FabButton
+          onPress={() => {
+            router.push({
+              pathname: "/shipping-campaign/add",
+            });
+          }}
+        />
+      ) : null}
     </View>
   );
 };

@@ -1,21 +1,17 @@
 import { ISellerShopDetail } from "@/types";
-import { Icon, Spacer, Text } from "@expo/ui";
 import { useRouter } from "expo-router";
+import { SymbolView } from "expo-symbols";
 import React from "react";
 import { View } from "react-native";
+import { useCSSVariable } from "uniwind";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
-import { Host } from "../ui/host";
-import { Row } from "../ui/row";
-
-const EDIT_ICON = Icon.select({
-  ios: "pencil",
-  android: require("@expo/material-symbols/edit.xml"),
-});
 
 export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
   const router = useRouter();
+  const primaryColor = useCSSVariable("--color-primary") as string;
+
   return (
     <Card.Root className="gap-6">
       <Card.Header>
@@ -31,40 +27,39 @@ export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
           {shop.shopAddress}
         </Card.Description>
       </Card.Header>
-      <Card.Footer className="w-full">
-        <Host matchContents={{ vertical: true }} style={{ height: 50 }}>
-          <Row alignment="center">
-            <Button
-              height={50}
-              onPress={() => {
-                router.push({
-                  pathname: "/shop/[shopId]",
-                  params: {
-                    shopId: shop.shopId,
-                  },
-                });
-              }}
-            >
-              <Text>View</Text>
-            </Button>
-            <Spacer size={12} />
-            <Button
-              height={50}
-              onPress={() => {
-                router.push({
-                  pathname: "/shop/[shopId]/edit",
-                  params: {
-                    shopId: shop.shopId,
-                  },
-                });
-              }}
-              variant="filled"
-              fillFullWidth={false}
-            >
-              <Icon name={EDIT_ICON} />
-            </Button>
-          </Row>
-        </Host>
+      <Card.Footer className="w-full flex-row items-center gap-3">
+        <Button.Primary
+          className="flex-1"
+          onPress={() => {
+            router.push({
+              pathname: "/shop/[shopId]",
+              params: {
+                shopId: shop.shopId,
+              },
+            });
+          }}
+        >
+          <Button.PrimaryLabel>View</Button.PrimaryLabel>
+        </Button.Primary>
+        <Button.Secondary
+          onPress={() => {
+            router.push({
+              pathname: "/shop/[shopId]/edit",
+              params: {
+                shopId: shop.shopId,
+              },
+            });
+          }}
+        >
+          <SymbolView
+            tintColor={primaryColor}
+            size={18}
+            name={{
+              ios: "pencil",
+              android: "edit",
+            }}
+          />
+        </Button.Secondary>
       </Card.Footer>
     </Card.Root>
   );

@@ -1,146 +1,100 @@
-import { TextInputProps } from "@/types/components";
+import { TextFieldProps } from "@/types/components";
 import {
-  BasicTextField,
-  Box,
-  ObservableState,
-  OutlinedTextField,
   Text,
-  TextField,
+  TextField as UITextField,
+  useNativeState,
 } from "@expo/ui/jetpack-compose";
+import { weight } from "@expo/ui/jetpack-compose/modifiers";
+import { useCallback } from "react";
+import { scheduleOnRN } from "react-native-worklets";
 
 export const TextInput = ({
   autoFocus,
   disabled,
   keyboardType,
   label,
-  isInvalid,
   leadingIcon,
-  placeholder,
+  // placeholder,
   prefix,
   suffix,
   trailingIcon,
   maxLines,
   multiLine,
-  variant = "default",
+  errorMessage,
+  isInvalid,
+  onSubmit,
   onValueChange,
   value,
-}: TextInputProps) => {
-  if (variant === "outline")
-    return (
-      <OutlinedTextField
-        value={value as ObservableState<string>}
-        onValueChange={onValueChange}
-        singleLine={!multiLine}
-        maxLines={maxLines}
-        autoFocus={autoFocus}
-        isError={isInvalid}
-        enabled={!disabled}
-        keyboardOptions={{
-          keyboardType,
-          capitalization: "none",
-          autoCorrectEnabled: false,
-        }}
-      >
-        <OutlinedTextField.Label>
-          <Text>{label}</Text>
-        </OutlinedTextField.Label>
-        {placeholder ? (
-          <OutlinedTextField.Placeholder>
-            <Text>{placeholder}</Text>
-          </OutlinedTextField.Placeholder>
-        ) : null}
-        {leadingIcon ? (
-          <OutlinedTextField.LeadingIcon>
-            <Text>{leadingIcon}</Text>
-          </OutlinedTextField.LeadingIcon>
-        ) : null}
-        {trailingIcon ? (
-          <OutlinedTextField.TrailingIcon>
-            <Text>{trailingIcon}</Text>
-          </OutlinedTextField.TrailingIcon>
-        ) : null}
-        {prefix ? (
-          <OutlinedTextField.Prefix>
-            <Text>{prefix}</Text>
-          </OutlinedTextField.Prefix>
-        ) : null}
-        {suffix ? (
-          <OutlinedTextField.Suffix>
-            <Text>{suffix}</Text>
-          </OutlinedTextField.Suffix>
-        ) : null}
-      </OutlinedTextField>
-    );
-  if (variant === "filled")
-    return (
-      <TextField
-        value={value as ObservableState<string>}
-        onValueChange={onValueChange}
-        singleLine={!multiLine}
-        maxLines={maxLines}
-        autoFocus={autoFocus}
-        isError={isInvalid}
-        enabled={!disabled}
-        keyboardOptions={{
-          keyboardType,
-          capitalization: "none",
-          autoCorrectEnabled: false,
-        }}
-      >
-        <TextField.Label>
-          <Text>{label}</Text>
-        </TextField.Label>
-        {placeholder ? (
-          <TextField.Placeholder>
-            <Text>{placeholder}</Text>
-          </TextField.Placeholder>
-        ) : null}
-        {leadingIcon ? (
-          <TextField.LeadingIcon>
-            <Text>{leadingIcon}</Text>
-          </TextField.LeadingIcon>
-        ) : null}
-        {trailingIcon ? (
-          <TextField.TrailingIcon>
-            <Text>{trailingIcon}</Text>
-          </TextField.TrailingIcon>
-        ) : null}
-        {prefix ? (
-          <TextField.Prefix>
-            <Text>{prefix}</Text>
-          </TextField.Prefix>
-        ) : null}
-        {suffix ? (
-          <TextField.Suffix>
-            <Text>{suffix}</Text>
-          </TextField.Suffix>
-        ) : null}
-      </TextField>
-    );
+}: TextFieldProps) => {
+  const nativeValue = useNativeState(value ?? "");
+  const updateField = useCallback(
+    (value: string) => {
+      onValueChange?.(value);
+    },
+    [onValueChange],
+  );
+
+  const handleValueChange = useCallback(
+    (value: string) => {
+      "worklet";
+
+      nativeValue.value = value;
+      scheduleOnRN(updateField, value);
+    },
+    [nativeValue, updateField],
+  );
+
   return (
-    <BasicTextField
-      value={value as ObservableState<string>}
-      onValueChange={onValueChange}
+    <UITextField
       singleLine={!multiLine}
       maxLines={maxLines}
       autoFocus={autoFocus}
+      isError={isInvalid}
       enabled={!disabled}
+      modifiers={[weight(1)]}
+      value={nativeValue}
+      onValueChange={handleValueChange}
+      keyboardActions={onSubmit ? { onDone: onSubmit } : undefined}
       keyboardOptions={{
         keyboardType,
         capitalization: "none",
         autoCorrectEnabled: false,
+        imeAction: onSubmit ? "done" : "default",
       }}
     >
-      <BasicTextField.DecorationBox>
-        <Box>
-          {placeholder ? (
-            <BasicTextField.Placeholder>
-              <Text color="#9ca3af">{placeholder}</Text>
-            </BasicTextField.Placeholder>
-          ) : null}
-          <BasicTextField.InnerTextField />
-        </Box>
-      </BasicTextField.DecorationBox>
-    </BasicTextField>
+      <UITextField.Label>
+        <Text>{label}</Text>
+      </UITextField.Label>
+      {/*{placeholder ? (
+        <UITextField.Placeholder>
+          <Text>{placeholder}</Text>
+        </UITextField.Placeholder>
+      ) : null}*/}
+      {leadingIcon ? (
+        <UITextField.LeadingIcon>
+          <Text>{leadingIcon}</Text>
+        </UITextField.LeadingIcon>
+      ) : null}
+      {trailingIcon ? (
+        <UITextField.TrailingIcon>
+          <Text>{trailingIcon}</Text>
+        </UITextField.TrailingIcon>
+      ) : null}
+      {prefix ? (
+        <UITextField.Prefix>
+          <Text>{prefix}</Text>
+        </UITextField.Prefix>
+      ) : null}
+      {suffix ? (
+        <UITextField.Suffix>
+          <Text>{suffix}</Text>
+        </UITextField.Suffix>
+      ) : null}
+      {!!errorMessage ? (
+        <UITextField.SupportingText>
+          <Text>{errorMessage}</Text>
+        </UITextField.SupportingText>
+      ) : null}
+    </UITextField>
   );
 };

@@ -1,4 +1,14 @@
-import { Image } from "expo-image";
+import { Image, ImageProps } from "expo-image";
 import { withUniwind } from "uniwind";
 
-export const StyledImage = withUniwind(Image);
+const ExpoImage = withUniwind(Image);
+
+export const StyledImage = ({ source, placeholder, ...rest }: ImageProps) => {
+  return (
+    <ExpoImage
+      placeholder={placeholder ?? require("@/assets/images/logo.png")}
+      source={source}
+      {...rest}
+    />
+  );
+};

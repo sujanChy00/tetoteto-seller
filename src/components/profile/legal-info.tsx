@@ -6,7 +6,6 @@ import { AndroidSymbol, SFSymbol, SymbolView } from "expo-symbols";
 import { TouchableOpacity, View } from "react-native";
 import { Fragment } from "react/jsx-runtime";
 import { useCSSVariable } from "uniwind";
-import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { ThemedText } from "../ui/themed-text";
 
@@ -76,9 +75,7 @@ export const LegalInfo = () => {
               />
             </View>
           </TouchableOpacity>
-          <Host matchContents={{ vertical: true }}>
-            <Separator />
-          </Host>
+          <Separator />
         </Fragment>
       ))}
     </View>

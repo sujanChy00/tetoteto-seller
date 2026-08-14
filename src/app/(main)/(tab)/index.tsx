@@ -7,6 +7,7 @@ import { useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
 
 export default function Index() {
+  const [selected, setSelected] = useState("one");
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, isRefetching, refetch } = useGetHomeData();
 

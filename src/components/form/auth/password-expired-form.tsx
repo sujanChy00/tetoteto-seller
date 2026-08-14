@@ -2,13 +2,11 @@ import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
 import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
 import { Host } from "@/components/ui/host";
-import { Spinner } from "@/components/ui/spinner";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useAppTheme } from "@/context/app-theme-provider";
 import { useForm } from "@/hooks/use-form";
 import { useUser } from "@/hooks/use-user";
 import { useLogoutMutation } from "@/mutation/auth-mutation";
-import { Row, Text } from "@expo/ui";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -78,19 +76,19 @@ export const PasswordExpiredForm = () => {
       <FormStickySubmitButtonWrapper>
         <View className="gap-y-3 bg-background w-full">
           <Form.SubmitButton>
-            <Row alignment="center" spacing={6}>
-              <Spinner size={16} />
-              <Text>Reset Password</Text>
-            </Row>
+            {/*<Spinner size={16} />*/}
+            <Button.PrimaryLabel>Reset Password</Button.PrimaryLabel>
           </Form.SubmitButton>
-          <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-            <Button onPress={logout} variant="text">
-              <Row spacing={10} alignment="center">
-                {isPending && <Spinner size={20} />}
-                <Text>Login with another account?</Text>
-              </Row>
-            </Button>
-          </Host>
+          <Button.Ghost
+            onPress={() => {
+              logout();
+            }}
+          >
+            {/*{isPending && <Spinner size={20} />}*/}
+            <Button.DangerSoftLabel>
+              Login with another account?
+            </Button.DangerSoftLabel>
+          </Button.Ghost>
         </View>
       </FormStickySubmitButtonWrapper>
     </Form.AppForm>

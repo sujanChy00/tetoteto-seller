@@ -1,13 +1,12 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
+import { Button } from "@/components/ui/button";
 import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
 import { Host } from "@/components/ui/host";
-import { Spinner } from "@/components/ui/spinner";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUpdatePassword } from "@/mutation/auth-mutation";
 import { PasswordFormData, PasswordSchema } from "@/schema/auth-schema";
-import { Row, Text } from "@expo/ui";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
 export const PasswordForm = () => {
   const hapticFeedBack = useHaptics();
@@ -64,10 +63,8 @@ export const PasswordForm = () => {
       </ScrollView>
       <FormStickySubmitButtonWrapper>
         <Form.SubmitButton disabled={isPending}>
-          <Row alignment="center" spacing={6}>
-            {isPending && <Spinner size={16} />}
-            <Text>Update Password</Text>
-          </Row>
+          {isPending && <ActivityIndicator size={16} />}
+          <Button.PrimaryLabel>Update Password</Button.PrimaryLabel>
         </Form.SubmitButton>
       </FormStickySubmitButtonWrapper>
     </Form.AppForm>

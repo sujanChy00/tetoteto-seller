@@ -8,7 +8,6 @@ import { Pressable, View } from "react-native";
 import { SymbolView } from "expo-symbols";
 import { twMerge } from "tailwind-merge";
 import { Card } from "../ui/card";
-import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { ThemedText } from "../ui/themed-text";
 import { ToggleShippingCampaignStatus } from "./toggle-shipping-campaign-status";
@@ -109,9 +108,7 @@ export const ShippingCampaignCard = React.memo(
               </View>
             </View>
           </Card.Header>
-          <Host matchContents={{ vertical: true }}>
-            <Separator />
-          </Host>
+          <Separator />
           <Card.Body className="gap-3">
             <View className="flex-row items-center justify-between gap-3">
               <View className="flex-row gap-2 items-center">

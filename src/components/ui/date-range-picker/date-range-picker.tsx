@@ -1,7 +1,5 @@
-import { Host } from "@/components/ui/host";
 import { useAppTheme } from "@/context/app-theme-provider";
 import { dateOnlyFormatter, formatShortDate } from "@/utils/date";
-import { RNHostView, Text } from "@expo/ui";
 import BottomSheet, { BottomSheetView } from "@expo/ui/community/bottom-sheet";
 import { SymbolView } from "expo-symbols";
 import { useCallback, useRef, useState } from "react";
@@ -11,8 +9,8 @@ import DateTimePicker, {
   DateType,
   useDefaultClassNames,
 } from "react-native-ui-datepicker";
+import { useCSSVariable } from "uniwind";
 import { Button } from "../button";
-import { Row } from "../row";
 
 interface DateRangeType {
   endDate?: DateType;
@@ -26,6 +24,9 @@ interface Props extends Omit<DatePickerBaseProps, "mode" | "onChange"> {
 
 export const DateRangePicker = ({ onChange, value }: Props) => {
   const { isDark } = useAppTheme();
+  const colorForeground = useCSSVariable(
+    "--color-default-foreground",
+  ) as string;
   const sheetRef = useRef<BottomSheet>(null);
   const defaultClassNames = useDefaultClassNames();
   const [date, setDate] = useState<DateRangeType>({
@@ -46,20 +47,13 @@ export const DateRangePicker = ({ onChange, value }: Props) => {
 
   return (
     <View>
-      <Host matchContents>
-        <Button
-          variant="elevated"
-          onPress={onOpen}
-          paddingHorizontal={12}
-          height={35}
-        >
-          <Text>
-            {value.startDate && value.endDate
-              ? `${formatShortDate(new Date(value.startDate as string))} - ${formatShortDate(new Date(value.endDate as string))}`
-              : "Select Date"}
-          </Text>
-        </Button>
-      </Host>
+      <Button.Secondary onPress={onOpen} className="h-8.75 px-3">
+        <Button.SecondaryLabel>
+          {value.startDate && value.endDate
+            ? `${formatShortDate(new Date(value.startDate as string))} - ${formatShortDate(new Date(value.endDate as string))}`
+            : "Select Date"}
+        </Button.SecondaryLabel>
+      </Button.Secondary>
       <BottomSheet ref={sheetRef} index={-1} enablePanDownToClose>
         <BottomSheetView>
           <DateTimePicker
@@ -87,70 +81,59 @@ export const DateRangePicker = ({ onChange, value }: Props) => {
             }}
             components={{
               MonthSelector: (props) => (
-                <Host matchContents>
-                  <Button
-                    onPress={props.onPress}
-                    variant={isDark ? "outlined" : "elevated"}
-                  >
-                    <Text>{props.text}</Text>
-                  </Button>
-                </Host>
+                <Button.Secondary
+                  onPress={props.onPress}
+                  className="h-10 px-6 shadow"
+                >
+                  <Button.SecondaryLabel>{props.text}</Button.SecondaryLabel>
+                </Button.Secondary>
               ),
               YearSelector: (props) => (
-                <Host matchContents>
-                  <Button
-                    onPress={props.onPress}
-                    variant={isDark ? "outlined" : "elevated"}
-                  >
-                    <Text>{props.year}</Text>
-                  </Button>
-                </Host>
+                <Button.Secondary
+                  onPress={props.onPress}
+                  className="h-10 px-6 shadow"
+                >
+                  <Button.SecondaryLabel>{props.year}</Button.SecondaryLabel>
+                </Button.Secondary>
               ),
               IconNext: (
-                <Host matchContents>
-                  <Button height={45} width={45} variant="outlined">
-                    <RNHostView matchContents>
-                      <SymbolView
-                        name={{
-                          ios: "chevron.right",
-                          android: "chevron_right",
-                        }}
-                      />
-                    </RNHostView>
-                  </Button>
-                </Host>
+                <Button.Outline className="rounded-full size-11.25">
+                  <SymbolView
+                    tintColor={colorForeground}
+                    name={{
+                      ios: "chevron.right",
+                      android: "chevron_right",
+                    }}
+                  />
+                </Button.Outline>
               ),
               IconPrev: (
-                <Host matchContents>
-                  <Button height={45} width={45} variant="outlined">
-                    <RNHostView matchContents>
-                      <SymbolView
-                        name={{
-                          ios: "chevron.left",
-                          android: "chevron_left",
-                        }}
-                      />
-                    </RNHostView>
-                  </Button>
-                </Host>
+                <Button.Outline className="rounded-full size-11.25">
+                  <SymbolView
+                    tintColor={colorForeground}
+                    name={{
+                      ios: "chevron.left",
+                      android: "chevron_left",
+                    }}
+                  />
+                </Button.Outline>
               ),
             }}
           />
-          <Host style={{ width: "100%" }} matchContents={{ vertical: true }}>
-            <Row alignment="center" fillFullWidth paddingHorizontal={16}>
-              <Button variant="text" onPress={onClose}>
-                <Text>Close</Text>
-              </Button>
-              <Button
-                onPress={() => {
-                  onChange(date);
-                  onClose();
-                }}
-              >
-                <Text>Done</Text>
-              </Button>
-            </Row>
-          </Host>
+          <View className="flex-row w-full items-center gap-3 px-4 justify-between pt-6">
+            <Button.Ghost className="flex-1" onPress={onClose}>
+              <Button.GhostLabel>Close</Button.GhostLabel>
+            </Button.Ghost>
+            <Button.Primary
+              className="flex-1"
+              onPress={() => {
+                onChange(date);
+                onClose();
+              }}
+            >
+              <Button.PrimaryLabel>Done</Button.PrimaryLabel>
+            </Button.Primary>
+          </View>
         </BottomSheetView>
       </BottomSheet>
     </View>

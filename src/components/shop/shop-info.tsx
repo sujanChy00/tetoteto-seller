@@ -2,13 +2,12 @@ import { IshopDetails } from "@/types";
 import { SymbolView } from "expo-symbols";
 import { Linking, Pressable, View } from "react-native";
 import { useCSSVariable } from "uniwind";
-import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { Surface } from "../ui/surface";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
-  const primaryColor = useCSSVariable("--primary-color") as string;
+  const primaryColor = useCSSVariable("--color-primary") as string;
 
   return (
     <Surface className="rounded-2xl p-0 border border-separator">
@@ -23,9 +22,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
         />
         <ThemedText className="font-semibold">Shop Info</ThemedText>
       </View>
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="flex-row items-center gap-6 p-3.5 justify-between">
         <ThemedText className="text-muted text-sm">Shop Name</ThemedText>
         <ThemedText
@@ -35,9 +32,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
           {shop.shopName}
         </ThemedText>
       </View>
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="flex-row items-center gap-6 p-3.5 justify-between">
         <ThemedText className="text-muted text-sm">Phone Number</ThemedText>
         <ThemedText
@@ -49,9 +44,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
       </View>
       {!!shop?.shopRegistrationNumber && (
         <>
-          <Host matchContents={{ vertical: true }}>
-            <Separator />
-          </Host>
+          <Separator />
           <View className="flex-row items-center gap-6 p-3.5 justify-between">
             <ThemedText className="text-muted text-sm">
               Registration Number
@@ -65,9 +58,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
           </View>
         </>
       )}
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="flex-row items-center gap-6 p-3.5 justify-between">
         <ThemedText className="text-muted text-sm">Prefecture</ThemedText>
         <ThemedText
@@ -77,9 +68,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
           {shop.prefecture}
         </ThemedText>
       </View>
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="flex-row items-center gap-6 p-3.5 justify-between">
         <ThemedText className="text-muted text-sm">Address</ThemedText>
         <ThemedText
@@ -89,9 +78,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
           {shop.shopAddress}
         </ThemedText>
       </View>
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="flex-row items-center gap-6 p-3.5 justify-between">
         <ThemedText className="text-muted text-sm">
           Low Stock Threshold
@@ -105,9 +92,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
       </View>
       {!!shop.expiryThreshold && (
         <>
-          <Host matchContents={{ vertical: true }}>
-            <Separator />
-          </Host>
+          <Separator />
           <View className="flex-row items-center gap-6 p-3.5 justify-between">
             <ThemedText className="text-muted text-sm">
               Expiry Threshold
@@ -121,9 +106,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
           </View>
         </>
       )}
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="flex-row items-center gap-6 p-3.5 justify-between">
         <ThemedText className="text-muted text-sm">
           Min. Order Amount
@@ -135,9 +118,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
           ¥{shop.orderAmount}
         </ThemedText>
       </View>
-      <Host matchContents={{ vertical: true }}>
-        <Separator />
-      </Host>
+      <Separator />
       <View className="flex-row items-center gap-6 p-3.5 justify-between">
         <ThemedText className="text-muted text-sm">Postal Code</ThemedText>
         <ThemedText
@@ -149,9 +130,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
       </View>
       {!!shop.shopFacebookUrl && (
         <>
-          <Host matchContents={{ vertical: true }}>
-            <Separator />
-          </Host>
+          <Separator />
           <View className="flex-row items-center gap-6 p-3.5 justify-between">
             <ThemedText className="text-muted text-sm">
               Facebook Link
@@ -175,9 +154,7 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
       )}
       {!!shop.shopTiktokUrl && (
         <>
-          <Host matchContents={{ vertical: true }}>
-            <Separator />
-          </Host>
+          <Separator />
           <View className="flex-row items-center gap-6 p-3.5 justify-between">
             <ThemedText className="text-muted text-sm">Tiktok Link</ThemedText>
             <Pressable

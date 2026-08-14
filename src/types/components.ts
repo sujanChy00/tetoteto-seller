@@ -1,32 +1,8 @@
-import { IconName, ObservableState, Row } from "@expo/ui";
+import { IconName, Row } from "@expo/ui";
 import { ButtonRole } from "@expo/ui/swift-ui";
 import { SFSymbol } from "expo-symbols";
 import { ViewProps } from "react-native";
 import { ILanguageTexts } from "./ILanguageTexts";
-
-export interface UIButtonProps {
-  variant?: "filled" | "outlined" | "elevated" | "text" | "default";
-  children?: React.ReactElement;
-  systemImageIos?: SFSymbol;
-  roleIos?: ButtonRole;
-  onPress?: () => void;
-  size?: "mini" | "small" | "regular" | "large";
-  disabled?: boolean;
-  iconOnlyIos?: boolean;
-  height?: number;
-  width?: number;
-  backgroundColor?: string;
-  paddingHorizontal?: number;
-  paddingVertical?: number;
-  fillFullWidth?: boolean;
-}
-
-export type UITextProps = {
-  color?: string;
-  fontSize?: number;
-  fontWeight?: "normal" | "bold" | "light" | "thin" | "ultraLight" | "heavy";
-  align?: "left" | "center" | "right";
-};
 
 export type TextFieldKeyboardType =
   | "email"
@@ -59,22 +35,9 @@ export type TextFieldProps = {
   multiLine?: boolean;
   maxLines?: number;
   onSubmit?: () => void;
-};
-export type TextInputProps = {
-  label?: string;
-  placeholder?: string;
-  prefix?: string;
-  suffix?: string;
-  leadingIcon?: string;
-  trailingIcon?: string;
-  disabled?: boolean;
-  keyboardType?: TextFieldKeyboardType;
-  autoFocus?: boolean;
   isInvalid?: boolean;
-  variant?: "default" | "filled" | "outline";
-  multiLine?: boolean;
-  maxLines?: number;
-  value?: ObservableState<string>;
+  errorMessage?: string;
+  value?: string;
   onValueChange?: (text: string) => void;
 };
 
@@ -125,8 +88,3 @@ export type AlertDialogProps = {
 export interface SurfaceProps extends ViewProps {
   variant?: "default" | "secondary" | "tertiary" | "outlined" | "transparent";
 }
-
-export type FabButtonProps = {
-  onPress: () => void;
-  className?: string;
-};

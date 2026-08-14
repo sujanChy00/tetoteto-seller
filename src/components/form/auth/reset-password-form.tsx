@@ -1,10 +1,9 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
+import { Button } from "@/components/ui/button";
 import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
 import { Host } from "@/components/ui/host";
-import { Spinner } from "@/components/ui/spinner";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
-import { Row, Text } from "@expo/ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -70,10 +69,8 @@ export const ResetPasswordForm = () => {
       </ScrollView>
       <FormStickySubmitButtonWrapper>
         <Form.SubmitButton>
-          <Row alignment="center" spacing={6}>
-            <Spinner size={16} />
-            <Text>Reset Password</Text>
-          </Row>
+          {/*<Spinner size={16} />*/}
+          <Button.PrimaryLabel>Reset Password</Button.PrimaryLabel>
         </Form.SubmitButton>
       </FormStickySubmitButtonWrapper>
     </Form.AppForm>

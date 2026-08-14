@@ -1,11 +1,10 @@
-import { isAndroid } from "@/constants/platform";
 import { useLogoutMutation } from "@/mutation/auth-mutation";
-import { Icon, Spacer, Text } from "@expo/ui";
+import { Icon, RNHostView } from "@expo/ui";
+import { SymbolView } from "expo-symbols";
 import { useCSSVariable } from "uniwind";
 import { AlertDialog } from "../alert-dialog";
 import { Button } from "../button";
 import { Host } from "../host";
-import { Row } from "../row";
 
 const LOGOUT_ICON = Icon.select({
   android: import("@expo/material-symbols/logout.xml"),
@@ -14,7 +13,9 @@ const LOGOUT_ICON = Icon.select({
 
 export const LogoutButton = () => {
   const { mutate: logout, isPending } = useLogoutMutation();
-  const dangerColor = useCSSVariable("--color-danger");
+  const dangerForegroundColor = useCSSVariable(
+    "--color-danger-foreground",
+  ) as string;
   return (
     <Host matchContents={{ vertical: true }}>
       <AlertDialog
@@ -25,29 +26,19 @@ export const LogoutButton = () => {
         isConfirming={isPending}
         confirmButtonText="logout"
         trigger={(open) => (
-          <Button
-            backgroundColor={dangerColor as string}
-            onPress={open}
-            height={50}
-            roleIos="destructive"
-            variant="filled"
-          >
-            <Row alignment="center">
-              <Text
-                textStyle={{
-                  color: isAndroid ? "#fff" : undefined,
+          <RNHostView matchContents>
+            <Button.Danger onPress={open}>
+              <Button.DangerLabel>Logout</Button.DangerLabel>
+              <SymbolView
+                name={{
+                  android: "logout",
+                  ios: "rectangle.portrait.and.arrow.right",
                 }}
-              >
-                Logout
-              </Text>
-              <Spacer size={6} />
-              <Icon
-                name={LOGOUT_ICON}
                 size={16}
-                color={isAndroid ? "#fff" : undefined}
+                tintColor={dangerForegroundColor}
               />
-            </Row>
-          </Button>
+            </Button.Danger>
+          </RNHostView>
         )}
       />
     </Host>

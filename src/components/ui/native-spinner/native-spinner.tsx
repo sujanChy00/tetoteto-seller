@@ -3,7 +3,7 @@ import { UiSpinnerProps } from "@/types/components";
 import { CircularProgressIndicator } from "@expo/ui/jetpack-compose";
 import { height, width } from "@expo/ui/jetpack-compose/modifiers";
 
-export const Spinner = ({
+export const NativeSpinner = ({
   size = 35,
   color,
   strokeWidth = 2,

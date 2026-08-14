@@ -1,39 +1,35 @@
-import { Host } from "@/components/ui/host";
-import { Icon, Spacer, Text } from "@expo/ui";
+import { SymbolView } from "expo-symbols";
+import { View } from "react-native";
+import { useCSSVariable } from "uniwind";
 import { Button } from "../ui/button";
-import { Row } from "../ui/row";
-
-const ORDER_ICON = Icon.select({
-  ios: "cart.fill",
-  android: import("@expo/material-symbols/shopping_cart.xml"),
-});
-
-const SHIPMENT_ICON = Icon.select({
-  ios: "shippingbox.fill",
-  android: import("@expo/material-symbols/local_shipping.xml"),
-});
 
 export const HomeLinks = () => {
+  const primaryColor = useCSSVariable("--color-primary") as string;
   return (
-    <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-      <Row alignment="center">
-        <Button variant="elevated">
-          <Row alignment="center">
-            <Icon size={20} name={ORDER_ICON} />
-            <Text>Orders</Text>
-          </Row>
-        </Button>
+    <View className="flex-row items-center gap-6 justify-between">
+      <Button.Secondary className="flex-1">
+        <SymbolView
+          tintColor={primaryColor}
+          size={20}
+          name={{
+            android: "shopping_cart",
+            ios: "cart.fill",
+          }}
+        />
+        <Button.SecondaryLabel>Orders</Button.SecondaryLabel>
+      </Button.Secondary>
 
-        <Spacer size={24} />
-
-        <Button variant="elevated">
-          <Row alignment="center">
-            <Icon size={20} name={SHIPMENT_ICON} />
-            <Spacer size={4} />
-            <Text>Shipments</Text>
-          </Row>
-        </Button>
-      </Row>
-    </Host>
+      <Button.Secondary className="flex-1">
+        <SymbolView
+          tintColor={primaryColor}
+          size={20}
+          name={{
+            ios: "shippingbox.fill",
+            android: "local_shipping",
+          }}
+        />
+        <Button.SecondaryLabel>Shipments</Button.SecondaryLabel>
+      </Button.Secondary>
+    </View>
   );
 };

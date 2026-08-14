@@ -123,3 +123,22 @@
     }
   }
 }
+
+@utility h-hairline {
+  height: hairlineWidth();
+}
+
+@utility border-t-hairline {
+  border-top-width: hairlineWidth();
+  border-top-style: solid;
+}
+
+@utility border-b-hairline {
+  border-bottom-width: hairlineWidth();
+  border-bottom-style: solid;
+}
+
+@utility border-hairline {
+  border-width: hairlineWidth();
+  border-style: solid;
+}

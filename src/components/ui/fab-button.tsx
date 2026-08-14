@@ -1,9 +1,18 @@
-import { FabButtonProps } from "@/types/components";
 import { SymbolView } from "expo-symbols";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { twMerge } from "tailwind-merge";
+import { useCSSVariable } from "uniwind";
+import { Button } from "./button";
+
+export type FabButtonProps = {
+  onPress: () => void;
+  className?: string;
+};
 
 export const FabButton = ({ className, onPress }: FabButtonProps) => {
+  const primaryForegroundColor = useCSSVariable(
+    "--color-primary-foreground",
+  ) as string;
   return (
     <View
       className={twMerge(
@@ -11,20 +20,16 @@ export const FabButton = ({ className, onPress }: FabButtonProps) => {
         className,
       )}
     >
-      <TouchableOpacity
-        onPress={onPress}
-        className={
-          "flexflex-row items-center justify-center rounded-3xl bg-primary size-16"
-        }
-      >
+      <Button.Primary onPress={onPress} className={"size-16"}>
         <SymbolView
           size={28}
           name={{
             ios: "plus",
             android: "add",
           }}
+          tintColor={primaryForegroundColor}
         />
-      </TouchableOpacity>
+      </Button.Primary>
     </View>
   );
 };

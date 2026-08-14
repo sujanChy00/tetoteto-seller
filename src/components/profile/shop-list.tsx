@@ -1,26 +1,17 @@
-import { useAppTheme } from "@/context/app-theme-provider";
 import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
-import { Icon } from "@expo/ui";
 import { useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { TouchableOpacity, View } from "react-native";
 import { Fragment } from "react/jsx-runtime";
 import { useCSSVariable } from "uniwind";
+import { ViewAllShopButton } from "../shop/view-all-shop-button";
 import { Avatar } from "../ui/avatar";
-import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { ThemedText } from "../ui/themed-text";
 
-const CHEVRON = Icon.select({
-  ios: "chevron.right",
-  android: require("@expo/material-symbols/chevron_right.xml"),
-});
-
 export const ShopList = () => {
-  const { colors } = useAppTheme();
   const mutedColor = useCSSVariable("--color-muted");
-
   const router = useRouter();
   const { user } = useUser();
 
@@ -35,25 +26,7 @@ export const ShopList = () => {
     <View>
       <View className="flex-row items-center justify-between px-2.5 pb-2.5">
         <ThemedText className="text-base font-medium">Manage Stores</ThemedText>
-        <TouchableOpacity
-          onPress={() => {
-            router.push({
-              pathname: "/shop",
-            });
-          }}
-        >
-          <View className="flex-row items-center gap-1">
-            <ThemedText>view all</ThemedText>
-            <SymbolView
-              name={{
-                android: "arrow_right_alt",
-                ios: "arrow.right",
-              }}
-              size={16}
-              tintColor={mutedColor as string}
-            />
-          </View>
-        </TouchableOpacity>
+        <ViewAllShopButton />
       </View>
 
       {shops.map((shop) => (
@@ -90,9 +63,7 @@ export const ShopList = () => {
               />
             </View>
           </TouchableOpacity>
-          <Host matchContents={{ vertical: true }}>
-            <Separator />
-          </Host>
+          <Separator />
         </Fragment>
       ))}
     </View>
