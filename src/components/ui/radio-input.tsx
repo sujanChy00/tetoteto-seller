@@ -5,10 +5,11 @@ import { AnimatedView } from "./animated-view";
 import { ThemedText } from "./themed-text";
 
 interface RadioInputProps {
-  selected: string;
+  selected: boolean;
   onPress: () => void;
   className?: string;
   label?: string;
+  disabled?: boolean;
 }
 
 export const RadioInput = ({
@@ -16,9 +17,11 @@ export const RadioInput = ({
   onPress,
   className,
   label,
+  disabled = false,
 }: RadioInputProps) => {
   return (
     <Pressable
+      disabled={disabled}
       accessibilityRole="radio"
       className={twMerge(
         "flex-row items-center justify-between gap-3",

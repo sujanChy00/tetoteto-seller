@@ -51,6 +51,11 @@
 
       --color-danger: oklch(0.6532 0.2328 25.74);
       --color-danger-foreground: oklch(0.9911 0 0);
+      --color-danger-soft: color-mix(
+        in oklab,
+        oklch(0.6532 0.2328 25.74) 15%,
+        transparent
+      );
 
       /* Component Colors */
       --color-segment: oklch(100% 0 0);
@@ -110,6 +115,11 @@
 
       --color-danger: oklch(0.594 0.1967 24.63);
       --color-danger-foreground: oklch(0.9911 0 0);
+      --color-danger-soft: color-mix(
+        in oklab,
+        oklch(0.594 0.1967 24.63) 15%,
+        transparent
+      );
 
       /* Component Colors */
       --color-segment: oklch(0.3964 0.01 285.93);

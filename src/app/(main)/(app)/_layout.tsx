@@ -1,4 +1,5 @@
 import { IosShippingCampaignHeaderButton } from "@/components/shipping-campaign/ios-shipping-campaign-header-button";
+import { ResetShippingFee } from "@/components/shipping-fee/reset-shipping-fee";
 import { isAndroid, isIOS } from "@/constants/platform";
 import { useLanguage } from "@/hooks/use-language";
 import { Stack } from "expo-router";
@@ -58,7 +59,7 @@ const AppLayout = () => {
         name="shipping-fee/index"
         options={{
           title: t("shipping_fees"),
-          // headerRight: () => <ResetShippingFee />,
+          headerRight: () => <ResetShippingFee />,
         }}
       />
       <Stack.Screen

@@ -20,7 +20,11 @@ export const useGetAllShippingFee = () => {
   });
 };
 
-export const useGetAllShippingCompany = () => {
+export const useGetAllShippingCompany = ({
+  enabled,
+}: {
+  enabled?: boolean;
+}) => {
   return useQuery<IShippingCompany[]>({
     queryKey: [GET_ALL_SHIPPING_COMPANY_QUERY_KEY],
     async queryFn() {
@@ -28,5 +32,6 @@ export const useGetAllShippingCompany = () => {
         url: "/shipping/company/active",
       });
     },
+    enabled,
   });
 };
