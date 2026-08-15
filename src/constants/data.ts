@@ -2,6 +2,8 @@ import { ILanguageCode, ILanguageTexts } from "@/types";
 
 export const SASTO_SULAV_NEPAL = 2586825067;
 export const SASTO_SULAV_iNDIA = 2863768825;
+export const BIOMETRIC_EMAIL_KEY = "tetoteto_seller_email";
+export const BIOMETRIC_PASSWORD_KEY = "tetoteto_seller_password";
 
 export const TABLET_BREAKPOINT = 768;
 
