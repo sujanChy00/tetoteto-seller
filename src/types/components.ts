@@ -1,3 +1,4 @@
+import { Host } from "@/components/ui/host";
 import { IconName, Row } from "@expo/ui";
 import { ButtonRole } from "@expo/ui/swift-ui";
 import { SFSymbol } from "expo-symbols";
@@ -20,6 +21,8 @@ export type PasswordFieldProps = {
   disabled?: boolean;
   autoFocus?: boolean;
   onSubmit?: () => void;
+  hostProps?: React.ComponentProps<typeof Host>;
+  fillFullWidth?: boolean;
 };
 
 export type TextFieldProps = {
@@ -39,6 +42,8 @@ export type TextFieldProps = {
   errorMessage?: string;
   value?: string;
   onValueChange?: (text: string) => void;
+  hostProps?: React.ComponentProps<typeof Host>;
+  fillFullWidth?: boolean;
 };
 
 export type UiSpinnerProps = {

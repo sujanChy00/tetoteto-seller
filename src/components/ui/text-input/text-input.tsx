@@ -7,6 +7,7 @@ import {
 import { weight } from "@expo/ui/jetpack-compose/modifiers";
 import { useCallback } from "react";
 import { scheduleOnRN } from "react-native-worklets";
+import { Host } from "../host";
 
 export const TextInput = ({
   autoFocus,
@@ -25,6 +26,8 @@ export const TextInput = ({
   onSubmit,
   onValueChange,
   value,
+  hostProps,
+  fillFullWidth = true,
 }: TextFieldProps) => {
   const nativeValue = useNativeState(value ?? "");
   const updateField = useCallback(
@@ -45,56 +48,61 @@ export const TextInput = ({
   );
 
   return (
-    <UITextField
-      singleLine={!multiLine}
-      maxLines={maxLines}
-      autoFocus={autoFocus}
-      isError={isInvalid}
-      enabled={!disabled}
-      modifiers={[weight(1)]}
-      value={nativeValue}
-      onValueChange={handleValueChange}
-      keyboardActions={onSubmit ? { onDone: onSubmit } : undefined}
-      keyboardOptions={{
-        keyboardType,
-        capitalization: "none",
-        autoCorrectEnabled: false,
-        imeAction: onSubmit ? "done" : "default",
-      }}
+    <Host
+      matchContents={hostProps?.matchContents ?? { vertical: true }}
+      style={{ width: "100%", ...hostProps?.style }}
     >
-      <UITextField.Label>
-        <Text>{label}</Text>
-      </UITextField.Label>
-      {/*{placeholder ? (
+      <UITextField
+        singleLine={!multiLine}
+        maxLines={maxLines}
+        autoFocus={autoFocus}
+        isError={isInvalid}
+        enabled={!disabled}
+        modifiers={fillFullWidth ? [weight(1)] : undefined}
+        value={nativeValue}
+        onValueChange={handleValueChange}
+        keyboardActions={onSubmit ? { onDone: onSubmit } : undefined}
+        keyboardOptions={{
+          keyboardType,
+          capitalization: "none",
+          autoCorrectEnabled: false,
+          imeAction: onSubmit ? "done" : "default",
+        }}
+      >
+        <UITextField.Label>
+          <Text>{label}</Text>
+        </UITextField.Label>
+        {/*{placeholder ? (
         <UITextField.Placeholder>
           <Text>{placeholder}</Text>
         </UITextField.Placeholder>
       ) : null}*/}
-      {leadingIcon ? (
-        <UITextField.LeadingIcon>
-          <Text>{leadingIcon}</Text>
-        </UITextField.LeadingIcon>
-      ) : null}
-      {trailingIcon ? (
-        <UITextField.TrailingIcon>
-          <Text>{trailingIcon}</Text>
-        </UITextField.TrailingIcon>
-      ) : null}
-      {prefix ? (
-        <UITextField.Prefix>
-          <Text>{prefix}</Text>
-        </UITextField.Prefix>
-      ) : null}
-      {suffix ? (
-        <UITextField.Suffix>
-          <Text>{suffix}</Text>
-        </UITextField.Suffix>
-      ) : null}
-      {!!errorMessage ? (
-        <UITextField.SupportingText>
-          <Text>{errorMessage}</Text>
-        </UITextField.SupportingText>
-      ) : null}
-    </UITextField>
+        {leadingIcon ? (
+          <UITextField.LeadingIcon>
+            <Text>{leadingIcon}</Text>
+          </UITextField.LeadingIcon>
+        ) : null}
+        {trailingIcon ? (
+          <UITextField.TrailingIcon>
+            <Text>{trailingIcon}</Text>
+          </UITextField.TrailingIcon>
+        ) : null}
+        {prefix ? (
+          <UITextField.Prefix>
+            <Text>{prefix}</Text>
+          </UITextField.Prefix>
+        ) : null}
+        {suffix ? (
+          <UITextField.Suffix>
+            <Text>{suffix}</Text>
+          </UITextField.Suffix>
+        ) : null}
+        {!!errorMessage ? (
+          <UITextField.SupportingText>
+            <Text>{errorMessage}</Text>
+          </UITextField.SupportingText>
+        ) : null}
+      </UITextField>
+    </Host>
   );
 };

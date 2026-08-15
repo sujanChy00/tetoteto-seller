@@ -4,8 +4,7 @@ import { toast } from "../../../utils/toast";
 
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
-import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
-import { Host } from "@/components/ui/host";
+import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -47,56 +46,41 @@ export const UpdatePasswordForm = () => {
             <Form.AppField
               name="email"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.TextField
-                    placeholder="tetoteto@gmail.com"
-                    label="Email"
-                    keyboardType="email"
-                  />
-                </Host>
+                <Field.TextField
+                  placeholder="tetoteto@gmail.com"
+                  label="Email"
+                  keyboardType="email"
+                />
               )}
             />
             <Form.AppField
               name="newPassword"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.PasswordField
-                    label="New Password"
-                    placeholder="********"
-                  />
-                </Host>
+                <Field.PasswordField
+                  label="New Password"
+                  placeholder="********"
+                />
               )}
             />
             <Form.AppField
               name="confirmNewPassword"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.PasswordField
-                    label="Confirm Password"
-                    placeholder="********"
-                  />
-                </Host>
+                <Field.PasswordField
+                  label="Confirm Password"
+                  placeholder="********"
+                />
               )}
             />
           </View>
         </View>
         <AnimatedSpacer height={420} />
       </ScrollView>
-      <FormStickySubmitButtonWrapper>
+      <StickyButtonWrapper>
         <Form.SubmitButton>
           {/*<Spinner size={16} />*/}
           <Button.PrimaryLabel>Update Password</Button.PrimaryLabel>
         </Form.SubmitButton>
-      </FormStickySubmitButtonWrapper>
+      </StickyButtonWrapper>
     </Form.AppForm>
   );
 };

@@ -1,7 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
-import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
-import { Host } from "@/components/ui/host";
+import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -52,16 +51,11 @@ export const OtpForm = () => {
             <Form.AppField
               name="email"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.TextField
-                    placeholder="tetoteto@gmail.com"
-                    label="Email"
-                    keyboardType="email"
-                  />
-                </Host>
+                <Field.TextField
+                  placeholder="tetoteto@gmail.com"
+                  label="Email"
+                  keyboardType="email"
+                />
               )}
             />
             <Form.AppField
@@ -72,12 +66,12 @@ export const OtpForm = () => {
         </View>
         <AnimatedSpacer height={420} />
       </ScrollView>
-      <FormStickySubmitButtonWrapper>
+      <StickyButtonWrapper>
         <Form.SubmitButton>
           {/*<Spinner size={16} />*/}
           <Button.PrimaryLabel>Send Reset Link</Button.PrimaryLabel>
         </Form.SubmitButton>
-      </FormStickySubmitButtonWrapper>
+      </StickyButtonWrapper>
     </Form.AppForm>
   );
 };

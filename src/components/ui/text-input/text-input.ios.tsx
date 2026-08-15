@@ -5,6 +5,7 @@ import {
   border,
   disabled as disabledModifier,
   fixedSize,
+  frame,
   lineLimit,
   submitLabel,
   keyboardType as swiftKeyboardTypeModifier,
@@ -14,6 +15,7 @@ import {
 import { useCallback, useMemo } from "react";
 import { scheduleOnRN } from "react-native-worklets";
 import { useCSSVariable } from "uniwind";
+import { Host } from "../host";
 
 export const TextInput = ({
   isInvalid,
@@ -26,6 +28,8 @@ export const TextInput = ({
   autoFocus,
   value,
   onValueChange,
+  hostProps,
+  fillFullWidth = true,
 }: TextFieldProps) => {
   const nativeValue = useNativeState(value ?? "");
   const colorDanger = useCSSVariable("--color-danger");
@@ -84,21 +88,37 @@ export const TextInput = ({
     return [];
   }, [onSubmit]);
 
+  const fullWidthModifiers = useMemo(() => {
+    if (fillFullWidth)
+      return [
+        frame({
+          maxWidth: Infinity,
+        }),
+      ];
+    return [];
+  }, [fillFullWidth]);
+
   return (
-    <SwiftTextField
-      placeholder={placeholder}
-      text={nativeValue}
-      onTextChange={handleValueChange}
-      autoFocus={autoFocus}
-      modifiers={[
-        autocorrectionDisabled(),
-        textInputAutocapitalization("never"),
-        ...invalidBorderModifiers,
-        ...keyboardTypeModifiers,
-        ...multiLineModifiers,
-        disabledModifier(!!disabled),
-        ...submitModifiers,
-      ]}
-    />
+    <Host
+      matchContents={hostProps?.matchContents ?? { vertical: true }}
+      style={{ width: "100%", ...hostProps?.style }}
+    >
+      <SwiftTextField
+        placeholder={placeholder}
+        text={nativeValue}
+        onTextChange={handleValueChange}
+        autoFocus={autoFocus}
+        modifiers={[
+          autocorrectionDisabled(),
+          textInputAutocapitalization("never"),
+          ...invalidBorderModifiers,
+          ...keyboardTypeModifiers,
+          ...multiLineModifiers,
+          disabledModifier(!!disabled),
+          ...submitModifiers,
+          ...fullWidthModifiers,
+        ]}
+      />
+    </Host>
   );
 };

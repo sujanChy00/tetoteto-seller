@@ -1,7 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
-import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
-import { Host } from "@/components/ui/host";
+import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -38,41 +37,31 @@ export const ResetPasswordForm = () => {
             <Form.AppField
               name="newPassword"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.PasswordField
-                    placeholder="********"
-                    label="New Password"
-                  />
-                </Host>
+                <Field.PasswordField
+                  placeholder="********"
+                  label="New Password"
+                />
               )}
             />
             <Form.AppField
               name="confirmNewPassword"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.PasswordField
-                    placeholder="********"
-                    label="Confirm New Password"
-                  />
-                </Host>
+                <Field.PasswordField
+                  placeholder="********"
+                  label="Confirm New Password"
+                />
               )}
             />
           </View>
         </View>
         <AnimatedSpacer height={420} />
       </ScrollView>
-      <FormStickySubmitButtonWrapper>
+      <StickyButtonWrapper>
         <Form.SubmitButton>
           {/*<Spinner size={16} />*/}
           <Button.PrimaryLabel>Reset Password</Button.PrimaryLabel>
         </Form.SubmitButton>
-      </FormStickySubmitButtonWrapper>
+      </StickyButtonWrapper>
     </Form.AppForm>
   );
 };

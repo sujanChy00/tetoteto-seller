@@ -10,12 +10,21 @@
     "ios": {
       "icon": "./assets/expo.icon",
       "infoPlist": {
-        "UIBackgroundModes": ["fetch", "remote-notification"]
+        "UIBackgroundModes": [
+          "fetch",
+          "remote-notification",
+          "fetch",
+          "remote-notification"
+        ]
       }
     },
     "android": {
       "softwareKeyboardLayoutMode": "resize",
       "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
+        "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
@@ -52,11 +61,30 @@
           "cameraPermission": "The app accesses your camera for updating your profile picture and item images.",
           "microphonePermission": false
         }
+      ],
+      "expo-image",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b786e9db-573c-4423-8f17-b8c5914598a8"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b786e9db-573c-4423-8f17-b8c5914598a8"
     }
   }
 }

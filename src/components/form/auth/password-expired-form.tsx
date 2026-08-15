@@ -1,7 +1,7 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
-import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
 import { Host } from "@/components/ui/host";
+import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useAppTheme } from "@/context/app-theme-provider";
 import { useForm } from "@/hooks/use-form";
@@ -58,22 +58,17 @@ export const PasswordExpiredForm = () => {
             <Form.AppField
               name="newPassword"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.PasswordField
-                    placeholder="********"
-                    label="New Password"
-                  />
-                </Host>
+                <Field.PasswordField
+                  placeholder="********"
+                  label="New Password"
+                />
               )}
             />
           </View>
         </View>
         <AnimatedSpacer height={450} />
       </ScrollView>
-      <FormStickySubmitButtonWrapper>
+      <StickyButtonWrapper>
         <View className="gap-y-3 bg-background w-full">
           <Form.SubmitButton>
             {/*<Spinner size={16} />*/}
@@ -90,7 +85,7 @@ export const PasswordExpiredForm = () => {
             </Button.DangerSoftLabel>
           </Button.Ghost>
         </View>
-      </FormStickySubmitButtonWrapper>
+      </StickyButtonWrapper>
     </Form.AppForm>
   );
 };

@@ -4,7 +4,6 @@ import { Image } from "expo-image";
 import { ActivityIndicator, View } from "react-native";
 
 import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
-import { Host } from "@/components/ui/host";
 import { isIOS } from "@/constants/platform";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLoginMutation } from "@/mutation/auth-mutation";
@@ -72,31 +71,21 @@ export const LoginForm = () => {
               <Form.AppField
                 name="email"
                 children={(field) => (
-                  <Host
-                    matchContents={{ vertical: true }}
-                    style={{ width: "100%" }}
-                  >
-                    <field.TextField
-                      keyboardType="email"
-                      placeholder="email"
-                      label="Email"
-                    />
-                  </Host>
+                  <field.TextField
+                    keyboardType="email"
+                    placeholder="email"
+                    label="Email"
+                  />
                 )}
               />
               <Form.AppField
                 name="password"
                 children={(field) => (
-                  <Host
-                    matchContents={{ vertical: true }}
-                    style={{ width: "100%" }}
-                  >
-                    <field.PasswordField
-                      onSubmit={() => Form.handleSubmit()}
-                      placeholder="password"
-                      label="Password"
-                    />
-                  </Host>
+                  <field.PasswordField
+                    onSubmit={() => Form.handleSubmit()}
+                    placeholder="password"
+                    label="Password"
+                  />
                 )}
               />
               <View className="w-full gap-y-3">

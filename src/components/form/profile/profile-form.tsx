@@ -1,7 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
-import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
-import { Host } from "@/components/ui/host";
+import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUploadImageAndCall } from "@/hooks/use-image-upload";
@@ -74,21 +73,17 @@ export const ProfileForm = () => {
 
           <Form.AppField
             name="name"
-            children={(Field) => (
-              <Host matchContents={{ vertical: true }}>
-                <Field.TextField label="Name" />
-              </Host>
-            )}
+            children={(Field) => <Field.TextField label="Name" />}
           />
         </View>
         <AnimatedSpacer height={450} />
       </ScrollView>
-      <FormStickySubmitButtonWrapper>
+      <StickyButtonWrapper>
         <Form.SubmitButton disabled={isPending}>
           {isPending && <ActivityIndicator size={16} />}
           <Button.PrimaryLabel>Update Profile</Button.PrimaryLabel>
         </Form.SubmitButton>
-      </FormStickySubmitButtonWrapper>
+      </StickyButtonWrapper>
     </Form.AppForm>
   );
 };

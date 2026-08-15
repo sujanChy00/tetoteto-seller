@@ -5,6 +5,7 @@ import {
   autocorrectionDisabled,
   border,
   disabled as disabledModifier,
+  frame,
   submitLabel,
   onSubmit as swiftOnSubmitModifier,
   textInputAutocapitalization,
@@ -12,12 +13,15 @@ import {
 import { useCallback, useMemo } from "react";
 import { scheduleOnRN } from "react-native-worklets";
 import { useCSSVariable } from "uniwind";
+import { Host } from "../host";
 
 export const PasswordField = ({
   placeholder,
   disabled,
   autoFocus = false,
   onSubmit,
+  fillFullWidth = true,
+  hostProps,
 }: PasswordFieldProps) => {
   const colorDanger = useCSSVariable("--color-danger");
   const field = useFieldContext<string | undefined>();
@@ -53,19 +57,37 @@ export const PasswordField = ({
     return [];
   }, [onSubmit]);
 
+  const fullWidthModifiers = useMemo(() => {
+    if (fillFullWidth)
+      return [
+        frame({
+          maxWidth: Infinity,
+        }),
+      ];
+    return [];
+  }, [fillFullWidth]);
+
   return (
-    <SecureField
-      placeholder={placeholder}
-      text={nativeValue}
-      onTextChange={handleValueChange}
-      autoFocus={autoFocus}
-      modifiers={[
-        autocorrectionDisabled(),
-        textInputAutocapitalization("never"),
-        ...invalidBorderModifiers,
-        disabledModifier(!!disabled),
-        ...submitModifiers,
-      ]}
-    />
+    <Host
+      {...hostProps}
+      {...(hostProps?.matchContents
+        ? { matchContents: hostProps.matchContents }
+        : { matchContents: { vertical: true } })}
+    >
+      <SecureField
+        placeholder={placeholder}
+        text={nativeValue}
+        onTextChange={handleValueChange}
+        autoFocus={autoFocus}
+        modifiers={[
+          autocorrectionDisabled(),
+          textInputAutocapitalization("never"),
+          ...invalidBorderModifiers,
+          disabledModifier(!!disabled),
+          ...submitModifiers,
+          ...fullWidthModifiers,
+        ]}
+      />
+    </Host>
   );
 };

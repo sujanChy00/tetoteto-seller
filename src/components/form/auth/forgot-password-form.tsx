@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Host } from "@/components/ui/host";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -37,17 +36,12 @@ export const ForgotPasswordForm = () => {
           <Form.AppField
             name="email"
             children={(Field) => (
-              <Host
-                matchContents={{ vertical: true }}
-                style={{ width: "100%" }}
-              >
-                <Field.TextField
-                  autoFocus
-                  placeholder="tetoteto@gmail.com"
-                  label="Email"
-                  keyboardType="email"
-                />
-              </Host>
+              <Field.TextField
+                autoFocus
+                placeholder="tetoteto@gmail.com"
+                label="Email"
+                keyboardType="email"
+              />
             )}
           />
         </View>

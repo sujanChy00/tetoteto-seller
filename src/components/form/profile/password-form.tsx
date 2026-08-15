@@ -1,7 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { Button } from "@/components/ui/button";
-import { FormStickySubmitButtonWrapper } from "@/components/ui/form-sticky-submit-button-wrapper";
-import { Host } from "@/components/ui/host";
+import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUpdatePassword } from "@/mutation/auth-mutation";
@@ -36,37 +35,27 @@ export const PasswordForm = () => {
         <View className="gap-y-6">
           <Form.AppField
             name="oldPassword"
-            children={(Field) => (
-              <Host matchContents={{ vertical: true }}>
-                <Field.PasswordField label="Old Password" />
-              </Host>
-            )}
+            children={(Field) => <Field.PasswordField label="Old Password" />}
           />
           <Form.AppField
             name="newPassword"
-            children={(Field) => (
-              <Host matchContents={{ vertical: true }}>
-                <Field.PasswordField label="New Password" />
-              </Host>
-            )}
+            children={(Field) => <Field.PasswordField label="New Password" />}
           />
           <Form.AppField
             name="confirmPassword"
             children={(Field) => (
-              <Host matchContents={{ vertical: true }}>
-                <Field.PasswordField label="Confirm Password" />
-              </Host>
+              <Field.PasswordField label="Confirm Password" />
             )}
           />
         </View>
         <AnimatedSpacer height={450} />
       </ScrollView>
-      <FormStickySubmitButtonWrapper>
+      <StickyButtonWrapper>
         <Form.SubmitButton disabled={isPending}>
           {isPending && <ActivityIndicator size={16} />}
           <Button.PrimaryLabel>Update Password</Button.PrimaryLabel>
         </Form.SubmitButton>
-      </FormStickySubmitButtonWrapper>
+      </StickyButtonWrapper>
     </Form.AppForm>
   );
 };

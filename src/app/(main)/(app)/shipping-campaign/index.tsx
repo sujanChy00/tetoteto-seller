@@ -22,7 +22,7 @@ const ShippingCampaignScreen = () => {
   const { numColumns } = useResponsiveListColumns();
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, refetch } = useGetAllShippingCampaigns();
-
+  () => <ListSeparator />;
   const shippingCampaigns = useMemo(() => data || [], [data]);
 
   const onRefresh = useCallback(() => {
