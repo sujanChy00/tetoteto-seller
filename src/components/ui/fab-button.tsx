@@ -2,7 +2,7 @@ import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { useCSSVariable } from "uniwind";
-import { Button } from "./button";
+import { PrimaryButton } from "./button";
 
 export type FabButtonProps = {
   onPress: () => void;
@@ -20,7 +20,7 @@ export const FabButton = ({ className, onPress }: FabButtonProps) => {
         className,
       )}
     >
-      <Button.Primary onPress={onPress} className={"size-16"}>
+      <PrimaryButton onPress={onPress} className={"size-16"}>
         <SymbolView
           size={28}
           name={{
@@ -29,7 +29,7 @@ export const FabButton = ({ className, onPress }: FabButtonProps) => {
           }}
           tintColor={primaryForegroundColor}
         />
-      </Button.Primary>
+      </PrimaryButton>
     </View>
   );
 };

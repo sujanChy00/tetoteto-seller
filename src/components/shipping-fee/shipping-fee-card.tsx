@@ -46,7 +46,7 @@ export const ShippingFeeCard = memo(
                         {shippingFee.sellerShippingFromArea}
                       </ThemedText>
                     </View>
-                    <Chip.Root
+                    <Chip
                       variant="soft"
                       color="primary"
                       size="sm"
@@ -55,7 +55,7 @@ export const ShippingFeeCard = memo(
                       <Chip.Label>
                         Weight {shippingFee.sellerShippingWeight}
                       </Chip.Label>
-                    </Chip.Root>
+                    </Chip>
                   </View>
                 </View>
                 <View className="flex-row items-start gap-6">
@@ -76,7 +76,7 @@ export const ShippingFeeCard = memo(
             </Card.Body>
             <Card.Footer className="flex-row items-stretch gap-3">
               <Surface variant="tertiary" className="items-center gap-3 flex-1">
-                <Chip.Root
+                <Chip
                   variant="soft"
                   color="primary"
                   className="size-10 rounded-full p-0 mx-auto"
@@ -89,7 +89,7 @@ export const ShippingFeeCard = memo(
                     }}
                     size={18}
                   />
-                </Chip.Root>
+                </Chip>
                 <View className="gap-0.5">
                   <ThemedText className="text-muted text-[10px] text-center font-medium">
                     FROZEN
@@ -101,7 +101,7 @@ export const ShippingFeeCard = memo(
                 </View>
               </Surface>
               <Surface variant="tertiary" className="items-center gap-3 flex-1">
-                <Chip.Root
+                <Chip
                   variant="soft"
                   color="warning"
                   className="size-10 rounded-full p-0 mx-auto"
@@ -114,7 +114,7 @@ export const ShippingFeeCard = memo(
                     }}
                     size={18}
                   />
-                </Chip.Root>
+                </Chip>
                 <View className="gap-0.5">
                   <ThemedText className="text-muted text-[10px] text-center font-medium">
                     DRY
@@ -125,7 +125,7 @@ export const ShippingFeeCard = memo(
                 </View>
               </Surface>
               <Surface variant="tertiary" className="items-center gap-3 flex-1">
-                <Chip.Root
+                <Chip
                   variant="soft"
                   color="success"
                   className="size-10 rounded-full p-0 mx-auto"
@@ -138,7 +138,7 @@ export const ShippingFeeCard = memo(
                     }}
                     size={18}
                   />
-                </Chip.Root>
+                </Chip>
                 <View className="gap-0.5">
                   <ThemedText className="text-muted text-[10px] text-center font-medium">
                     COOL

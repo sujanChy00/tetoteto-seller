@@ -1,5 +1,5 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/button";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
@@ -35,16 +35,35 @@ export const PasswordForm = () => {
         <View className="gap-y-6">
           <Form.AppField
             name="oldPassword"
-            children={(Field) => <Field.PasswordField label="Old Password" />}
+            children={(Field) => (
+              <Field.PasswordField
+                label="Old Password"
+                textContentType={"password"}
+                autoComplete={"current-password"}
+                placeholder="*******"
+              />
+            )}
           />
           <Form.AppField
             name="newPassword"
-            children={(Field) => <Field.PasswordField label="New Password" />}
+            children={(Field) => (
+              <Field.PasswordField
+                label="New Password"
+                textContentType={"newPassword"}
+                autoComplete={"new-password"}
+                placeholder="*******"
+              />
+            )}
           />
           <Form.AppField
             name="confirmPassword"
             children={(Field) => (
-              <Field.PasswordField label="Confirm Password" />
+              <Field.PasswordField
+                label="Confirm Password"
+                textContentType={"newPassword"}
+                autoComplete={"new-password"}
+                placeholder="*******"
+              />
             )}
           />
         </View>
@@ -53,7 +72,7 @@ export const PasswordForm = () => {
       <StickyButtonWrapper>
         <Form.SubmitButton disabled={isPending}>
           {isPending && <ActivityIndicator size={16} />}
-          <Button.PrimaryLabel>Update Password</Button.PrimaryLabel>
+          <PrimaryButton.Label>Update Password</PrimaryButton.Label>
         </Form.SubmitButton>
       </StickyButtonWrapper>
     </Form.AppForm>

@@ -12,8 +12,10 @@ import { useCSSVariable } from "uniwind";
 
 export const ShopSelector = () => {
   const sheetRef = useRef<BottomSheet>(null);
-  const successColor = useCSSVariable("--color-success");
-  const primaryColor = useCSSVariable("--color-primary");
+  const [successColor, foregroundColor] = useCSSVariable([
+    "--color-success",
+    "--color-foreground",
+  ]);
   const { user } = useUser();
   const { selectedShop, setSelectedShop, shopLists } = useSelectedShop();
   const onOpen = useCallback(() => {
@@ -36,11 +38,11 @@ export const ShopSelector = () => {
             {selectedShop?.shopName}
           </ThemedText>
           <SymbolView
-            tintColor={primaryColor as string}
+            tintColor={foregroundColor as string}
             size={30}
             name={{
-              android: "storefront",
-              ios: "storefront",
+              android: "keyboard_arrow_down",
+              ios: "chevron.down",
             }}
           />
         </View>

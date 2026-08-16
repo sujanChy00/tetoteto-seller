@@ -1,13 +1,14 @@
+import { isIOS } from "@/constants/platform";
 import { useLanguage } from "@/hooks/use-language";
 import { useResetShop } from "@/mutation/shop-mutation";
 import { useGetAllShippingCompany } from "@/queries/shipping-fee-query";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
-import { Button } from "../ui/button";
+import { DangerButton, DangerSoftButton } from "../ui/button";
 import { Dialog } from "../ui/dialog";
+import { IOSGlassButton } from "../ui/ios-glass-button";
 import { RadioInput } from "../ui/radio-input";
 import { ThemedText } from "../ui/themed-text";
-import { ResetShippingFeeButton } from "./reset-shipping-fee-button.tsx";
 
 export const ResetShippingFee = () => {
   const [shippingId, setShippingId] = useState<string>();
@@ -31,6 +32,17 @@ export const ResetShippingFee = () => {
 
   return (
     <>
+      {isIOS ? (
+        <IOSGlassButton
+          label={t("reset")}
+          size="small"
+          onPress={() => setModalVisible(true)}
+        />
+      ) : (
+        <DangerSoftButton className="h-8" onPress={() => setModalVisible(true)}>
+          <DangerSoftButton.Label>{t("reset")} </DangerSoftButton.Label>
+        </DangerSoftButton>
+      )}
       <Dialog.Root isOpen={modalVisible} onClose={() => setModalVisible(false)}>
         <Dialog.Content isPending={loadingShippingCompanies}>
           <Dialog.Header>
@@ -72,13 +84,12 @@ export const ResetShippingFee = () => {
                 {isResetingShop && (
                   <ActivityIndicator colorClassName="accent-danger-foreground" />
                 )}
-                <Button.DangerLabel>{t("reset")}</Button.DangerLabel>
+                <DangerButton.Label>{t("reset")}</DangerButton.Label>
               </Dialog.Action>
             </Dialog.Footer>
           )}
         </Dialog.Content>
       </Dialog.Root>
-      <ResetShippingFeeButton onPress={() => setModalVisible(true)} />
     </>
   );
 };

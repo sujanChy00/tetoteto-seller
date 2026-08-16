@@ -3,13 +3,13 @@ import { ShopInfo } from "@/components/shop/shop-info";
 import { ShopPrefectures } from "@/components/shop/shop-prefectures";
 import { ShopPromotionalMessage } from "@/components/shop/shop-promotional-message";
 import { ShopTitle } from "@/components/shop/shop-title";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/button";
 import { FalllBackMesage } from "@/components/ui/fallback-message";
 import { StyledImage } from "@/components/ui/image";
 import { ParallaxScrollView } from "@/components/ui/parallax-scroll-view";
 import { useGetShopDetails } from "@/queries/shop-query";
 import { Icon } from "@expo/ui";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { useState } from "react";
 import { RefreshControl, View } from "react-native";
@@ -34,12 +34,21 @@ const ShopDetailsScreen = () => {
     <ParallaxScrollView
       headerHeight={224}
       headerImage={
-        <StyledImage
-          placeholderContentFit="cover"
-          source={data.shopPhotoUrl}
-          alt={data.shopName}
-          className="w-full h-56"
-        />
+        <Link
+          href={{
+            pathname: "/image/[image]",
+            params: {
+              image: data.shopPhotoUrl,
+            },
+          }}
+        >
+          <StyledImage
+            placeholderContentFit="cover"
+            source={data.shopPhotoUrl}
+            alt={data.shopName}
+            className="w-full h-56"
+          />
+        </Link>
       }
       refreshControl={
         <RefreshControl
@@ -61,7 +70,7 @@ const ShopDetailsScreen = () => {
         <ShopPrefectures prefectures={data.supportedPrefectures} />
       </View>
       <View className="px-2 pt-4">
-        <Button.Primary
+        <PrimaryButton
           onPress={() => {
             router.push({
               pathname: "/shop/[shopId]/edit",
@@ -79,8 +88,8 @@ const ShopDetailsScreen = () => {
             }}
             size={18}
           />
-          <Button.PrimaryLabel>Edit Shop</Button.PrimaryLabel>
-        </Button.Primary>
+          <PrimaryButton.Label>Edit Shop</PrimaryButton.Label>
+        </PrimaryButton>
       </View>
       <View className="h-5" />
     </ParallaxScrollView>

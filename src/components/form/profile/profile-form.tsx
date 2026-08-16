@@ -1,22 +1,20 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/button";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUploadImageAndCall } from "@/hooks/use-image-upload";
-import { useIsKeyboardVisible } from "@/hooks/use-keyboard-visible";
+import { useScrollToBottomOnKeyboardVisible } from "@/hooks/use-scroll-to-bottom-on-keyboard-visible";
 import { useUser } from "@/hooks/use-user";
 import {
   useChangeProfileImage,
   useUpdateProfile,
 } from "@/mutation/profile-mutation";
-import { useEffect, useRef } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { ProfileImagePicker } from "./profile-image-picker";
 
 export const ProfileForm = () => {
-  const isKeyboardVisible = useIsKeyboardVisible();
-  const scrollViewRef = useRef<ScrollView>(null);
+  const { scrollViewRef } = useScrollToBottomOnKeyboardVisible();
   const hapticFeedBack = useHaptics();
   const { user } = useUser();
   const { mutateAsync: updateProfileSync, isPending: isProfilePending } =
@@ -44,13 +42,6 @@ export const ProfileForm = () => {
   });
 
   const isPending = isProfilePending || isProfileImagePending || isUploading;
-
-  useEffect(() => {
-    if (!scrollViewRef.current) return;
-    if (isKeyboardVisible) {
-      scrollViewRef.current.scrollToEnd();
-    }
-  }, [isKeyboardVisible]);
 
   return (
     <Form.AppForm>
@@ -81,7 +72,7 @@ export const ProfileForm = () => {
       <StickyButtonWrapper>
         <Form.SubmitButton disabled={isPending}>
           {isPending && <ActivityIndicator size={16} />}
-          <Button.PrimaryLabel>Update Profile</Button.PrimaryLabel>
+          <PrimaryButton.Label>Update Profile</PrimaryButton.Label>
         </Form.SubmitButton>
       </StickyButtonWrapper>
     </Form.AppForm>

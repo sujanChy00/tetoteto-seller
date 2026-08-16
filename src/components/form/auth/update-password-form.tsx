@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { toast } from "../../../utils/toast";
 
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/button";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native";
@@ -47,9 +47,13 @@ export const UpdatePasswordForm = () => {
               name="email"
               children={(Field) => (
                 <Field.TextField
-                  placeholder="tetoteto@gmail.com"
+                  keyboardType="email-address"
+                  inputMode="email"
                   label="Email"
-                  keyboardType="email"
+                  placeholder="tetoteto@gmail.com"
+                  textContentType="emailAddress"
+                  spellCheck={false}
+                  autoComplete="email"
                 />
               )}
             />
@@ -59,6 +63,8 @@ export const UpdatePasswordForm = () => {
                 <Field.PasswordField
                   label="New Password"
                   placeholder="********"
+                  textContentType={"newPassword"}
+                  autoComplete={"new-password"}
                 />
               )}
             />
@@ -68,6 +74,8 @@ export const UpdatePasswordForm = () => {
                 <Field.PasswordField
                   label="Confirm Password"
                   placeholder="********"
+                  textContentType={"newPassword"}
+                  autoComplete={"new-password"}
                 />
               )}
             />
@@ -78,7 +86,7 @@ export const UpdatePasswordForm = () => {
       <StickyButtonWrapper>
         <Form.SubmitButton>
           {/*<Spinner size={16} />*/}
-          <Button.PrimaryLabel>Update Password</Button.PrimaryLabel>
+          <PrimaryButton.Label>Update Password</PrimaryButton.Label>
         </Form.SubmitButton>
       </StickyButtonWrapper>
     </Form.AppForm>

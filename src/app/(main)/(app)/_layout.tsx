@@ -1,11 +1,12 @@
-import { IosShippingCampaignHeaderButton } from "@/components/shipping-campaign/ios-shipping-campaign-header-button";
 import { ResetShippingFee } from "@/components/shipping-fee/reset-shipping-fee";
+import { IOSGlassButton } from "@/components/ui/ios-glass-button";
 import { isAndroid, isIOS } from "@/constants/platform";
 import { useLanguage } from "@/hooks/use-language";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
 const AppLayout = () => {
   const { t } = useLanguage();
+  const router = useRouter();
   return (
     <Stack
       screenOptions={{
@@ -52,7 +53,17 @@ const AppLayout = () => {
         options={{
           title: t("shipping_campaigns"),
           headerRight: () =>
-            isIOS ? <IosShippingCampaignHeaderButton /> : null,
+            isIOS ? (
+              <IOSGlassButton
+                size="small"
+                label={t("add")}
+                onPress={() => {
+                  router.push({
+                    pathname: "/shipping-campaign/add",
+                  });
+                }}
+              />
+            ) : null,
         }}
       />
       <Stack.Screen
@@ -86,12 +97,8 @@ const AppLayout = () => {
           isAndroid
             ? {
                 headerShown: false,
-                presentation: "formSheet",
-                gestureDirection: "vertical",
+                presentation: "fullScreenModal",
                 animation: "slide_from_bottom",
-                sheetAllowedDetents: [1],
-                sheetInitialDetentIndex: 0,
-                sheetExpandsWhenScrolledToEdge: true,
               }
             : { headerShown: false }
         }

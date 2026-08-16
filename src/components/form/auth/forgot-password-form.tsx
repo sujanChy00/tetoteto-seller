@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/button";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -38,9 +38,13 @@ export const ForgotPasswordForm = () => {
             children={(Field) => (
               <Field.TextField
                 autoFocus
-                placeholder="tetoteto@gmail.com"
+                keyboardType="email-address"
+                inputMode="email"
                 label="Email"
-                keyboardType="email"
+                placeholder="tetoteto@gmail.com"
+                textContentType="emailAddress"
+                spellCheck={false}
+                autoComplete="email"
               />
             )}
           />
@@ -61,7 +65,7 @@ export const ForgotPasswordForm = () => {
       >
         <Form.SubmitButton>
           {/*{isPending && <Spinner size={16} />}*/}
-          <Button.PrimaryLabel>Send Reset Link</Button.PrimaryLabel>
+          <PrimaryButton.Label>Send Reset Link</PrimaryButton.Label>
         </Form.SubmitButton>
       </KeyboardStickyView>
     </Form.AppForm>

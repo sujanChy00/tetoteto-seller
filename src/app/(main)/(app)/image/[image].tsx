@@ -1,9 +1,15 @@
 import { AnimatedImage } from "@/components/ui/animated-image";
+import { IOSGlassButton } from "@/components/ui/ios-glass-button";
 import { ThemedText } from "@/components/ui/themed-text";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { useState } from "react";
-import { TouchableOpacity, useWindowDimensions, View } from "react-native";
+import {
+  Platform,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import {
   useAnimatedReaction,
@@ -94,17 +100,8 @@ const ImageScreen = () => {
     },
   );
 
-  if (!image)
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ThemedText className="text-center italic text-danger">
-          Something went wrong while loading image
-        </ThemedText>
-      </View>
-    );
-
-  return (
-    <>
+  const BackButton = Platform.select({
+    android: (
       <TouchableOpacity
         onPress={router.back}
         className="absolute top-safe-offset-14 size-10 rounded-full bg-muted/20 items-center justify-center right-safe-offset-6 z-20"
@@ -116,6 +113,22 @@ const ImageScreen = () => {
           }}
         />
       </TouchableOpacity>
+    ),
+    ios: <IOSGlassButton systemImage="xmark" isIconOnly />,
+  });
+
+  if (!image)
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ThemedText className="text-center italic text-danger">
+          Something went wrong while loading image
+        </ThemedText>
+      </View>
+    );
+
+  return (
+    <>
+      {BackButton}
       <View className="flex-1 justify-center items-center">
         <GestureDetector gesture={combinedGesture}>
           <Link.AppleZoomTarget>

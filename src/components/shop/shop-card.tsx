@@ -4,7 +4,7 @@ import { SymbolView } from "expo-symbols";
 import React from "react";
 import { View } from "react-native";
 import { useCSSVariable } from "uniwind";
-import { Button } from "../ui/button";
+import { PrimaryButton, SecondaryButton } from "../ui/button";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
 
@@ -19,16 +19,16 @@ export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
           <Card.Title numberOfLines={1} className="flex-1">
             {shop.shopName}
           </Card.Title>
-          <Chip.Root variant="secondary">
+          <Chip variant="secondary">
             <Chip.Label>{shop.shopAssistantCountry}</Chip.Label>
-          </Chip.Root>
+          </Chip>
         </View>
         <Card.Description className="text-sm">
           {shop.shopAddress}
         </Card.Description>
       </Card.Header>
       <Card.Footer className="w-full flex-row items-center gap-3">
-        <Button.Primary
+        <PrimaryButton
           className="flex-1"
           onPress={() => {
             router.push({
@@ -39,9 +39,9 @@ export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
             });
           }}
         >
-          <Button.PrimaryLabel>View</Button.PrimaryLabel>
-        </Button.Primary>
-        <Button.Secondary
+          <PrimaryButton.Label>View</PrimaryButton.Label>
+        </PrimaryButton>
+        <SecondaryButton
           onPress={() => {
             router.push({
               pathname: "/shop/[shopId]/edit",
@@ -59,7 +59,7 @@ export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
               android: "edit",
             }}
           />
-        </Button.Secondary>
+        </SecondaryButton>
       </Card.Footer>
     </Card.Root>
   );

@@ -4,7 +4,7 @@ import { IShopDeliveryTimes } from "@/types";
 import { memo } from "react";
 import { ActivityIndicator } from "react-native";
 import { twMerge } from "tailwind-merge";
-import { Button } from "../ui/button";
+import { PrimaryButton } from "../ui/button";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
 import { ThemedText } from "../ui/themed-text";
@@ -27,16 +27,16 @@ export const DeliverTimeSlotCard = memo(
             {timeSlots?.shippingCompanyName}
           </Card.Title>
           {defaultTimeSlot && (
-            <Chip.Root color="success" variant="soft">
+            <Chip color="success" variant="soft">
               <Chip.Label>{t("default")?.toUpperCase()}</Chip.Label>
-            </Chip.Root>
+            </Chip>
           )}
         </Card.Header>
         <Card.Body className="flex-row flex-wrap gap-1.5 pt-3">
           {timeSlots?.deliveryTimes.map((time) => (
-            <Chip.Root key={time.deliveryTimeId} size="sm" variant="secondary">
+            <Chip key={time.deliveryTimeId} size="sm" variant="secondary">
               <Chip.Label>{time?.deliveryTimeName}</Chip.Label>
-            </Chip.Root>
+            </Chip>
           ))}
         </Card.Body>
         <Card.Footer className="justify-center pt-6">
@@ -45,7 +45,7 @@ export const DeliverTimeSlotCard = memo(
               {t("selected")}
             </ThemedText>
           ) : (
-            <Button.Primary
+            <PrimaryButton
               onPress={async () => {
                 await mutateAsync({
                   shippingCompanyId: timeSlots.shippingCompanyId,
@@ -53,8 +53,8 @@ export const DeliverTimeSlotCard = memo(
               }}
             >
               {isPending && <ActivityIndicator size={16} />}
-              <Button.PrimaryLabel>{t("select")}</Button.PrimaryLabel>
-            </Button.Primary>
+              <PrimaryButton.Label>{t("select")}</PrimaryButton.Label>
+            </PrimaryButton>
           )}
         </Card.Footer>
       </Card.Root>

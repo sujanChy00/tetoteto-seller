@@ -158,5 +158,6 @@ const Label = ({ className, ...rest }: ChipLabelProps) => {
     />
   );
 };
-
-export const Chip = { Root, Label };
+export const Chip = Object.assign(Root, {
+  Label,
+});

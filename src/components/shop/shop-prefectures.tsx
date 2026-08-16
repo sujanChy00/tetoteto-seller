@@ -28,7 +28,7 @@ export const ShopPrefectures = ({
             {prefectures?.length ? (
               <View className="p-3 flex-row items-center gap-3 flex-wrap border-t-hairline border-t-separator">
                 {prefectures?.map((prefecture) => (
-                  <Chip.Root
+                  <Chip
                     variant="soft"
                     color="success"
                     size="sm"
@@ -36,7 +36,7 @@ export const ShopPrefectures = ({
                     className="rounded-md"
                   >
                     <Chip.Label>{prefecture.name}</Chip.Label>
-                  </Chip.Root>
+                  </Chip>
                 ))}
               </View>
             ) : (

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { useCSSVariable } from "uniwind";
-import { Button } from "./button";
+import { DangerButton, DangerSoftButton, GhostButton } from "./button";
 import { Surface } from "./surface";
 import { ThemedText } from "./themed-text";
 
@@ -75,9 +75,9 @@ const Footer = ({ className, ...rest }: ViewProps) => (
 const Close = ({ className, children, ...rest }: PressableProps) => {
   const { t } = useLanguage();
   return (
-    <Button.Ghost className={twMerge("px-6 h-10", className)} {...rest}>
-      {children ?? <Button.GhostLabel>{t("cancel")}</Button.GhostLabel>}
-    </Button.Ghost>
+    <GhostButton className={twMerge("px-6 h-10", className)} {...rest}>
+      {children ?? <GhostButton.Label>{t("cancel")}</GhostButton.Label>}
+    </GhostButton>
   );
 };
 const Action = ({
@@ -87,19 +87,16 @@ const Action = ({
 }: PressableProps & { variant?: "danger" | "default" | "dangerSoft" }) => {
   if (variant === "danger") {
     return (
-      <Button.Danger className={twMerge("px-6 h-10", className)} {...rest} />
+      <DangerButton className={twMerge("px-6 h-10", className)} {...rest} />
     );
   }
   if (variant === "dangerSoft") {
     return (
-      <Button.DangerSoft
-        className={twMerge("px-6 h-10", className)}
-        {...rest}
-      />
+      <DangerSoftButton className={twMerge("px-6 h-10", className)} {...rest} />
     );
   }
 
-  return <Button.Ghost className={twMerge("px-6 h-10", className)} {...rest} />;
+  return <GhostButton className={twMerge("px-6 h-10", className)} {...rest} />;
 };
 
 export const Dialog = {

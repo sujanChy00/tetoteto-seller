@@ -13,9 +13,9 @@ export const ShopTitle = ({ data }: { data: IshopDetails }) => {
         <ThemedText numberOfLines={1} className="text-2xl font-semibold flex-1">
           {data.shopName}
         </ThemedText>
-        <Chip.Root size="sm" variant="soft">
+        <Chip size="sm" variant="soft">
           <Chip.Label>{data.shopCountry}</Chip.Label>
-        </Chip.Root>
+        </Chip>
       </View>
       <View className="flex-row items-center gap-1">
         <SymbolView

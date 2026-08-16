@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useCSSVariable } from "uniwind";
-import { Button } from "../../ui/button";
+import { GhostButton, PrimaryButton, SecondaryButton } from "../../ui/button";
 import { ThemedText } from "../../ui/themed-text";
 
 export const LoginForm = () => {
@@ -74,7 +74,7 @@ export const LoginForm = () => {
       }
 
       const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: "Login with biometrics",
+        promptMessage: isIOS ? "Login with Face ID" : "Login with Fingerprint",
         cancelLabel: "Cancel",
         disableDeviceFallback: true,
       });
@@ -150,7 +150,7 @@ export const LoginForm = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
+        keyboardShouldPersistTaps="always"
         className="py-safe bg-background"
         style={{ flex: 1 }}
       >
@@ -176,9 +176,13 @@ export const LoginForm = () => {
                 name="email"
                 children={(field) => (
                   <field.TextField
-                    keyboardType="email"
-                    placeholder="email"
+                    keyboardType="email-address"
+                    inputMode="email"
                     label="Email"
+                    placeholder="tetoteto@gmail.com"
+                    textContentType="emailAddress"
+                    spellCheck={false}
+                    autoComplete="email"
                   />
                 )}
               />
@@ -186,9 +190,9 @@ export const LoginForm = () => {
                 name="password"
                 children={(field) => (
                   <field.PasswordField
-                    onSubmit={() => Form.handleSubmit()}
-                    placeholder="password"
+                    returnKeyType="done"
                     label="Password"
+                    placeholder="********"
                   />
                 )}
               />
@@ -196,11 +200,11 @@ export const LoginForm = () => {
                 <View className="flex-row gap-3 items-center">
                   <Form.SubmitButton className="flex-1">
                     {isPending && <ActivityIndicator size={16} />}
-                    <Button.PrimaryLabel>Login</Button.PrimaryLabel>
+                    <PrimaryButton.Label>Login</PrimaryButton.Label>
                   </Form.SubmitButton>
 
                   {showBiometricLogin && (
-                    <Button.Secondary
+                    <SecondaryButton
                       onPress={handleBiometricLogin}
                       disabled={isAuthenticating}
                     >
@@ -211,11 +215,11 @@ export const LoginForm = () => {
                           android: "fingerprint",
                         }}
                       />
-                    </Button.Secondary>
+                    </SecondaryButton>
                   )}
                 </View>
 
-                <Button.Ghost
+                <GhostButton
                   onPress={() => {
                     router.push({
                       pathname: "/auth/forgot-password",
@@ -225,8 +229,8 @@ export const LoginForm = () => {
                     });
                   }}
                 >
-                  <Button.GhostLabel>Forgot Password?</Button.GhostLabel>
-                </Button.Ghost>
+                  <GhostButton.Label>Forgot Password?</GhostButton.Label>
+                </GhostButton>
               </View>
             </View>
           </Form.AppForm>

@@ -49,10 +49,7 @@ const ItemScreen = () => {
   }, [refetch]);
 
   const keyExtractor = useCallback(
-    ({ item_id, item_name, item_delivery_time }: IItem) =>
-      item_id.toString() +
-      item_name.toString() +
-      item_delivery_time?.toString(),
+    ({ item_id }: IItem) => item_id.toString(),
     [],
   );
   const ListEmptyComponent = useCallback(
@@ -70,6 +67,8 @@ const ItemScreen = () => {
     [isFetchingNextPage, hasNextPage],
   );
 
+  const getFixedItemSize = useCallback(() => 142.25, []);
+
   const onEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
@@ -82,10 +81,11 @@ const ItemScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerClassName="p-2"
         drawDistance={500}
-        estimatedItemSize={140}
+        getFixedItemSize={getFixedItemSize}
         keyboardDismissMode="on-drag"
         onEndReachedThreshold={0.5}
         data={allItems}
+        estimatedItemSize={142}
         ItemSeparatorComponent={renderSeparator}
         renderItem={renderItem}
         refreshing={refreshing}
@@ -95,6 +95,11 @@ const ItemScreen = () => {
         onEndReached={onEndReached}
         ListFooterComponentStyle={footerStyle}
         ListFooterComponent={ListFooterComponent}
+        experimental_adaptiveRender={{
+          enterVelocity: 6,
+          exitVelocity: 3,
+          exitDelay: 250,
+        }}
       />
       <ItemFilters />
     </View>

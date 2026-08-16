@@ -1,20 +1,17 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
-import { Button } from "@/components/ui/button";
-import { Host } from "@/components/ui/host";
+import { GhostButton, PrimaryButton } from "@/components/ui/button";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
-import { useAppTheme } from "@/context/app-theme-provider";
 import { useForm } from "@/hooks/use-form";
+import { useScrollToBottomOnKeyboardVisible } from "@/hooks/use-scroll-to-bottom-on-keyboard-visible";
 import { useUser } from "@/hooks/use-user";
 import { useLogoutMutation } from "@/mutation/auth-mutation";
-import { ScrollView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
 export const PasswordExpiredForm = () => {
-  const { currentTheme } = useAppTheme();
+  const { scrollViewRef } = useScrollToBottomOnKeyboardVisible();
   const { user } = useUser();
-  const { bottom } = useSafeAreaInsets();
-  const { mutate: logout, isPending } = useLogoutMutation();
+  const { mutate: logout, isPending: isPendingLogout } = useLogoutMutation();
   const Form = useForm({
     defaultValues: { oldPassword: "", newPassword: "" },
     onSubmit: async ({ value }) => {
@@ -24,12 +21,13 @@ export const PasswordExpiredForm = () => {
   return (
     <Form.AppForm>
       <ScrollView
+        ref={scrollViewRef}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View className="pt-safe-offset-40 flex-1 px-4 gap-y-10">
           <View className="gap-3">
-            <ThemedText className="text-foreground text-3xl font-semibold">
+            <ThemedText className="text-3xl font-semibold">
               Password Expired
             </ThemedText>
             <ThemedText className="text-muted">
@@ -44,15 +42,10 @@ export const PasswordExpiredForm = () => {
             <Form.AppField
               name="oldPassword"
               children={(Field) => (
-                <Host
-                  matchContents={{ vertical: true }}
-                  style={{ width: "100%" }}
-                >
-                  <Field.PasswordField
-                    placeholder="********"
-                    label="Old Password"
-                  />
-                </Host>
+                <Field.PasswordField
+                  placeholder="********"
+                  label="Old Password"
+                />
               )}
             />
             <Form.AppField
@@ -61,29 +54,29 @@ export const PasswordExpiredForm = () => {
                 <Field.PasswordField
                   placeholder="********"
                   label="New Password"
+                  textContentType={"newPassword"}
+                  autoComplete={"new-password"}
                 />
               )}
             />
           </View>
         </View>
-        <AnimatedSpacer height={450} />
+        <AnimatedSpacer height={500} />
       </ScrollView>
-      <StickyButtonWrapper>
-        <View className="gap-y-3 bg-background w-full">
+      <StickyButtonWrapper closedOffset={-22}>
+        <View className="gap-y-1 w-full">
           <Form.SubmitButton>
-            {/*<Spinner size={16} />*/}
-            <Button.PrimaryLabel>Reset Password</Button.PrimaryLabel>
+            {/*<ActivityIndicator size={16} />*/}
+            <PrimaryButton.Label>Reset Password</PrimaryButton.Label>
           </Form.SubmitButton>
-          <Button.Ghost
+          <GhostButton
             onPress={() => {
               logout();
             }}
           >
-            {/*{isPending && <Spinner size={20} />}*/}
-            <Button.DangerSoftLabel>
-              Login with another account?
-            </Button.DangerSoftLabel>
-          </Button.Ghost>
+            {isPendingLogout && <ActivityIndicator size={20} />}
+            <GhostButton.Label>Login with another account?</GhostButton.Label>
+          </GhostButton>
         </View>
       </StickyButtonWrapper>
     </Form.AppForm>

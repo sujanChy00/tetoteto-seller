@@ -1,5 +1,5 @@
 import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { OutlineButton } from "@/components/ui/button";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
@@ -94,7 +94,7 @@ export const ProfileImagePicker = ({
         </View>
       </View>
       <View className="justify-center flex-row items-center gap-3">
-        <Button.Outline onPress={takePicture}>
+        <OutlineButton onPress={takePicture}>
           <SymbolView
             tintColor={defaultForegroundColor}
             name={{
@@ -103,9 +103,9 @@ export const ProfileImagePicker = ({
             }}
             size={16}
           />
-          <Button.OutlineLabel>Camera</Button.OutlineLabel>
-        </Button.Outline>
-        <Button.Outline onPress={pickImage}>
+          <OutlineButton.Label>Camera</OutlineButton.Label>
+        </OutlineButton>
+        <OutlineButton onPress={pickImage}>
           <SymbolView
             tintColor={defaultForegroundColor}
             name={{
@@ -114,8 +114,8 @@ export const ProfileImagePicker = ({
             }}
             size={16}
           />
-          <Button.OutlineLabel>Gallery</Button.OutlineLabel>
-        </Button.Outline>
+          <OutlineButton.Label>Gallery</OutlineButton.Label>
+        </OutlineButton>
       </View>
     </View>
   );

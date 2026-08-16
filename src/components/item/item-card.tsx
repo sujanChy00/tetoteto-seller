@@ -43,7 +43,7 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
                 <Card.Title className="flex-1" numberOfLines={1}>
                   {item.item_name}
                 </Card.Title>
-                <Chip.Root
+                <Chip
                   size="sm"
                   variant="soft"
                   color={item.item_disabled ? "danger" : "success"}
@@ -51,7 +51,7 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
                   <Chip.Label>
                     {item.item_disabled ? "INACTIVE" : "ACTIVE"}
                   </Chip.Label>
-                </Chip.Root>
+                </Chip>
               </View>
             </Card.Header>
             <Card.Body className="flex-row items-center gap-3">

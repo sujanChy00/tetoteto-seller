@@ -17,7 +17,7 @@ export const ListEmpty = React.memo(
         <View
           className={twMerge("h-40 items-center justify-center", className)}
         >
-          <ActivityIndicator />
+          <ActivityIndicator size={50} />
         </View>
       );
     return <FalllBackMesage className="pt-20" message={emptyStateMessage} />;

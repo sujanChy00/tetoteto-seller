@@ -10,7 +10,12 @@ import DateTimePicker, {
   useDefaultClassNames,
 } from "react-native-ui-datepicker";
 import { useCSSVariable } from "uniwind";
-import { Button } from "../button";
+import {
+  GhostButton,
+  OutlineButton,
+  PrimaryButton,
+  SecondaryButton,
+} from "../button";
 
 interface DateRangeType {
   endDate?: DateType;
@@ -24,9 +29,7 @@ interface Props extends Omit<DatePickerBaseProps, "mode" | "onChange"> {
 
 export const DateRangePicker = ({ onChange, value }: Props) => {
   const { isDark } = useAppTheme();
-  const colorForeground = useCSSVariable(
-    "--color-default-foreground",
-  ) as string;
+  const primaryColor = useCSSVariable("--color-primary") as string;
   const sheetRef = useRef<BottomSheet>(null);
   const defaultClassNames = useDefaultClassNames();
   const [date, setDate] = useState<DateRangeType>({
@@ -47,13 +50,13 @@ export const DateRangePicker = ({ onChange, value }: Props) => {
 
   return (
     <View>
-      <Button.Secondary onPress={onOpen} className="h-8.75 px-3">
-        <Button.SecondaryLabel>
+      <SecondaryButton onPress={onOpen} className="h-8.75 px-3">
+        <SecondaryButton.Label>
           {value.startDate && value.endDate
             ? `${formatShortDate(new Date(value.startDate as string))} - ${formatShortDate(new Date(value.endDate as string))}`
             : "Select Date"}
-        </Button.SecondaryLabel>
-      </Button.Secondary>
+        </SecondaryButton.Label>
+      </SecondaryButton>
       <BottomSheet ref={sheetRef} index={-1} enablePanDownToClose>
         <BottomSheetView>
           <DateTimePicker
@@ -81,58 +84,52 @@ export const DateRangePicker = ({ onChange, value }: Props) => {
             }}
             components={{
               MonthSelector: (props) => (
-                <Button.Secondary
-                  onPress={props.onPress}
-                  className="h-10 px-6 shadow"
-                >
-                  <Button.SecondaryLabel>{props.text}</Button.SecondaryLabel>
-                </Button.Secondary>
+                <OutlineButton onPress={props.onPress} className="h-10 px-6">
+                  <OutlineButton.Label>{props.text}</OutlineButton.Label>
+                </OutlineButton>
               ),
               YearSelector: (props) => (
-                <Button.Secondary
-                  onPress={props.onPress}
-                  className="h-10 px-6 shadow"
-                >
-                  <Button.SecondaryLabel>{props.year}</Button.SecondaryLabel>
-                </Button.Secondary>
+                <OutlineButton onPress={props.onPress} className="h-10 px-6">
+                  <OutlineButton.Label>{props.year}</OutlineButton.Label>
+                </OutlineButton>
               ),
               IconNext: (
-                <Button.Outline className="rounded-full size-11.25">
+                <View className="rounded-full items-center justify-center size-10">
                   <SymbolView
-                    tintColor={colorForeground}
+                    tintColor={primaryColor}
                     name={{
                       ios: "chevron.right",
                       android: "chevron_right",
                     }}
                   />
-                </Button.Outline>
+                </View>
               ),
               IconPrev: (
-                <Button.Outline className="rounded-full size-11.25">
+                <View className="rounded-full items-center justify-center size-10">
                   <SymbolView
-                    tintColor={colorForeground}
+                    tintColor={primaryColor}
                     name={{
                       ios: "chevron.left",
                       android: "chevron_left",
                     }}
                   />
-                </Button.Outline>
+                </View>
               ),
             }}
           />
-          <View className="flex-row w-full items-center gap-3 px-4 justify-between pt-6">
-            <Button.Ghost className="flex-1" onPress={onClose}>
-              <Button.GhostLabel>Close</Button.GhostLabel>
-            </Button.Ghost>
-            <Button.Primary
+          <View className="flex-row w-full items-center gap-3 px-4 justify-between pt-6 pb-3">
+            <GhostButton className="flex-1" onPress={onClose}>
+              <GhostButton.Label>Close</GhostButton.Label>
+            </GhostButton>
+            <PrimaryButton
               className="flex-1"
               onPress={() => {
                 onChange(date);
                 onClose();
               }}
             >
-              <Button.PrimaryLabel>Done</Button.PrimaryLabel>
-            </Button.Primary>
+              <PrimaryButton.Label>Done</PrimaryButton.Label>
+            </PrimaryButton>
           </View>
         </BottomSheetView>
       </BottomSheet>

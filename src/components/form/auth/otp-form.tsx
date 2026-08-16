@@ -1,5 +1,5 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/button";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
@@ -52,9 +52,13 @@ export const OtpForm = () => {
               name="email"
               children={(Field) => (
                 <Field.TextField
-                  placeholder="tetoteto@gmail.com"
+                  keyboardType="email-address"
+                  inputMode="email"
                   label="Email"
-                  keyboardType="email"
+                  placeholder="tetoteto@gmail.com"
+                  textContentType="emailAddress"
+                  spellCheck={false}
+                  autoComplete="email"
                 />
               )}
             />
@@ -69,7 +73,7 @@ export const OtpForm = () => {
       <StickyButtonWrapper>
         <Form.SubmitButton>
           {/*<Spinner size={16} />*/}
-          <Button.PrimaryLabel>Send Reset Link</Button.PrimaryLabel>
+          <PrimaryButton.Label>Send Reset Link</PrimaryButton.Label>
         </Form.SubmitButton>
       </StickyButtonWrapper>
     </Form.AppForm>

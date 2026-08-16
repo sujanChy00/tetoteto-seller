@@ -3,7 +3,7 @@ import { Icon, RNHostView } from "@expo/ui";
 import { SymbolView } from "expo-symbols";
 import { useCSSVariable } from "uniwind";
 import { AlertDialog } from "../alert-dialog";
-import { Button } from "../button";
+import { DangerButton } from "../button";
 import { Host } from "../host";
 
 const LOGOUT_ICON = Icon.select({
@@ -27,8 +27,8 @@ export const LogoutButton = () => {
         confirmButtonText="logout"
         trigger={(open) => (
           <RNHostView matchContents>
-            <Button.Danger onPress={open}>
-              <Button.DangerLabel>Logout</Button.DangerLabel>
+            <DangerButton onPress={open}>
+              <DangerButton.Label>Logout</DangerButton.Label>
               <SymbolView
                 name={{
                   android: "logout",
@@ -37,7 +37,7 @@ export const LogoutButton = () => {
                 size={16}
                 tintColor={dangerForegroundColor}
               />
-            </Button.Danger>
+            </DangerButton>
           </RNHostView>
         )}
       />

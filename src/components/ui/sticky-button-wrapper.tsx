@@ -3,13 +3,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
   children: React.ReactNode;
-  closed?: number;
-  opened?: number;
+  closedOffset?: number;
+  openedOffset?: number;
 }
 
 export const StickyButtonWrapper = ({
-  closed = -16,
-  opened = 20,
+  closedOffset = -16,
+  openedOffset = 20,
   children,
 }: Props) => {
   const { bottom } = useSafeAreaInsets();
@@ -23,8 +23,8 @@ export const StickyButtonWrapper = ({
         paddingHorizontal: 16,
       }}
       offset={{
-        opened: bottom - opened,
-        closed: closed,
+        opened: bottom - openedOffset,
+        closed: closedOffset,
       }}
     >
       {children}

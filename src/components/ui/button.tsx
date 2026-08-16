@@ -2,7 +2,7 @@ import { Pressable, PressableProps, TextProps } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { ThemedText } from "./themed-text";
 
-const Secondary = ({ className, ...props }: PressableProps) => {
+const SecondaryRoot = ({ className, ...props }: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
@@ -22,7 +22,7 @@ const SecondaryLabel = ({ className, ...props }: TextProps) => {
     />
   );
 };
-const Primary = ({ className, ...props }: PressableProps) => {
+const PrimaryRoot = ({ className, ...props }: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
@@ -43,7 +43,7 @@ const PrimaryLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const Danger = ({ className, ...props }: PressableProps) => {
+const DangerRoot = ({ className, ...props }: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
@@ -64,7 +64,7 @@ const DangerLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const DangerSoft = ({ className, ...props }: PressableProps) => {
+const DangerSoftRoot = ({ className, ...props }: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
@@ -85,7 +85,7 @@ const DangerSoftLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const Tertiary = ({ className, ...props }: PressableProps) => {
+const TertiaryRoot = ({ className, ...props }: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
@@ -106,7 +106,7 @@ const TertiaryLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const Ghost = ({ className, ...props }: PressableProps) => {
+const GhostRoot = ({ className, ...props }: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
@@ -127,7 +127,7 @@ const GhostLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const Outline = ({ className, ...props }: PressableProps) => {
+const OutlineRoot = ({ className, ...props }: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
@@ -148,19 +148,25 @@ const OutlineLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-export const Button = {
-  Secondary,
-  SecondaryLabel,
-  Primary,
-  PrimaryLabel,
-  Danger,
-  DangerLabel,
-  DangerSoft,
-  DangerSoftLabel,
-  Tertiary,
-  TertiaryLabel,
-  Ghost,
-  GhostLabel,
-  Outline,
-  OutlineLabel,
-};
+export const PrimaryButton = Object.assign(PrimaryRoot, {
+  Label: PrimaryLabel,
+});
+export const SecondaryButton = Object.assign(SecondaryRoot, {
+  Label: SecondaryLabel,
+});
+export const TertiaryButton = Object.assign(TertiaryRoot, {
+  Label: TertiaryLabel,
+});
+export const GhostButton = Object.assign(GhostRoot, {
+  Label: GhostLabel,
+});
+export const OutlineButton = Object.assign(OutlineRoot, {
+  Label: OutlineLabel,
+});
+
+export const DangerButton = Object.assign(DangerRoot, {
+  Label: DangerLabel,
+});
+export const DangerSoftButton = Object.assign(DangerSoftRoot, {
+  Label: DangerSoftLabel,
+});

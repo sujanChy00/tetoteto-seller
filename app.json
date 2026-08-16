@@ -36,7 +36,6 @@
         "backgroundImage": "./assets/images/adaptive-icon.png",
         "monochromeImage": "./assets/images/adaptive-icon.png"
       },
-      "predictiveBackGestureEnabled": true,
       "package": "com.sujan_chy.tetotetoseller"
     },
     "web": {

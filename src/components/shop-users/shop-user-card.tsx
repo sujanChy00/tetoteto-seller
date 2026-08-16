@@ -47,7 +47,7 @@ export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
       </Card.Header>
       <Card.Footer className="flex-row  items-center justify-between pt-3 border-t border-t-background">
         {isAdmin ? (
-          <Chip.Root variant="soft" color="danger">
+          <Chip variant="soft" color="danger">
             <SymbolView
               name={{
                 android: "admin_panel_settings",
@@ -57,7 +57,7 @@ export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
               size={18}
             />
             <Chip.Label>ADMIN</Chip.Label>
-          </Chip.Root>
+          </Chip>
         ) : (
           <ThemedText className="text-sm font-semibold">
             {data.sellerRole}
