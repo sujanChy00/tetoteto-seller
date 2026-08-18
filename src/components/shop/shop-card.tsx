@@ -13,7 +13,7 @@ export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
   const primaryColor = useCSSVariable("--color-primary") as string;
 
   return (
-    <Card.Root className="gap-6">
+    <Card className="gap-6">
       <Card.Header>
         <View className="flex-row items-center justify-between gap-3">
           <Card.Title numberOfLines={1} className="flex-1">
@@ -61,6 +61,6 @@ export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
           />
         </SecondaryButton>
       </Card.Footer>
-    </Card.Root>
+    </Card>
   );
 });

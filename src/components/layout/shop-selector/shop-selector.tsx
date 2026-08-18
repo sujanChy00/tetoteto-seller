@@ -1,7 +1,8 @@
 import { ThemedText } from "@/components/ui/themed-text";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { useUser } from "@/hooks/use-user";
-import BottomSheet, {
+import {
+  BottomSheetModal,
   BottomSheetScrollView,
 } from "@expo/ui/community/bottom-sheet";
 import { SymbolView } from "expo-symbols";
@@ -11,7 +12,7 @@ import { twMerge } from "tailwind-merge";
 import { useCSSVariable } from "uniwind";
 
 export const ShopSelector = () => {
-  const sheetRef = useRef<BottomSheet>(null);
+  const sheetRef = useRef<BottomSheetModal>(null);
   const [successColor, foregroundColor] = useCSSVariable([
     "--color-success",
     "--color-foreground",
@@ -19,10 +20,10 @@ export const ShopSelector = () => {
   const { user } = useUser();
   const { selectedShop, setSelectedShop, shopLists } = useSelectedShop();
   const onOpen = useCallback(() => {
-    sheetRef.current?.snapToIndex(0);
+    sheetRef.current?.present();
   }, []);
   const onClose = useCallback(() => {
-    sheetRef.current?.close();
+    sheetRef.current?.dismiss();
   }, []);
   return (
     <View>
@@ -53,10 +54,9 @@ export const ShopSelector = () => {
           </ThemedText>
         </ThemedText>
       </Pressable>
-      <BottomSheet
+      <BottomSheetModal
         ref={sheetRef}
         snapPoints={["50%", "75%", "90%"]}
-        index={-1}
         enablePanDownToClose
       >
         <BottomSheetScrollView
@@ -102,7 +102,7 @@ export const ShopSelector = () => {
             })}
           </View>
         </BottomSheetScrollView>
-      </BottomSheet>
+      </BottomSheetModal>
     </View>
   );
 };

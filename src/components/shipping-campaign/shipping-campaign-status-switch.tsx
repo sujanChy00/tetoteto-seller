@@ -10,7 +10,7 @@ interface Props {
   campaign: IShipppingCampaign;
 }
 
-export const ToggleShippingCampaignStatus = ({ campaign }: Props) => {
+export const ShippingCampaignStatusSwitch = ({ campaign }: Props) => {
   const { mutate, isPending } = useUpdateShippingCampaign();
 
   const updateCampaign = (checked: boolean) => {

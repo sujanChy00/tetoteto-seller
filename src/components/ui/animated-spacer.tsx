@@ -1,4 +1,4 @@
-import { useIsKeyboardVisible } from "@/hooks/use-keyboard-visible";
+import { useKeyboard } from "@/hooks/use-keyboard";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -6,7 +6,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 export const AnimatedSpacer = ({ height }: { height: number }) => {
-  const isKeyboardVisible = useIsKeyboardVisible();
+  const { isKeyboardVisible } = useKeyboard();
   const spacerStyle = useAnimatedStyle(() => ({
     height: withTiming(isKeyboardVisible ? height : 0, {
       duration: 300,

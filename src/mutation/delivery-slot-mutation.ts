@@ -2,11 +2,15 @@ import { GET_SHOP_AVAILABLE_DELIVERY_TIME_SLOTS_QUERY_KEY } from "@/constants/qu
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
+import { IGeneralResponse, mutationProps } from "@/types";
 import { fetcher } from "@/utils/fetcher";
-import { toast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const useUpdateShopDeliveryTime = () => {
+export const useUpdateShopDeliveryTime = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const { selectedShop } = useSelectedShop();
   const { t } = useLanguage();
   const haptic = useHaptics();
@@ -14,24 +18,28 @@ export const useUpdateShopDeliveryTime = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: { shippingCompanyId: number | null }) =>
-      await fetcher({
+      await fetcher<IGeneralResponse>({
         url: `/delivery-time/${selectedShop?.shopId}`,
         data,
         method: "PATCH",
       }),
-    onSuccess() {
+    onSuccess(data) {
       queryClient.invalidateQueries({
         queryKey: [GET_SHOP_AVAILABLE_DELIVERY_TIME_SLOTS_QUERY_KEY],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: t("delivery_update_success_message"),
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptic("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };

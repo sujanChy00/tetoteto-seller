@@ -22,11 +22,10 @@ const Description = ({ className, ...props }: TextProps) => (
   />
 );
 
-export const Card = {
-  Root,
+export const Card = Object.assign(Root, {
   Header,
   Body,
   Footer,
   Title,
   Description,
-};
+});

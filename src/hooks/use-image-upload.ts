@@ -1,8 +1,8 @@
-import { toast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 
 import { addLocalFileToFormData } from "@/utils/add-local-file-to-formdata";
 import { fetcher } from "@/utils/fetcher";
+import { errorToast } from "@/utils/toast";
 
 export const useUploadImageAndCall = () => {
   const { mutateAsync: upload, isPending: isUploading } = useMutation({
@@ -17,9 +17,11 @@ export const useUploadImageAndCall = () => {
       });
     },
     onError: (error) => {
-      toast.error(
-        error?.message || "Something went wrong while uploading image",
-      );
+      errorToast({
+        title: "Error",
+        description:
+          error?.message || "Something went wrong while uploading image",
+      });
     },
   });
   const uploadImage = async (
@@ -34,7 +36,10 @@ export const useUploadImageAndCall = () => {
     if (res?.length > 0) {
       await call(res);
     } else {
-      toast.error("Something went wrong while uploading image");
+      errorToast({
+        title: "Error",
+        description: "Something went wrong while uploading image",
+      });
     }
   };
 

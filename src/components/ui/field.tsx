@@ -8,10 +8,18 @@ const Field = ({ className, children }: ViewProps) => {
   );
 };
 
-const FieldLabel = ({ className, ...rest }: TextProps) => {
+const FieldLabel = ({
+  className,
+  isInvalid = false,
+  ...rest
+}: TextProps & { isInvalid?: boolean }) => {
   return (
     <ThemedText
-      className={twMerge("text-base font-medium", className)}
+      className={twMerge(
+        "text-base font-medium",
+        isInvalid ? "text-danger" : "text-foreground",
+        className,
+      )}
       {...rest}
     />
   );
@@ -24,7 +32,7 @@ const FieldError = ({ className, ...rest }: TextProps) => {
     />
   );
 };
-const FieldSupportingText = ({ className, ...rest }: TextProps) => {
+const FieldDescription = ({ className, ...rest }: TextProps) => {
   return (
     <ThemedText
       className={twMerge("text-muted text-xs", className)}
@@ -33,4 +41,4 @@ const FieldSupportingText = ({ className, ...rest }: TextProps) => {
   );
 };
 
-export { Field, FieldError, FieldLabel, FieldSupportingText };
+export { Field, FieldDescription, FieldError, FieldLabel };

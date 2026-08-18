@@ -17,14 +17,14 @@ export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
   const isAdmin = data.sellerRole === "admin";
 
   return (
-    <Card.Root className="overflow-hidden">
+    <Card className="overflow-hidden">
       <Card.Header className="flex-row items-center justify-between pb-3">
         <View className="flex-row items-center gap-2">
-          <Avatar.Root className="items-center justify-center border border-border">
+          <Avatar className="items-center justify-center border border-border">
             <Avatar.Fallback source="">
               {getAvatarName(data.sellerName)}
             </Avatar.Fallback>
-          </Avatar.Root>
+          </Avatar>
           <View>
             <View className="flex-row items-start gap-1">
               <ThemedText className="font-semibold">
@@ -70,6 +70,6 @@ export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
           {dateTimeFormatterWithouTLocale(new Date(data.sellerCreated))}
         </ThemedText>
       </Card.Footer>
-    </Card.Root>
+    </Card>
   );
 });

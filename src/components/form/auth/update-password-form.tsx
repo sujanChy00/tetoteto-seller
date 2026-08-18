@@ -1,10 +1,10 @@
 import { useForm } from "@/hooks/use-form";
 import { View } from "react-native";
-import { toast } from "../../../utils/toast";
 
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { PrimaryButton } from "@/components/ui/button";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { successToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -21,7 +21,10 @@ export const UpdatePasswordForm = () => {
       confirmNewPassword: "",
     },
     onSubmit: ({ value }) => {
-      toast.success("Logged in successfully");
+      successToast({
+        title: "Success",
+        description: "Password updated successfully",
+      });
       console.log(value);
     },
   });

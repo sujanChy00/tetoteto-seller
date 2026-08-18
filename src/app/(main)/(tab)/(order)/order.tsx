@@ -1,11 +1,5 @@
-import { Text, View } from "react-native";
+import { OrderList } from "@/components/order/order-list";
 
-const OrderScreen = () => {
-  return (
-    <View>
-      <Text>OrderScreen</Text>
-    </View>
-  );
-};
+const OrderScreen = () => <OrderList status="ORDER_PLACED" />;
 
 export default OrderScreen;

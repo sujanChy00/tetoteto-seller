@@ -91,7 +91,7 @@ export const ProfileHeader = ({
     >
       <View className="flex-1 flex-row items-center gap-3 px-4">
         <Animated.View style={avatarStyle}>
-          <Avatar.Root className="size-full">
+          <Avatar className="size-full">
             <Avatar.Image
               className="size-full"
               source={user?.profileDetails.shopAssistantPhotoUrl}
@@ -103,7 +103,7 @@ export const ProfileHeader = ({
             >
               {getAvatarName(user?.profileDetails.shopAssistantName)}
             </Avatar.Fallback>
-          </Avatar.Root>
+          </Avatar>
         </Animated.View>
         <View>
           <AnimatedThemedText className="capitalize" style={nameStyle}>

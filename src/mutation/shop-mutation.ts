@@ -10,13 +10,16 @@ import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { useUser } from "@/hooks/use-user";
 import { getUser } from "@/queries/auth-query";
 import { ShopFormValues } from "@/schema/shop-schema";
-import { IGeneralResponse } from "@/types/IGeneral";
+import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { IProfile } from "@/types/IProfile";
 import { IshopDetails } from "@/types/IShop";
 import { fetcher } from "@/utils/fetcher";
-import { toast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 
-export const useResetShop = ({ onSuccess }: { onSuccess?: () => void }) => {
+export const useResetShop = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { selectedShop } = useSelectedShop();
@@ -34,21 +37,27 @@ export const useResetShop = ({ onSuccess }: { onSuccess?: () => void }) => {
           GET_ALL_SHIPPING_FEE_QUERY_KEY,
         ],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
-      onSuccess?.();
+      onSuccess?.(data);
     },
     onError(error) {
+      onError?.(error);
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
     },
   });
 };
 
-export const useUpdateShopLegalInfo = () => {
+export const useUpdateShopLegalInfo = ({
+  onSuccess,
+  onError,
+}: mutationProps<IshopDetails> = {}) => {
   const haptics = useHaptics();
   const queryClient = useQueryClient();
   const { t } = useLanguage();
@@ -60,22 +69,29 @@ export const useUpdateShopLegalInfo = () => {
         method: "PUT",
         data: { shopInfo: body },
       }),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["ShopDetails"] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: "Shop legal information updated successfully",
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useUpdateShop = () => {
+export const useUpdateShop = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const haptics = useHaptics();
   const queryClient = useQueryClient();
   const { setUser } = useUser();
@@ -96,20 +112,27 @@ export const useUpdateShop = () => {
     onSuccess: (data) => {
       getUser().then((user) => setUser(user));
       queryClient.invalidateQueries({ queryKey: ["ShopDetails"] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useUpdateShopImage = () => {
+export const useUpdateShopImage = ({
+  onSuccess,
+  onError,
+}: mutationProps<IProfile> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -120,17 +143,21 @@ export const useUpdateShopImage = () => {
         method: "PATCH",
         data: { image_url: [image] },
       }),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["ShopDetails"] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: "Shop image updated successfully",
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };

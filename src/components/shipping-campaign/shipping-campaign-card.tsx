@@ -10,7 +10,7 @@ import { twMerge } from "tailwind-merge";
 import { Card } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { ThemedText } from "../ui/themed-text";
-import { ToggleShippingCampaignStatus } from "./toggle-shipping-campaign-status";
+import { ShippingCampaignStatusSwitch } from "./shipping-campaign-status-switch";
 
 interface Props {
   campaign: IShipppingCampaign;
@@ -24,7 +24,7 @@ export const ShippingCampaignCard = React.memo(
     const router = useRouter();
     const { selectedShop } = useSelectedShop();
     return (
-      <Card.Root>
+      <Card>
         <Pressable
           className="gap-6"
           onPress={() => {
@@ -148,9 +148,9 @@ export const ShippingCampaignCard = React.memo(
           </Card.Body>
         </Pressable>
         <Card.Footer className="pt-6">
-          <ToggleShippingCampaignStatus campaign={campaign} />
+          <ShippingCampaignStatusSwitch campaign={campaign} />
         </Card.Footer>
-      </Card.Root>
+      </Card>
     );
   },
 );

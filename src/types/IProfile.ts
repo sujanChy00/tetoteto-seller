@@ -42,3 +42,9 @@ export interface ISignInResponse {
   message: string;
   status: boolean;
 }
+
+export interface BiometricsStatus {
+  hasHardware: boolean;
+  isEnrolled: boolean;
+  isBiometricLoginEnabled: boolean;
+}

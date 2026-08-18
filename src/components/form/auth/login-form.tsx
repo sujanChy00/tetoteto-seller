@@ -1,18 +1,18 @@
 import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
-import { BIOMETRIC_EMAIL_KEY, BIOMETRIC_PASSWORD_KEY } from "@/constants/data";
-import { isIOS, isNative, isWeb } from "@/constants/platform";
+import { isIOS, isNative } from "@/constants/platform";
+import { useDeviceToken } from "@/hooks/use-device-token";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
-import { useLoginMutation } from "@/mutation/auth-mutation";
+import {
+  useBiometricLoginMutation,
+  useLoginMutation,
+} from "@/mutation/auth-mutation";
+import { useCheckForBiometrics } from "@/queries/auth-query";
 import { LoginFormData, LoginSchema } from "@/schema/auth-schema";
-import { toast } from "@/utils/toast";
 import { useSelector } from "@tanstack/react-form";
 import { Image } from "expo-image";
-import * as LocalAuthentication from "expo-local-authentication";
 import { useRouter } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import { SymbolView } from "expo-symbols";
-import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useCSSVariable } from "uniwind";
@@ -22,111 +22,21 @@ import { ThemedText } from "../../ui/themed-text";
 export const LoginForm = () => {
   const [colorPrimary] = useCSSVariable(["--color-primary"]);
   const router = useRouter();
+  const { deviceToken } = useDeviceToken();
   const hapticFeedBack = useHaptics();
 
   const { mutate: login, isPending } = useLoginMutation();
-
-  const [hasBiometricsHardware, setHasBiometricsHardware] = useState(false);
-  const [isBiometricsEnrolled, setIsBiometricsEnrolled] = useState(false);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [isBiometricLoginEnabled, setIsBiometricLoginEnabled] = useState(false);
-
-  useEffect(() => {
-    checkBiometrics();
-  }, []);
-
-  const checkBiometrics = async () => {
-    if (isWeb) return;
-    const compatible = await LocalAuthentication.hasHardwareAsync();
-    setHasBiometricsHardware(compatible);
-    if (compatible) {
-      const enrolled = await LocalAuthentication.isEnrolledAsync();
-      setIsBiometricsEnrolled(enrolled);
-      const storedEmail = await SecureStore.getItemAsync(BIOMETRIC_EMAIL_KEY);
-      if (enrolled && storedEmail) {
-        setIsBiometricLoginEnabled(true);
-      }
-    }
-  };
-
-  const storeBiometricCredentials = async (
-    email: string,
-    password_1: string,
-  ) => {
-    await SecureStore.setItemAsync(BIOMETRIC_EMAIL_KEY, email);
-    await SecureStore.setItemAsync(BIOMETRIC_PASSWORD_KEY, password_1);
-    setIsBiometricLoginEnabled(true);
-  };
-
-  const handleBiometricLogin = async () => {
-    try {
-      const storedEmail = await SecureStore.getItemAsync(BIOMETRIC_EMAIL_KEY);
-      const storedPassword = await SecureStore.getItemAsync(
-        BIOMETRIC_PASSWORD_KEY,
-      );
-
-      if (!storedEmail || !storedPassword) {
-        hapticFeedBack("error");
-        toast.error(
-          "Biometric login isn't set up. Please log in manually first.",
-        );
-        return;
-      }
-
-      const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: isIOS ? "Login with Face ID" : "Login with Fingerprint",
-        cancelLabel: "Cancel",
-        disableDeviceFallback: true,
-      });
-
-      if (result.success) {
-        setIsAuthenticating(true);
-        login({ email: storedEmail, password: storedPassword });
-        return;
-      }
-
-      hapticFeedBack("error");
-      switch (result.error) {
-        case "user_cancel":
-        case "app_cancel":
-        case "system_cancel":
-          break;
-        case "lockout":
-          toast.error(
-            "Too many attempts. Biometrics locked — use your passcode or password.",
-          );
-          break;
-        case "not_enrolled":
-          toast.error("No biometrics found on this device.");
-          setIsBiometricLoginEnabled(false);
-          break;
-        case "not_available":
-          toast.error("Biometric authentication isn't available right now.");
-          break;
-        default:
-          toast.error("Biometric login failed. Please try again.");
-      }
-    } catch (error) {
-      hapticFeedBack("error");
-      toast.error("Something went wrong. Please try logging in manually.");
-    } finally {
-      setIsAuthenticating(false);
-    }
-  };
+  const { data: biometrics } = useCheckForBiometrics();
+  const { mutate: loginWithBiometrics, isPending: isAuthenticating } =
+    useBiometricLoginMutation();
 
   const Form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    } as LoginFormData,
-    validators: {
-      onSubmit: LoginSchema,
-    },
-    onSubmit: async ({ value }) => {
-      login(value, {
-        onSuccess: () => {
-          if (isNative) storeBiometricCredentials(value.email, value.password);
-        },
+    defaultValues: { email: "", password: "" } as LoginFormData,
+    validators: { onSubmit: LoginSchema },
+    onSubmit: ({ value }) => {
+      login({
+        ...value,
+        deviceToken,
       });
     },
     onSubmitInvalid: () => {
@@ -136,10 +46,10 @@ export const LoginForm = () => {
 
   const email = useSelector(Form.store, (state) => state.values.email);
   const showBiometricLogin =
-    hasBiometricsHardware &&
-    isBiometricsEnrolled &&
-    isBiometricLoginEnabled &&
-    isNative;
+    isNative &&
+    !!biometrics?.hasHardware &&
+    !!biometrics?.isEnrolled &&
+    !!biometrics?.isBiometricLoginEnabled;
 
   return (
     <KeyboardAvoidingView
@@ -190,6 +100,9 @@ export const LoginForm = () => {
                 name="password"
                 children={(field) => (
                   <field.PasswordField
+                    onSubmitEditing={() => {
+                      Form.handleSubmit();
+                    }}
                     returnKeyType="done"
                     label="Password"
                     placeholder="********"
@@ -205,7 +118,7 @@ export const LoginForm = () => {
 
                   {showBiometricLogin && (
                     <SecondaryButton
-                      onPress={handleBiometricLogin}
+                      onPress={() => loginWithBiometrics()}
                       disabled={isAuthenticating}
                     >
                       <SymbolView

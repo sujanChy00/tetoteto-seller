@@ -16,7 +16,7 @@ type Props = {
   className?: string;
 };
 
-export const RecommendedItemToggler = ({
+export const RecommendedItemSwitch = ({
   itemId,
   recommended,
   disabled,

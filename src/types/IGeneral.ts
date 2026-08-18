@@ -38,3 +38,16 @@ export interface ItemSortOption {
   label: ILanguageTexts;
   value: string;
 }
+
+export class BiometricLoginError extends Error {
+  code: string;
+  constructor(code: string) {
+    super(code);
+    this.code = code;
+  }
+}
+
+export type mutationProps<T> = {
+  onSuccess?: (data: T) => void;
+  onError?: (error: Error) => void;
+};

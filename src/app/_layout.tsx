@@ -1,10 +1,10 @@
-import { Toaster } from "@/components/ui/toaster";
 import { NAV_THEME } from "@/constants/theme";
 import { AppThemeProvider, useAppTheme } from "@/context/app-theme-provider";
 import { AuthProvider, useLoading } from "@/context/auth-provider";
 import { QueryProvider } from "@/context/query-provider";
 import { useAppInit } from "@/hooks/use-app-init";
 import { useUser } from "@/hooks/use-user";
+import { Toaster } from "burnt/web";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
@@ -28,7 +28,6 @@ export default function RootLayout() {
             <AuthProvider>
               <QueryProvider>
                 <StackLayout />
-                <Toaster />
               </QueryProvider>
             </AuthProvider>
           </AppThemeProvider>
@@ -74,6 +73,11 @@ function StackLayout() {
 
   return (
     <ThemeProvider value={NAV_THEME[currentTheme || "light"]}>
+      <Toaster
+        position="top-center"
+        richColors
+        theme={currentTheme ?? "light"}
+      />
       <View className="flex-1 bg-background">
         <StatusBar
           style={isDark ? "light" : "dark"}

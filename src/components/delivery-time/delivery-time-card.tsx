@@ -16,7 +16,7 @@ export const DeliverTimeSlotCard = memo(
     const { mutateAsync, isPending } = useUpdateShopDeliveryTime();
     const { t } = useLanguage();
     return (
-      <Card.Root
+      <Card
         className={twMerge(
           "justify-between",
           defaultTimeSlot ? "border-2 border-success" : "",
@@ -57,7 +57,7 @@ export const DeliverTimeSlotCard = memo(
             </PrimaryButton>
           )}
         </Card.Footer>
-      </Card.Root>
+      </Card>
     );
   },
 );

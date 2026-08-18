@@ -50,4 +50,7 @@ const AvatarFallback = ({
   );
 };
 
-export const Avatar = { Image: AvatarImage, Fallback: AvatarFallback, Root };
+export const Avatar = Object.assign(Root, {
+  Image: AvatarImage,
+  Fallback: AvatarFallback,
+});

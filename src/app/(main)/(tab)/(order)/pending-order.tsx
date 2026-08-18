@@ -1,11 +1,5 @@
-import { Text, View } from "react-native";
+import { OrderList } from "@/components/order/order-list";
 
-const PendingOrderScreen = () => {
-  return (
-    <View>
-      <Text>PendingOrderScreen</Text>
-    </View>
-  );
-};
+const PendingOrderScreen = () => <OrderList status="PENDING_CHANGE" />;
 
 export default PendingOrderScreen;

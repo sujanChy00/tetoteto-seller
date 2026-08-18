@@ -72,7 +72,7 @@ export const ProfileImagePicker = ({
           }}
         >
           <Link.AppleZoom>
-            <Avatar.Root className="size-28">
+            <Avatar className="size-28">
               <Avatar.Image
                 className="size-full"
                 alt={user?.profileDetails.shopAssistantName}
@@ -81,7 +81,7 @@ export const ProfileImagePicker = ({
               <Avatar.Fallback className={"text-2xl"} source={value}>
                 {getAvatarName(user?.profileDetails.shopAssistantName)}
               </Avatar.Fallback>
-            </Avatar.Root>
+            </Avatar>
           </Link.AppleZoom>
         </Link>
         <View>

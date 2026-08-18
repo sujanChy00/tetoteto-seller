@@ -16,11 +16,7 @@ const footerStyle = { padding: 10, alignItems: "center" as const };
 
 const ItemScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const params = useLocalSearchParams<{
-    query?: string;
-    sort?: string;
-    order?: string;
-  }>();
+  const params = useLocalSearchParams();
 
   const {
     data,
@@ -67,8 +63,6 @@ const ItemScreen = () => {
     [isFetchingNextPage, hasNextPage],
   );
 
-  const getFixedItemSize = useCallback(() => 142.25, []);
-
   const onEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
@@ -81,7 +75,6 @@ const ItemScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerClassName="p-2"
         drawDistance={500}
-        getFixedItemSize={getFixedItemSize}
         keyboardDismissMode="on-drag"
         onEndReachedThreshold={0.5}
         data={allItems}
@@ -101,7 +94,7 @@ const ItemScreen = () => {
           exitDelay: 250,
         }}
       />
-      <ItemFilters />
+      <ItemFilters showSearch />
     </View>
   );
 };

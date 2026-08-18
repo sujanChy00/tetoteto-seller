@@ -4,7 +4,7 @@ import { useResetShop } from "@/mutation/shop-mutation";
 import { useGetAllShippingCompany } from "@/queries/shipping-fee-query";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
-import { DangerButton, DangerSoftButton } from "../ui/button";
+import { DangerSoftButton } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { IOSGlassButton } from "../ui/ios-glass-button";
 import { RadioInput } from "../ui/radio-input";
@@ -43,7 +43,7 @@ export const ResetShippingFee = () => {
           <DangerSoftButton.Label>{t("reset")} </DangerSoftButton.Label>
         </DangerSoftButton>
       )}
-      <Dialog.Root isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+      <Dialog isOpen={modalVisible} onClose={() => setModalVisible(false)}>
         <Dialog.Content isPending={loadingShippingCompanies}>
           <Dialog.Header>
             <Dialog.Title>{t("reset_company_title")}</Dialog.Title>
@@ -82,14 +82,19 @@ export const ResetShippingFee = () => {
                 onPress={async () => await mutateAsync(Number(shippingId))}
               >
                 {isResetingShop && (
-                  <ActivityIndicator colorClassName="accent-danger-foreground" />
+                  <ActivityIndicator
+                    size={"small"}
+                    colorClassName="accent-danger-foreground"
+                  />
                 )}
-                <DangerButton.Label>{t("reset")}</DangerButton.Label>
+                <Dialog.ActionLabel variant="danger">
+                  {t("reset")}
+                </Dialog.ActionLabel>
               </Dialog.Action>
             </Dialog.Footer>
           )}
         </Dialog.Content>
-      </Dialog.Root>
+      </Dialog>
     </>
   );
 };

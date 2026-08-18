@@ -1,36 +1,51 @@
-import { Host } from "@/components/ui/host";
 import { Menu } from "@/components/ui/menu";
+import { ThemedText } from "@/components/ui/themed-text";
 import { LanguageLists } from "@/constants/data";
 import { useAppTheme } from "@/context/app-theme-provider";
 import { useLanguage } from "@/hooks/use-language";
-import { Row, Spacer, Text } from "@expo/ui";
+import { SymbolView } from "expo-symbols";
+import { useMemo } from "react";
+import { View } from "react-native";
 
 export const LanguageSelector = () => {
   const { colors } = useAppTheme();
   const { language, setLanguage, t } = useLanguage();
+  const selectedLabel = useMemo(() => {
+    return LanguageLists.find((l) => l.value === language)?.label;
+  }, [language]);
 
   return (
-    <Host
-      matchContents={{ vertical: true }}
-      style={{
-        width: "100%",
-      }}
-    >
-      <Row
-        alignment="center"
-        spacing={12}
-        style={{ paddingLeft: 16, paddingVertical: 4 }}
-      >
-        <Text
-          textStyle={{
-            color: colors.text as string,
+    <View className="flex-row items-center justify-between p-4">
+      <ThemedText>{t("change_langauge")}</ThemedText>
+      <View className="flex-1 items-end">
+        <Menu
+          nativeOptions={LanguageLists.map((l) => ({
+            title: l.label,
+            id: l.value,
+            state: l.value === language ? "on" : "off",
+          }))}
+          onValueChange={(lan) => {
+            setLanguage(lan);
           }}
         >
-          {t("change_langauge")}
-        </Text>
-        <Spacer flexible />
-        <Menu options={LanguageLists} onSelect={setLanguage} value={language} />
-      </Row>
-    </Host>
+          <View className="flex-row items-center gap-1 justify-end">
+            <ThemedText
+              numberOfLines={1}
+              className="text-primary capitalize shrink"
+            >
+              {selectedLabel}
+            </ThemedText>
+            <SymbolView
+              style={{
+                flexShrink: 0,
+              }}
+              name={{ android: "unfold_more", ios: "chevron.up.chevron.down" }}
+              size={20}
+              tintColor={colors.primary}
+            />
+          </View>
+        </Menu>
+      </View>
+    </View>
   );
 };

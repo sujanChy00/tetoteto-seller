@@ -1,9 +1,101 @@
-import { Text, View } from "react-native";
+import { InStockItemCard } from "@/components/item/in-stock-item-card";
+import { ItemFilters } from "@/components/item/item-filters";
+import { ListEmpty } from "@/components/ui/list/list-empty";
+import { ListFetchingMore } from "@/components/ui/list/list-fetching-more";
+import { ListSeparator } from "@/components/ui/list/list-separator";
+import { useRefreshOnFocus } from "@/hooks/use-refetch-onfocus";
+import { useInfiniteStockItemQuery } from "@/queries/item-query";
+import { IStockItem } from "@/types";
+import { LegendList } from "@legendapp/list/react-native";
+import { useLocalSearchParams } from "expo-router";
+import { useCallback, useMemo, useState } from "react";
+import { View } from "react-native";
+
+const renderSeparator = () => <ListSeparator />;
+const footerStyle = { padding: 10, alignItems: "center" as const };
 
 const StockItemScreen = () => {
+  const [refreshing, setRefreshing] = useState(false);
+  const params = useLocalSearchParams<{
+    query?: string;
+    sort?: string;
+    order?: string;
+  }>();
+
+  const {
+    data,
+    isPending,
+    refetch,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteStockItemQuery(params);
+
+  useRefreshOnFocus(refetch);
+
+  const stockItems = useMemo(
+    () => (data ? data?.pages.flatMap((page) => page.content) : []),
+    [data],
+  );
+
+  const renderItem = useCallback(
+    ({ item }: { item: IStockItem }) => <InStockItemCard item={item} />,
+    [],
+  );
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch().finally(() => setRefreshing(false));
+  }, [refetch]);
+
+  const keyExtractor = useCallback(({ id }: IStockItem) => id.toString(), []);
+  const ListEmptyComponent = useCallback(
+    () => <ListEmpty isPending={isPending} />,
+    [isPending],
+  );
+
+  const ListFooterComponent = useCallback(
+    () => (
+      <ListFetchingMore
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+      />
+    ),
+    [isFetchingNextPage, hasNextPage],
+  );
+
+  const onEndReached = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return (
-    <View>
-      <Text>StockItemScreen</Text>
+    <View className="flex-1">
+      <LegendList
+        recycleItems
+        maintainVisibleContentPosition
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="p-2"
+        drawDistance={500}
+        keyboardDismissMode="on-drag"
+        onEndReachedThreshold={0.5}
+        data={stockItems}
+        estimatedItemSize={174}
+        ItemSeparatorComponent={renderSeparator}
+        renderItem={renderItem}
+        refreshing={refreshing}
+        keyExtractor={keyExtractor}
+        onRefresh={onRefresh}
+        ListEmptyComponent={ListEmptyComponent}
+        onEndReached={onEndReached}
+        ListFooterComponentStyle={footerStyle}
+        ListFooterComponent={ListFooterComponent}
+        experimental_adaptiveRender={{
+          enterVelocity: 6,
+          exitVelocity: 3,
+          exitDelay: 250,
+        }}
+      />
+      <ItemFilters />
     </View>
   );
 };

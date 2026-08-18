@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { ScrollView } from "react-native";
-import { useIsKeyboardVisible } from "./use-keyboard-visible";
+import { useKeyboard } from "./use-keyboard";
 
 export const useScrollToBottomOnKeyboardVisible = () => {
-  const isKeyboardVisible = useIsKeyboardVisible();
+  const { isKeyboardVisible } = useKeyboard();
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {

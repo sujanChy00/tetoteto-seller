@@ -28,6 +28,9 @@ export const GET_ALL_SHIPPING_COMPANY_QUERY_KEY = "all_shipping_company";
 export const RECOMMENDED_ITEMS_QUERY_KEY = "recommended_items";
 export const GET_ITEM_DETAILS_QUERY_KEY = "item_details";
 export const GET_LOW_STOCK_ITEMS_QUERY_KEY = "low_stock_items";
+export const GET_LOW_STOCK_ITEMS_INFINITE_QUERY_KEY =
+  "infinite_low_stock_items";
+export const GET_EXPIRED_ITEMS_INFINITE_QUERY_KEY = "infinite_expired_items";
 export const GET_ALL_ITEMS_INFINITE_QUERY_KEY = "all_infinite_items";
 export const GET_ALL_ITEMS_QUERY_KEY = "all_items";
 export const GET_EXPIRED_ITEMS_QUERY_KEY = "expired_items";
@@ -42,9 +45,11 @@ export const GET_USER_ORDERS_QUERY_KEY = "order_details";
 export const GET_ALL_INFINITE_SHIPMENTS_QUERY_KEY = "all_shipments";
 export const GET_ORDER_DETAILS_QUERY_KEY = "order_details";
 export const GET_ALL_ORDERS_QUERY_KEY = "all_orders";
+export const GET_ALL_ORDERS_INFINITE_QUERY_KEY = "infinite_all_orders";
 
 export const GET_ALL_USER_CHAT_QUERY_KEY = "chat";
 export const GET_UNSEEN_CHAT_COUNT_QUERY_KEY = "unseen_count";
 export const GET_USER_CHAT_DETAILS_QUERY_KEY = "user_chat";
 
 export const GET_PROFILE_QUERY_KEY = "profile";
+export const GET_BIOMETRIC_STATUS_QUERY_KEY = "biometric_status";

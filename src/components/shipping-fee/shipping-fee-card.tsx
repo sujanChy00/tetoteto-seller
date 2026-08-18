@@ -28,7 +28,7 @@ export const ShippingFeeCard = memo(
         asChild
       >
         <TouchableOpacity>
-          <Card.Root className="gap-10">
+          <Card className="gap-10">
             <Card.Body className="relative flex-row items-stretch ">
               <View className="h-full w-0.5 bg-success-soft" />
               <View className="gap-10 flex-1 -translate-x-1.5">
@@ -149,7 +149,7 @@ export const ShippingFeeCard = memo(
                 </View>
               </Surface>
             </Card.Footer>
-          </Card.Root>
+          </Card>
         </TouchableOpacity>
       </Link>
     );

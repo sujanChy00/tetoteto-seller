@@ -1,34 +1,36 @@
+import { FormInputBaseProps } from "@/types/components";
 import { useFieldContext } from "@/utils/form-hook-context";
-import { Field, FieldLabel } from "../ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { TextInput, TextInputProps } from "../ui/text-input";
-
-interface Props extends TextInputProps {
-  label?: string;
-  isDisabled?: boolean;
-}
 
 export const TextField = ({
   label,
   isDisabled = false,
+  description,
+  inputClassName,
+  className,
   ...inputProps
-}: Props) => {
+}: FormInputBaseProps<TextInputProps>) => {
   const field = useFieldContext<string | undefined>();
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
   const fieldError = field.state.meta.errors?.[0];
 
   return (
-    <Field>
-      <FieldLabel>{label}</FieldLabel>
+    <Field className={className}>
+      {!!label && <FieldLabel isInvalid={isInvalid}>{label}</FieldLabel>}
       <TextInput
         autoCapitalize="none"
         autoCorrect={false}
         {...inputProps}
+        className={inputClassName}
         isInvalid={isInvalid}
         editable={!isDisabled}
         onBlur={field.handleBlur}
         value={field.state.value}
         onChangeText={field.handleChange}
       />
+      {!!description && <FieldDescription>{description}</FieldDescription>}
+      {!!fieldError?.message && <FieldError>{fieldError?.message}</FieldError>}
     </Field>
   );
 };

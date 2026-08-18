@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { useCSSVariable } from "uniwind";
-import { DangerButton, DangerSoftButton, GhostButton } from "./button";
+import {
+  DangerButton,
+  DangerSoftButton,
+  GhostButton,
+  PrimaryButton,
+} from "./button";
 import { Surface } from "./surface";
 import { ThemedText } from "./themed-text";
 
@@ -42,13 +47,16 @@ export const Root = ({ children, isOpen, onClose }: DialogRootProps) => {
 const Content = ({ children, isPending, className }: ModalContentProps) => {
   if (isPending)
     return (
-      <Surface className="p-6 h-50 md:w-sm w-2xs rounded-4xl items-center justify-center">
+      <Surface className="p-6 h-50 w-[90vw] rounded-4xl items-center justify-center overflow-hidden">
         <ActivityIndicator size={50} />
       </Surface>
     );
   return (
     <Surface
-      className={twMerge("p-6 md:w-sm w-2xs gap-y-6 rounded-4xl", className)}
+      className={twMerge(
+        "p-6 w-[90vw] gap-y-6 rounded-4xl overflow-hidden",
+        className,
+      )}
     >
       {children}
     </Surface>
@@ -75,32 +83,43 @@ const Footer = ({ className, ...rest }: ViewProps) => (
 const Close = ({ className, children, ...rest }: PressableProps) => {
   const { t } = useLanguage();
   return (
-    <GhostButton className={twMerge("px-6 h-10", className)} {...rest}>
+    <GhostButton className={twMerge("px-6", className)} {...rest}>
       {children ?? <GhostButton.Label>{t("cancel")}</GhostButton.Label>}
     </GhostButton>
   );
 };
+
 const Action = ({
   className,
   variant,
   ...rest
 }: PressableProps & { variant?: "danger" | "default" | "dangerSoft" }) => {
   if (variant === "danger") {
-    return (
-      <DangerButton className={twMerge("px-6 h-10", className)} {...rest} />
-    );
+    return <DangerButton className={twMerge("px-6", className)} {...rest} />;
   }
   if (variant === "dangerSoft") {
     return (
-      <DangerSoftButton className={twMerge("px-6 h-10", className)} {...rest} />
+      <DangerSoftButton className={twMerge("px-6", className)} {...rest} />
     );
   }
 
-  return <GhostButton className={twMerge("px-6 h-10", className)} {...rest} />;
+  return <PrimaryButton className={twMerge("px-6", className)} {...rest} />;
+};
+const ActionLabel = ({
+  variant,
+  ...rest
+}: TextProps & { variant?: "danger" | "default" | "dangerSoft" }) => {
+  if (variant === "danger") {
+    return <DangerButton.Label {...rest} />;
+  }
+  if (variant === "dangerSoft") {
+    return <DangerSoftButton.Label {...rest} />;
+  }
+
+  return <PrimaryButton.Label {...rest} />;
 };
 
-export const Dialog = {
-  Root,
+export const Dialog = Object.assign(Root, {
   Close,
   Action,
   Title,
@@ -108,4 +127,5 @@ export const Dialog = {
   Header,
   Footer,
   Content,
-};
+  ActionLabel,
+});

@@ -9,7 +9,7 @@ import { Avatar } from "../ui/avatar";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
 import { ThemedText } from "../ui/themed-text";
-import { RecommendedItemToggler } from "./recommended-item-toggler";
+import { RecommendedItemSwitch } from "./recommended-item-switch";
 
 export const ItemCard = memo(({ item }: { item: IItem }) => {
   const router = useRouter();
@@ -25,8 +25,8 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
       }}
     >
       <Link.Trigger>
-        <Card.Root className="flex-row items-center gap-3">
-          <Avatar.Root className="rounded-xl size-20">
+        <Card className="flex-row items-center gap-3">
+          <Avatar className="rounded-xl size-20">
             <Avatar.Image
               alt={item.item_name}
               className="rounded-xl size-20"
@@ -35,7 +35,7 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
             <Avatar.Fallback source={item.thumbnail_image_url ?? ""}>
               <ThemedText>{getAvatarName(item.item_name)}</ThemedText>
             </Avatar.Fallback>
-          </Avatar.Root>
+          </Avatar>
 
           <View className="flex-1">
             <Card.Header className="flex-1">
@@ -79,7 +79,7 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
                   </ThemedText>
                 </ThemedText>
               </View>
-              <RecommendedItemToggler
+              <RecommendedItemSwitch
                 recommended={item.recommended}
                 label="Recommended: "
                 disabled={item.item_disabled}
@@ -87,7 +87,7 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
               />
             </Card.Footer>
           </View>
-        </Card.Root>
+        </Card>
       </Link.Trigger>
       <Link.Menu>
         <Link.MenuAction

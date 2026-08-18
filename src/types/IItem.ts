@@ -114,7 +114,7 @@ export interface IPaginatedParams {
   size?: number;
   sort?: string;
   order?: number;
-  q?: string | null;
+  query?: string | null;
   search?: string;
   ItemName?: string | null;
   catId?: number | null;

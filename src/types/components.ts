@@ -1,9 +1,16 @@
 import { Host } from "@/components/ui/host";
-import { IconName, Row } from "@expo/ui";
-import { ButtonRole } from "@expo/ui/swift-ui";
-import { SFSymbol } from "expo-symbols";
+import { Row } from "@expo/ui";
+import { MenuAction } from "@expo/ui/community/menu";
 import { ViewProps } from "react-native";
 import { ILanguageTexts } from "./ILanguageTexts";
+
+export interface RadioInputProps {
+  selected: boolean;
+  onPress: () => void;
+  className?: string;
+  label?: string;
+  disabled?: boolean;
+}
 
 export type TextFieldKeyboardType =
   | "email"
@@ -59,24 +66,9 @@ export type UIRowProps = Omit<React.ComponentProps<typeof Row>, "modifiers"> & {
 };
 
 export type DropdownMenuProps = {
-  options: DropdownMenuOptions[];
-  onSelect?: (v: string) => void;
-  value?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  IOSSystemImage?: SFSymbol;
-  customLabel?: React.ReactNode;
-  androidIcon?: IconName;
-};
-
-export type DropdownMenuOptions = {
-  label: string;
-  value: string;
-  disabled?: boolean;
-  leadingIcon?: React.ReactNode;
-  trailingIcon?: React.ReactNode;
-  IOSSystemImage?: SFSymbol;
-  IOSRole?: ButtonRole;
+  children: React.ReactNode;
+  onValueChange: (value: string) => void;
+  nativeOptions: MenuAction[];
 };
 
 export type AlertDialogProps = {
@@ -93,3 +85,10 @@ export type AlertDialogProps = {
 export interface SurfaceProps extends ViewProps {
   variant?: "default" | "secondary" | "tertiary" | "outlined" | "transparent";
 }
+
+export type FormInputBaseProps<T> = T & {
+  label?: string;
+  isDisabled?: boolean;
+  description?: string;
+  inputClassName?: string;
+};

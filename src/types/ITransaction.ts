@@ -210,3 +210,14 @@ export type UserOrders = {
   totalPrice: number;
   type: IItemType;
 };
+
+export interface PackedItems {
+  itemId: string;
+  quantity: number;
+}
+
+export interface IPackedOrders {
+  orderId: number;
+  items: PackedItems[];
+  createdAt: number;
+}

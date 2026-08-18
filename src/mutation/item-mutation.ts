@@ -1,4 +1,3 @@
-import { toast } from "@/utils/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Platform } from "react-native";
 
@@ -25,11 +24,15 @@ import {
   IItemUpdateRequest,
   IItemVaritions,
 } from "@/types";
-import { IGeneralResponse } from "@/types/IGeneral";
+import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { addLocalFileToFormData } from "@/utils/add-local-file-to-formdata";
 import { fetcher } from "@/utils/fetcher";
+import { errorToast, successToast } from "@/utils/toast";
 
-export const useToggleItem = () => {
+export const useToggleItemStatus = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const { t } = useLanguage();
   const haptics = useHaptics();
@@ -50,20 +53,27 @@ export const useToggleItem = () => {
       });
       queryClient.invalidateQueries({ queryKey: [GET_HOME_DATA_QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: [GET_ALL_ITEMS_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useAddRecommendedItems = () => {
+export const useAddRecommendedItems = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -83,20 +93,27 @@ export const useAddRecommendedItems = () => {
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
       queryClient.invalidateQueries({ queryKey: [GET_HOME_DATA_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useRemoveRecommendedItems = () => {
+export const useRemoveRecommendedItems = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -115,20 +132,27 @@ export const useRemoveRecommendedItems = () => {
       queryClient.invalidateQueries({
         queryKey: [GET_ALL_RECOMMENDED_ITEMS_QUERY_KEY],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useAddItem = () => {
+export const useAddItem = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const { selectedShop } = useSelectedShop();
   const queryClient = useQueryClient();
   const haptics = useHaptics();
@@ -154,20 +178,27 @@ export const useAddItem = () => {
       queryClient.invalidateQueries({
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useUpdateItem = () => {
+export const useUpdateItem = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -195,20 +226,27 @@ export const useUpdateItem = () => {
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
       queryClient.invalidateQueries({ queryKey: [GET_HOME_DATA_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useDeleteItem = (goBack?: boolean) => {
+export const useDeleteItem = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -225,20 +263,27 @@ export const useDeleteItem = (goBack?: boolean) => {
       });
       queryClient.invalidateQueries({ queryKey: [GET_HOME_DATA_QUERY_KEY] });
 
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useUpdateItemThumbnail = () => {
+export const useUpdateItemThumbnail = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -257,20 +302,27 @@ export const useUpdateItemThumbnail = () => {
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
       queryClient.invalidateQueries({ queryKey: [GET_HOME_DATA_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useAddItemVaritaions = () => {
+export const useAddItemVaritaions = ({
+  onSuccess,
+  onError,
+}: mutationProps<IItemVaritions[]> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -281,26 +333,33 @@ export const useAddItemVaritaions = () => {
         method: "POST",
         data: args.data,
       }),
-    onSuccess() {
+    onSuccess(data) {
       queryClient.invalidateQueries({ queryKey: [GET_ALL_ITEMS_QUERY_KEY] });
       queryClient.invalidateQueries({
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
       queryClient.invalidateQueries({ queryKey: [GET_ITEM_DETAILS_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: "item variations added successfully",
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useUpdateItemVariation = () => {
+export const useUpdateItemVariation = ({
+  onSuccess,
+  onError,
+}: mutationProps<IItemVaritions[]> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -315,7 +374,7 @@ export const useUpdateItemVariation = () => {
         method: "PATCH",
         data: args.data,
       }),
-    onSuccess() {
+    onSuccess(data) {
       queryClient.invalidateQueries({ queryKey: [GET_ALL_ITEMS_QUERY_KEY] });
       queryClient.invalidateQueries({
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
@@ -324,20 +383,27 @@ export const useUpdateItemVariation = () => {
       queryClient.invalidateQueries({
         queryKey: [GET_ITEM_VARIATIONS_QUERY_KEY],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: "item variations updated successfully",
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useDeleteItemVariation = () => {
+export const useDeleteItemVariation = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -359,20 +425,27 @@ export const useDeleteItemVariation = () => {
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
       queryClient.invalidateQueries({ queryKey: [GET_ITEM_DETAILS_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useCopyItem = () => {
+export const useCopyItem = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const { selectedShop } = useSelectedShop();
   const haptics = useHaptics();
@@ -405,20 +478,27 @@ export const useCopyItem = () => {
       queryClient.invalidateQueries({
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useDeleteItemImage = () => {
+export const useDeleteItemImage = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const haptics = useHaptics();
   const { t } = useLanguage();
   return useMutation({
@@ -435,20 +515,29 @@ export const useDeleteItemImage = () => {
       });
     },
     onSuccess: (data) => {
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError: (error) => {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useUploadItemImage = () => {
+export const useUploadItemImage = ({
+  onSuccess,
+  onError,
+}: mutationProps<string[]> = {}) => {
+  const { t } = useLanguage();
+  const haptics = useHaptics();
   return useMutation({
     mutationFn: async (data: FormData) => {
       return await fetcher<string[]>({
@@ -460,10 +549,24 @@ export const useUploadItemImage = () => {
         },
       });
     },
+    onSuccess: (data) => {
+      onSuccess?.(data);
+    },
+    onError: (error) => {
+      haptics("error");
+      errorToast({
+        title: t("error"),
+        description: error.message,
+      });
+      onError?.(error);
+    },
   });
 };
 
-export const useAddItemImages = () => {
+export const useAddItemImages = ({
+  onSuccess,
+  onError,
+}: mutationProps<AddImagesResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -500,7 +603,7 @@ export const useAddItemImages = () => {
         },
       });
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [GET_ITEM_DETAILS_QUERY_KEY],
       });
@@ -509,20 +612,27 @@ export const useAddItemImages = () => {
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
       queryClient.invalidateQueries({ queryKey: [GET_HOME_DATA_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: "Images added successfully",
       });
+      onSuccess?.(data);
     },
     onError: (error) => {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
 
-export const useUpdateItemImages = () => {
+export const useUpdateItemImages = ({
+  onSuccess,
+  onError,
+}: mutationProps<AddImagesResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -541,7 +651,7 @@ export const useUpdateItemImages = () => {
         data,
       });
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [GET_ITEM_DETAILS_QUERY_KEY],
       });
@@ -550,15 +660,19 @@ export const useUpdateItemImages = () => {
         queryKey: [GET_ALL_ITEMS_INFINITE_QUERY_KEY],
       });
       queryClient.invalidateQueries({ queryKey: [GET_HOME_DATA_QUERY_KEY] });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: "Images updated successfully",
       });
+      onSuccess?.(data);
     },
     onError: (error) => {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };
@@ -578,7 +692,10 @@ const uriToBlob = (uri: string): Promise<Blob> => {
   });
 };
 
-export const useUpdateItemStock = () => {
+export const useUpdateItemStock = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { t } = useLanguage();
@@ -608,15 +725,19 @@ export const useUpdateItemStock = () => {
       queryClient.invalidateQueries({
         queryKey: [GET_LOW_STOCK_ITEMS_QUERY_KEY],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError: (error) => {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };

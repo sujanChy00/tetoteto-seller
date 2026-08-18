@@ -5,16 +5,18 @@ import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { ShippingCampaignFormData } from "@/schema/campaign-schema";
-import { IShipppingCampaign } from "@/types";
-import { IGeneralResponse } from "@/types/IGeneral";
+import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { fetcher } from "@/utils/fetcher";
-import { toast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 
-export const useUpdateShippingCampaign = () => {
+export const useUpdateShippingCampaign = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
-  const haptics = useHaptics();
   const { selectedShop } = useSelectedShop();
   const { t } = useLanguage();
+  const haptics = useHaptics();
 
   return useMutation({
     mutationFn: async (
@@ -29,58 +31,31 @@ export const useUpdateShippingCampaign = () => {
         data,
       });
     },
-
-    onMutate: async (body) => {
-      const queryKey = [
-        GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY,
-        selectedShop?.shopId,
-      ];
-
-      await queryClient.cancelQueries({ queryKey });
-
-      const previousCampaigns =
-        queryClient.getQueryData<IShipppingCampaign[]>(queryKey);
-
-      queryClient.setQueryData<IShipppingCampaign[]>(queryKey, (old) =>
-        old?.map((c) =>
-          c.shippingCampaignId === body.campaignId
-            ? {
-                ...c,
-                ...body,
-                shippingAreas: c.shippingAreas, // keep the richer IShippingArea[] shape; body only carries ids
-              }
-            : c,
-        ),
-      );
-
-      return { previousCampaigns, queryKey };
-    },
-
     onSuccess(data) {
-      toast.success(t("operation_successfull"), {
+      queryClient.invalidateQueries({
+        queryKey: [GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY],
+      });
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
-
-    onError(error, _body, context) {
-      if (context?.previousCampaigns) {
-        queryClient.setQueryData(context.queryKey, context.previousCampaigns);
-      }
+    onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: [GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY, selectedShop?.shopId],
-      });
+      onError?.(error);
     },
   });
 };
 
-export const useAddShippingCampaign = () => {
+export const useAddShippingCampaign = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const haptics = useHaptics();
   const { selectedShop } = useSelectedShop();
@@ -100,15 +75,19 @@ export const useAddShippingCampaign = () => {
       queryClient.invalidateQueries({
         queryKey: [GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY],
       });
-      toast.success(t("operation_successfull"), {
+      successToast({
+        title: t("operation_successfull"),
         description: data.message,
       });
+      onSuccess?.(data);
     },
     onError(error) {
       haptics("error");
-      toast.error(t("error"), {
+      errorToast({
+        title: t("error"),
         description: error.message,
       });
+      onError?.(error);
     },
   });
 };

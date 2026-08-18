@@ -1,16 +1,9 @@
+import { RadioInputProps } from "@/types/components";
 import { Pressable, View } from "react-native";
 import { ZoomIn, ZoomOut } from "react-native-reanimated";
 import { twMerge } from "tailwind-merge";
 import { AnimatedView } from "./animated-view";
 import { ThemedText } from "./themed-text";
-
-interface RadioInputProps {
-  selected: boolean;
-  onPress: () => void;
-  className?: string;
-  label?: string;
-  disabled?: boolean;
-}
 
 export const RadioInput = ({
   selected,

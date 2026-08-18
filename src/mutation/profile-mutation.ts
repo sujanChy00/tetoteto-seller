@@ -2,12 +2,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { GET_PROFILE_QUERY_KEY } from "@/constants/query-keys";
 import { useHaptics } from "@/hooks/use-haptics";
-import { IGeneralResponse } from "@/types/IGeneral";
+import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { IProfile } from "@/types/IProfile";
 import { fetcher } from "@/utils/fetcher";
-import { toast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 
-export const useUpdateProfile = () => {
+export const useUpdateProfile = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const queryClient = useQueryClient();
   const hapticFeedback = useHaptics();
 
@@ -20,16 +23,27 @@ export const useUpdateProfile = () => {
       }),
     onSuccess(data) {
       queryClient.invalidateQueries({ queryKey: [GET_PROFILE_QUERY_KEY] });
-      toast.success(data?.message);
+      successToast({
+        title: "Success",
+        description: data?.message,
+      });
+      onSuccess?.(data);
     },
     onError(error) {
       hapticFeedback("error");
-      toast.error(error.message);
+      errorToast({
+        title: "Error",
+        description: error.message,
+      });
+      onError?.(error);
     },
   });
 };
 
-export const useChangeProfileImage = () => {
+export const useChangeProfileImage = ({
+  onSuccess,
+  onError,
+}: mutationProps<IProfile> = {}) => {
   const queryClient = useQueryClient();
   const hapticFeedback = useHaptics();
 
@@ -40,13 +54,21 @@ export const useChangeProfileImage = () => {
         method: "PUT",
         data,
       }),
-    async onSuccess() {
+    async onSuccess(data) {
       queryClient.invalidateQueries({ queryKey: [GET_PROFILE_QUERY_KEY] });
-      toast.success("Profile image updated successfully");
+      successToast({
+        title: "Success",
+        description: "Profile image updated successfully",
+      });
+      onSuccess?.(data);
     },
     onError(error) {
       hapticFeedback("error");
-      toast.error(error.message);
+      errorToast({
+        title: "Error",
+        description: error.message,
+      });
+      onError?.(error);
     },
   });
 };

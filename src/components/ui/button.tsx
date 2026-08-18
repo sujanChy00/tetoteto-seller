@@ -63,6 +63,26 @@ const DangerLabel = ({ className, ...props }: TextProps) => {
     />
   );
 };
+const DangerGhostRoot = ({ className, ...props }: PressableProps) => {
+  return (
+    <Pressable
+      className={twMerge(
+        "bg-transparent flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        className,
+      )}
+      {...props}
+    />
+  );
+};
+
+const DangerGhostLabel = ({ className, ...props }: TextProps) => {
+  return (
+    <ThemedText
+      className={twMerge("text-danger font-medium", className)}
+      {...props}
+    />
+  );
+};
 
 const DangerSoftRoot = ({ className, ...props }: PressableProps) => {
   return (
@@ -169,4 +189,8 @@ export const DangerButton = Object.assign(DangerRoot, {
 });
 export const DangerSoftButton = Object.assign(DangerSoftRoot, {
   Label: DangerSoftLabel,
+});
+
+export const DangerGhostButton = Object.assign(DangerGhostRoot, {
+  Label: DangerGhostLabel,
 });

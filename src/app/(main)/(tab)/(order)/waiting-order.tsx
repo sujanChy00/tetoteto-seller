@@ -1,11 +1,5 @@
-import { Text, View } from "react-native";
+import { OrderList } from "@/components/order/order-list";
 
-const WaitinOrderScreen = () => {
-  return (
-    <View>
-      <Text>WaitinOrderScreen</Text>
-    </View>
-  );
-};
+const WaitinOrderScreen = () => <OrderList status="WAITING_FOR_PAYMENT" />;
 
 export default WaitinOrderScreen;

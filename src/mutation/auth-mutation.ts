@@ -1,14 +1,26 @@
-import { TOKEN_KEY } from "@/constants/query-keys";
+import { BIOMETRIC_EMAIL_KEY, BIOMETRIC_PASSWORD_KEY } from "@/constants/data";
+import { isIOS, isNative } from "@/constants/platform";
+import {
+  GET_BIOMETRIC_STATUS_QUERY_KEY,
+  TOKEN_KEY,
+} from "@/constants/query-keys";
 import { useAppInit } from "@/hooks/use-app-init";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUser } from "@/hooks/use-user";
-import { LoginFormData } from "@/schema/auth-schema";
-import { IGeneralResponse, ISignInResponse } from "@/types";
+import {
+  BiometricLoginError,
+  IGeneralResponse,
+  ISignInRequest,
+  ISignInResponse,
+  mutationProps,
+} from "@/types";
 import { fetcher } from "@/utils/fetcher";
 import { storage } from "@/utils/storage";
-import { toast } from "@/utils/toast";
-import { useMutation } from "@tanstack/react-query";
+import { errorToast, successToast } from "@/utils/toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import * as LocalAuthentication from "expo-local-authentication";
 import { useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 
 export const useLogoutMutation = () => {
   const { setUser } = useUser();
@@ -28,34 +40,54 @@ export const useLogoutMutation = () => {
 
 export const useLoginMutation = () => {
   const { user } = useUser();
+  const queryClient = useQueryClient();
   const { initApp } = useAppInit();
   const hapticFeedback = useHaptics();
 
   return useMutation({
-    mutationFn: async (data: LoginFormData) =>
+    mutationFn: async (data: ISignInRequest) =>
       await fetcher<ISignInResponse>({
         url: "/shop/assistant/login",
         method: "POST",
         data,
       }),
-    onSuccess(data) {
+    async onSuccess(data, variables) {
       initApp();
       const passwordExpired = user?.profileDetails.shopAssistantPasswordExpired;
       if (passwordExpired) {
-        toast.warning("Password Expired", {
+        errorToast({
+          title: "Password Expired",
           description: data.message,
+        });
+      }
+      if (isNative) {
+        await SecureStore.setItemAsync(BIOMETRIC_EMAIL_KEY, variables.email);
+        await SecureStore.setItemAsync(
+          BIOMETRIC_PASSWORD_KEY,
+          variables.password,
+        );
+        queryClient.invalidateQueries({
+          queryKey: [GET_BIOMETRIC_STATUS_QUERY_KEY],
         });
       }
     },
     onError(error) {
       hapticFeedback("error");
-      toast.error(error.message);
+      errorToast({
+        title: "Error",
+        description: error.message,
+      });
     },
   });
 };
 
-export const useUpdatePassword = () => {
+export const useUpdatePassword = ({
+  onSuccess,
+  onError,
+}: mutationProps<IGeneralResponse> = {}) => {
   const hapticFeedback = useHaptics();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (data: {
       newPassword: string;
@@ -69,12 +101,36 @@ export const useUpdatePassword = () => {
         method: "PUT",
         data,
       }),
-    onSuccess(data) {
-      toast.success(data?.message);
+    onSuccess: async (data, variables) => {
+      if (isNative) {
+        const storedEmail = await SecureStore.getItemAsync(BIOMETRIC_EMAIL_KEY);
+        if (
+          storedEmail &&
+          (!variables.email || storedEmail === variables.email)
+        ) {
+          await SecureStore.setItemAsync(
+            BIOMETRIC_PASSWORD_KEY,
+            variables.newPassword,
+          );
+          queryClient.invalidateQueries({
+            queryKey: [GET_BIOMETRIC_STATUS_QUERY_KEY],
+          });
+        }
+      }
+
+      successToast({
+        title: "Success",
+        description: data.message,
+      });
+      onSuccess?.(data);
     },
     onError(error) {
       hapticFeedback("error");
-      toast.error(error.message);
+      errorToast({
+        title: "Error",
+        description: error.message,
+      });
+      onError?.(error);
     },
   });
 };
@@ -106,12 +162,18 @@ export const useResetPassword = () => {
         data,
       }),
     onSuccess(data) {
-      toast.success(data?.message);
+      successToast({
+        title: "Success",
+        description: data.message,
+      });
       router.push("/(auth)");
     },
     onError(error) {
       hapticFeedback("error");
-      toast.error(error.message);
+      errorToast({
+        title: "Error",
+        description: error.message,
+      });
     },
   });
 };
@@ -132,7 +194,10 @@ export const useValidateCode = () => {
         data,
       }),
     onSuccess(data, { email, reset_code }) {
-      toast.success("OTP verified successfully");
+      successToast({
+        title: "Success",
+        description: data.message,
+      });
 
       router.navigate({
         pathname: "/auth/update-password",
@@ -141,7 +206,10 @@ export const useValidateCode = () => {
     },
     onError(error) {
       hapticFeedback("error");
-      toast.error(error.message);
+      errorToast({
+        title: "Error",
+        description: error.message,
+      });
     },
   });
 };
@@ -164,7 +232,10 @@ export const useSendResetEmail = () => {
       if ("message" in data) {
         message = data.message || "otp verified successfully";
       }
-      toast.success(message);
+      successToast({
+        title: "Success",
+        description: message,
+      });
       router.navigate({
         pathname: "/auth/otp",
         params: { email: reset_email },
@@ -172,7 +243,92 @@ export const useSendResetEmail = () => {
     },
     onError(error) {
       hapticFeedback("error");
-      toast.error(error.message);
+      errorToast({
+        title: "Error",
+        description: error.message,
+      });
+    },
+  });
+};
+
+export const useBiometricLoginMutation = () => {
+  const hapticFeedback = useHaptics();
+  const queryClient = useQueryClient();
+  const { mutateAsync: login } = useLoginMutation();
+
+  return useMutation({
+    mutationFn: async () => {
+      const storedEmail = await SecureStore.getItemAsync(BIOMETRIC_EMAIL_KEY);
+      const storedPassword = await SecureStore.getItemAsync(
+        BIOMETRIC_PASSWORD_KEY,
+      );
+
+      if (!storedEmail || !storedPassword) {
+        throw new BiometricLoginError("not_set_up");
+      }
+
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: isIOS ? "Login with Face ID" : "Login with Fingerprint",
+        cancelLabel: "Cancel",
+        disableDeviceFallback: true,
+      });
+
+      if (!result.success) {
+        throw new BiometricLoginError(result.error);
+      }
+
+      await login({ email: storedEmail, password: storedPassword });
+    },
+    onError(error) {
+      hapticFeedback("error");
+
+      if (!(error instanceof BiometricLoginError)) {
+        errorToast({
+          title: "Something went wrong",
+          description: "Something went wrong. Please try logging in manually.",
+        });
+        return;
+      }
+
+      switch (error.code) {
+        case "not_set_up":
+          errorToast({
+            title: "Not set up",
+            description:
+              "Biometric login isn't set up. Please log in manually first.",
+          });
+          break;
+        case "user_cancel":
+        case "app_cancel":
+        case "system_cancel":
+          break;
+        case "lockout":
+          errorToast({
+            title: "Too many attempts",
+            description: "Biometrics locked — use your passcode or password.",
+          });
+          break;
+        case "not_enrolled":
+          errorToast({
+            title: "No biometrics found",
+            description: "No biometrics found on this device.",
+          });
+          queryClient.invalidateQueries({
+            queryKey: [GET_BIOMETRIC_STATUS_QUERY_KEY],
+          });
+          break;
+        case "not_available":
+          errorToast({
+            title: "Not available",
+            description: "Biometric authentication isn't available right now.",
+          });
+          break;
+        default:
+          errorToast({
+            title: "Login failed",
+            description: "Biometric login failed. Please try again.",
+          });
+      }
     },
   });
 };

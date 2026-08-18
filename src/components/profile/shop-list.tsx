@@ -44,11 +44,11 @@ export const ShopList = () => {
           >
             <View className="flex-row items-center justify-between gap-3">
               <View className="flex-row items-center gap-1 flex-1">
-                <Avatar.Root>
+                <Avatar>
                   <Avatar.Fallback source={undefined}>
                     {getAvatarName(shop.shopName)}
                   </Avatar.Fallback>
-                </Avatar.Root>
+                </Avatar>
                 <ThemedText numberOfLines={1} className="flex-1">
                   {shop.shopName}
                 </ThemedText>

@@ -13,15 +13,15 @@ export const LanguageLists: { label: string; value: ILanguageCode }[] = [
     value: "en_US",
   },
   {
-    label: "Nepali",
+    label: "नेपाली",
     value: "ne_NP",
   },
   {
-    label: "Vietnamese",
+    label: "Tiếng Việt",
     value: "vi_VN",
   },
   {
-    label: "Japanese",
+    label: "日本語",
     value: "ja_JP",
   },
 ];
