@@ -32,9 +32,6 @@ export const ProfileForm = () => {
       hapticFeedBack("error");
     },
     onSubmit: async ({ value }) => {
-      uploadImage([value.image], async (imgs) => {
-        await changeProfileImage({ data: { image_url: [imgs?.[0]] } });
-      });
       await updateProfileSync({
         name: value.name,
       });
@@ -49,15 +46,31 @@ export const ProfileForm = () => {
         ref={scrollViewRef}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1 }}
-        contentContainerClassName="pt-20 px-2"
+        contentContainerClassName="pt-20 px-4"
       >
         <View className="gap-y-10">
           <Form.AppField
             name="image"
             children={(Field) => (
               <ProfileImagePicker
+                isUploading={isUploading || isProfileImagePending}
+                fallback={user?.profileDetails.shopAssistantName ?? ""}
+                caption={user?.profileDetails.shopAssistantName}
+                subCaption={user?.profileDetails.shopAssistantEmail}
+                imagePickerOptions={{
+                  shape: "oval",
+                  allowsEditing: true,
+                  aspect: [1, 1],
+                }}
                 value={Field.state.value}
-                onChange={Field.handleChange}
+                onChange={async (img) => {
+                  Field.handleChange(img);
+                  uploadImage([img], async (imgs) => {
+                    await changeProfileImage({
+                      data: { image_url: [imgs?.[0]] },
+                    });
+                  });
+                }}
               />
             )}
           />
@@ -70,8 +83,8 @@ export const ProfileForm = () => {
         <AnimatedSpacer height={450} />
       </ScrollView>
       <StickyButtonWrapper>
-        <Form.SubmitButton disabled={isPending}>
-          {isPending && <ActivityIndicator size={16} />}
+        <Form.SubmitButton disabled={true}>
+          {isProfilePending && <ActivityIndicator size={16} />}
           <PrimaryButton.Label>Update Profile</PrimaryButton.Label>
         </Form.SubmitButton>
       </StickyButtonWrapper>

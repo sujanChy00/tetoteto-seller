@@ -1,4 +1,5 @@
 import { ShippingCampaignCard } from "@/components/shipping-campaign/shipping-campaign-card";
+import { PrimaryButton } from "@/components/ui/button";
 import { FabButton } from "@/components/ui/fab-button";
 import { ListEmpty } from "@/components/ui/list/list-empty";
 import { ListFooter } from "@/components/ui/list/list-footer";
@@ -9,6 +10,7 @@ import { useGetAllShippingCampaigns } from "@/queries/campaign-query";
 import { IShipppingCampaign } from "@/types";
 import { LegendList } from "@legendapp/list/react-native";
 import { useRouter } from "expo-router";
+import { SymbolView } from "expo-symbols";
 import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import { useCSSVariable } from "uniwind";
@@ -17,8 +19,11 @@ const renderSeparator = () => <ListSeparator />;
 
 const ShippingCampaignScreen = () => {
   const router = useRouter();
-  const successColor = useCSSVariable("--color-success") as string;
-  const mutedColor = useCSSVariable("--color-muted") as string;
+  const [successColor, mutedColor, primaryForegroundColor] = useCSSVariable([
+    "--color-success",
+    "--color-muted",
+    "--color-primary-foreground",
+  ]) as [string, string, string];
   const { numColumns } = useResponsiveListColumns();
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, refetch } = useGetAllShippingCampaigns();
@@ -74,13 +79,25 @@ const ShippingCampaignScreen = () => {
       />
 
       {isAndroid ? (
-        <FabButton
-          onPress={() => {
-            router.push({
-              pathname: "/shipping-campaign/add",
-            });
-          }}
-        />
+        <FabButton>
+          <PrimaryButton
+            onPress={() => {
+              router.push({
+                pathname: "/shipping-campaign/add",
+              });
+            }}
+            className={"size-16"}
+          >
+            <SymbolView
+              size={28}
+              name={{
+                ios: "plus",
+                android: "add",
+              }}
+              tintColor={primaryForegroundColor}
+            />
+          </PrimaryButton>
+        </FabButton>
       ) : null}
     </View>
   );

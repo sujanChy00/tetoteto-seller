@@ -35,7 +35,7 @@ export const OrderCard = memo(({ order, transactionTypeIcon }: Props) => {
               <Card.Title className="flex-1" numberOfLines={1}>
                 {order.userName}
               </Card.Title>
-              <Card.Description className="text-xs font-medium">
+              <Card.Description className="text-xs font-bold text-primary">
                 #{order.orderId}
               </Card.Description>
               <Card.Description className="text-xs font-medium">

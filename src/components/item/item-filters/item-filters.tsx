@@ -1,24 +1,11 @@
 import { AnimatedView } from "@/components/ui/animated-view";
-import { GhostButton } from "@/components/ui/button";
-import { Host } from "@/components/ui/host";
+import { GhostButton, SecondaryButton } from "@/components/ui/button";
 import { InputGroup } from "@/components/ui/input-group";
+import { Menu } from "@/components/ui/menu";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
 import { ItemSortOptions } from "@/constants/data";
-import { useKeyboard } from "@/hooks/use-keyboard";
 import { useSortItems } from "@/hooks/use-sort-items";
 import { ItemSortOption } from "@/types";
-import ADD_ICON from "@expo/material-symbols/add.xml";
-import ARROW_DOWN from "@expo/material-symbols/arrow_downward_alt.xml";
-import ARROW_UP from "@expo/material-symbols/arrow_upward_alt.xml";
-import SORT_ICON from "@expo/material-symbols/sort.xml";
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  FilledTonalIconButton,
-  Icon,
-  Text,
-} from "@expo/ui/jetpack-compose";
-import { size } from "@expo/ui/jetpack-compose/modifiers";
 import { SymbolView } from "expo-symbols";
 import { useMemo, useState } from "react";
 import { View } from "react-native";
@@ -34,11 +21,8 @@ export const ItemFilters = ({
   showSearch = false,
   options,
 }: ItemFiltersProps) => {
-  const { dismissKeyboard } = useKeyboard();
   const { onSort, params, router } = useSortItems();
-  const [isExpanded, setIsExpanded] = useState(false);
   const [query, setQuery] = useState(params.query ?? "");
-
   const sortOptions = useMemo(() => options || ItemSortOptions, [options]);
 
   return (
@@ -49,66 +33,52 @@ export const ItemFilters = ({
           showSearch ? "justify-between" : "justify-end",
         )}
       >
-        <Host matchContents>
-          <DropdownMenu
-            expanded={isExpanded}
-            onDismissRequest={() => {
-              dismissKeyboard();
-              setIsExpanded(false);
-            }}
-          >
-            <DropdownMenu.Trigger>
-              <FilledTonalIconButton
-                modifiers={[size(50, 50)]}
-                onClick={() => setIsExpanded(true)}
-              >
-                <Icon source={SORT_ICON} />
-              </FilledTonalIconButton>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Items>
-              {sortOptions.map((item) => (
-                <DropdownMenuItem
-                  key={item.value + params.sort}
-                  onClick={() => {
-                    onSort(item.value);
-                  }}
-                >
-                  <DropdownMenuItem.Text>
-                    <Text>{item.label}</Text>
-                  </DropdownMenuItem.Text>
-                  {params.sort === item.value && (
-                    <DropdownMenuItem.TrailingIcon>
-                      <Icon
-                        source={params.order === "0" ? ARROW_UP : ARROW_DOWN}
-                      />
-                    </DropdownMenuItem.TrailingIcon>
-                  )}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenu.Items>
-          </DropdownMenu>
-        </Host>
+        <Menu
+          nativeOptions={sortOptions.map((item) => ({
+            title: item.label,
+            id: item.value,
+            state: params.sort === item.value ? "on" : "off",
+          }))}
+          onValueChange={(v) => {
+            onSort(v);
+          }}
+        >
+          <View className="size-12 items-center justify-center rounded-full bg-default">
+            <SymbolView
+              name={{
+                android: "sort",
+                ios: "arrow.up.arrow.down",
+              }}
+            />
+          </View>
+        </Menu>
+
         {showSearch ? (
           <InputGroup className="w-auto flex-1 rounded-full pl-3 bg-default">
             <InputGroup.Input
               placeholder="search..."
               returnKeyType="done"
+              placeholderTextColorClassName="dark:accent-foreground"
               value={query}
-              onChangeText={setQuery}
+              onChangeText={(text) => {
+                setQuery(text);
+                if (!text.trim()) {
+                  router.setParams({ query: "" });
+                }
+              }}
               onSubmitEditing={() => {
-                router.setParams({
-                  query: query.trim(),
-                });
+                setQuery(query.trim());
+                router.setParams({ query: query.trim() });
               }}
             />
-            {!!query.trim() ? (
+            {!!query?.trim() ? (
               <AnimatedView entering={ZoomIn} exiting={ZoomOut}>
-                <InputGroup.Suffix className="px-0">
+                <InputGroup.Suffix className="pr-1.5">
                   <GhostButton
                     className="size-9 p-0"
                     onPress={() => {
                       setQuery("");
-                      if (!!params.query) {
+                      if (!!query) {
                         router.setParams({
                           query: "",
                         });
@@ -126,18 +96,16 @@ export const ItemFilters = ({
             ) : null}
           </InputGroup>
         ) : null}
-        <Host matchContents>
-          <FilledTonalIconButton
-            onClick={() => {
-              router.push({
-                pathname: "/item/add",
-              });
-            }}
-            modifiers={[size(50, 50)]}
-          >
-            <Icon source={ADD_ICON} />
-          </FilledTonalIconButton>
-        </Host>
+        <SecondaryButton
+          onPress={() => {
+            router.push({
+              pathname: "/item/add",
+            });
+          }}
+          className="px-0 size-12 rounded-full"
+        >
+          <SymbolView name={{ android: "add", ios: "plus" }} />
+        </SecondaryButton>
       </View>
     </StickyButtonWrapper>
   );

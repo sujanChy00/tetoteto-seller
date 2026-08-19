@@ -1,25 +1,37 @@
+import { AnimatedView } from "@/components/ui/animated-view";
 import { Avatar } from "@/components/ui/avatar";
 import { OutlineButton } from "@/components/ui/button";
 import { ThemedText } from "@/components/ui/themed-text";
-import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
 import * as ImagePicker from "expo-image-picker";
 import { Link } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { useCallback } from "react";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import { FadeIn, FadeOut } from "react-native-reanimated";
 import { useCSSVariable } from "uniwind";
 
 interface ProfileImagePickerProps {
   value: string | undefined;
   onChange: (value: string) => void;
+  isUploading: boolean;
+  disabled?: boolean;
+  caption?: string;
+  subCaption?: string;
+  fallback: string;
+  imagePickerOptions?: ImagePicker.ImagePickerOptions;
 }
 
 export const ProfileImagePicker = ({
   value,
   onChange,
+  isUploading,
+  disabled,
+  caption,
+  subCaption,
+  fallback,
+  imagePickerOptions,
 }: ProfileImagePickerProps) => {
-  const { user } = useUser();
   const defaultForegroundColor = useCSSVariable(
     "--color-default-foreground",
   ) as string;
@@ -27,10 +39,8 @@ export const ProfileImagePicker = ({
   const pickImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [1, 1],
       quality: 1,
-      shape: "oval",
+      ...imagePickerOptions,
     });
 
     if (!result.canceled) {
@@ -72,29 +82,45 @@ export const ProfileImagePicker = ({
           }}
         >
           <Link.AppleZoom>
-            <Avatar className="size-28">
+            <Avatar className="size-28 relative overflow-hidden">
+              {isUploading && (
+                <AnimatedView
+                  entering={FadeIn}
+                  exiting={FadeOut}
+                  className="absolute inset-0 bg-black/50 items-center justify-center z-20"
+                >
+                  <ActivityIndicator size="large" />
+                </AnimatedView>
+              )}
               <Avatar.Image
                 className="size-full"
-                alt={user?.profileDetails.shopAssistantName}
+                alt={fallback}
                 source={value}
               />
               <Avatar.Fallback className={"text-2xl"} source={value}>
-                {getAvatarName(user?.profileDetails.shopAssistantName)}
+                {getAvatarName(fallback)}
               </Avatar.Fallback>
             </Avatar>
           </Link.AppleZoom>
         </Link>
-        <View>
-          <ThemedText className="text-base font-medium text-center capitalize">
-            {user?.profileDetails.shopAssistantName}
-          </ThemedText>
-          <ThemedText className="text-muted text-center">
-            {user?.profileDetails.shopAssistantEmail}
-          </ThemedText>
-        </View>
+        {!!caption ||
+          (!!subCaption && (
+            <View>
+              {caption && (
+                <ThemedText className="text-base font-medium text-center capitalize">
+                  {caption}
+                </ThemedText>
+              )}
+              {subCaption && (
+                <ThemedText className="text-muted text-center">
+                  {subCaption}
+                </ThemedText>
+              )}
+            </View>
+          ))}
       </View>
       <View className="justify-center flex-row items-center gap-3">
-        <OutlineButton onPress={takePicture}>
+        <OutlineButton onPress={takePicture} disabled={isUploading || disabled}>
           <SymbolView
             tintColor={defaultForegroundColor}
             name={{
@@ -105,7 +131,7 @@ export const ProfileImagePicker = ({
           />
           <OutlineButton.Label>Camera</OutlineButton.Label>
         </OutlineButton>
-        <OutlineButton onPress={pickImage}>
+        <OutlineButton onPress={pickImage} disabled={isUploading || disabled}>
           <SymbolView
             tintColor={defaultForegroundColor}
             name={{

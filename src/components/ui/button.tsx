@@ -2,13 +2,19 @@ import { Pressable, PressableProps, TextProps } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { ThemedText } from "./themed-text";
 
-const SecondaryRoot = ({ className, ...props }: PressableProps) => {
+const SecondaryRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-default flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );
@@ -22,13 +28,19 @@ const SecondaryLabel = ({ className, ...props }: TextProps) => {
     />
   );
 };
-const PrimaryRoot = ({ className, ...props }: PressableProps) => {
+const PrimaryRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-primary flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );
@@ -43,13 +55,19 @@ const PrimaryLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const DangerRoot = ({ className, ...props }: PressableProps) => {
+const DangerRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-danger flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );
@@ -63,13 +81,19 @@ const DangerLabel = ({ className, ...props }: TextProps) => {
     />
   );
 };
-const DangerGhostRoot = ({ className, ...props }: PressableProps) => {
+const DangerGhostRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-transparent flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );
@@ -84,13 +108,19 @@ const DangerGhostLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const DangerSoftRoot = ({ className, ...props }: PressableProps) => {
+const DangerSoftRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-danger-soft flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );
@@ -105,13 +135,19 @@ const DangerSoftLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const TertiaryRoot = ({ className, ...props }: PressableProps) => {
+const TertiaryRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-default flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );
@@ -126,13 +162,19 @@ const TertiaryLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const GhostRoot = ({ className, ...props }: PressableProps) => {
+const GhostRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-transparent flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );
@@ -147,13 +189,19 @@ const GhostLabel = ({ className, ...props }: TextProps) => {
   );
 };
 
-const OutlineRoot = ({ className, ...props }: PressableProps) => {
+const OutlineRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
   return (
     <Pressable
       className={twMerge(
         "bg-transparent border border-border flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );

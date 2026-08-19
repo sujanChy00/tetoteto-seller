@@ -17,7 +17,11 @@ export const TextField = ({
 
   return (
     <Field className={className}>
-      {!!label && <FieldLabel isInvalid={isInvalid}>{label}</FieldLabel>}
+      {!!label && (
+        <FieldLabel isDisabled={isDisabled} isInvalid={isInvalid}>
+          {label}
+        </FieldLabel>
+      )}
       <TextInput
         autoCapitalize="none"
         autoCorrect={false}
@@ -26,7 +30,7 @@ export const TextField = ({
         isInvalid={isInvalid}
         editable={!isDisabled}
         onBlur={field.handleBlur}
-        value={field.state.value}
+        value={String(field.state.value ?? "")}
         onChangeText={field.handleChange}
       />
       {!!description && <FieldDescription>{description}</FieldDescription>}

@@ -1,7 +1,8 @@
 import { useAppTheme } from "@/context/app-theme-provider";
 import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
-import { View } from "react-native";
+import { useRouter } from "expo-router";
+import { TouchableOpacity, View } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -24,6 +25,7 @@ export const ProfileHeader = ({
 }: {
   scrollY: SharedValue<number>;
 }) => {
+  const router = useRouter();
   const { user } = useUser();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -89,35 +91,44 @@ export const ProfileHeader = ({
         containerStyle,
       ]}
     >
-      <View className="flex-1 flex-row items-center gap-3 px-4">
-        <Animated.View style={avatarStyle}>
-          <Avatar className="size-full">
-            <Avatar.Image
-              className="size-full"
-              source={user?.profileDetails.shopAssistantPhotoUrl}
-              alt={user?.profileDetails.shopAssistantName}
-            />
-            <Avatar.Fallback
-              style={fallbackTextStyle}
-              source={user?.profileDetails.shopAssistantPhotoUrl}
-            >
-              {getAvatarName(user?.profileDetails.shopAssistantName)}
-            </Avatar.Fallback>
-          </Avatar>
-        </Animated.View>
-        <View>
-          <AnimatedThemedText className="capitalize" style={nameStyle}>
-            {user?.profileDetails.shopAssistantName}
-          </AnimatedThemedText>
-          <Animated.View
-            style={[{ overflow: "hidden" }, subtitleContainerStyle]}
-          >
-            <AnimatedThemedText className="text-muted">
-              {user?.profileDetails.shopAssistantEmail}
-            </AnimatedThemedText>
+      <TouchableOpacity
+        onPress={() => {
+          router.push({
+            pathname: "/profile/update",
+          });
+        }}
+        className="flex-1"
+      >
+        <View className="flex-1 flex-row items-center gap-3 px-4">
+          <Animated.View style={avatarStyle}>
+            <Avatar className="size-full">
+              <Avatar.Image
+                className="size-full"
+                source={user?.profileDetails.shopAssistantPhotoUrl}
+                alt={user?.profileDetails.shopAssistantName}
+              />
+              <Avatar.Fallback
+                style={fallbackTextStyle}
+                source={user?.profileDetails.shopAssistantPhotoUrl}
+              >
+                {getAvatarName(user?.profileDetails.shopAssistantName)}
+              </Avatar.Fallback>
+            </Avatar>
           </Animated.View>
+          <View>
+            <AnimatedThemedText className="capitalize" style={nameStyle}>
+              {user?.profileDetails.shopAssistantName}
+            </AnimatedThemedText>
+            <Animated.View
+              style={[{ overflow: "hidden" }, subtitleContainerStyle]}
+            >
+              <AnimatedThemedText className="text-muted">
+                {user?.profileDetails.shopAssistantEmail}
+              </AnimatedThemedText>
+            </Animated.View>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </AnimatedView>
   );
 };

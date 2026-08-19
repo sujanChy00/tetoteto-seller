@@ -9,6 +9,7 @@ import { ListEmpty } from "../ui/list/list-empty";
 import { ListFetchingMore } from "../ui/list/list-fetching-more";
 import { ListSeparator } from "../ui/list/list-separator";
 import { OrderCard } from "./order-card";
+import { OrderFilterResultText } from "./order-filter-result-text";
 
 interface Props {
   status?: IOrderProgress | "all";
@@ -85,9 +86,18 @@ export const OrderList = ({ orderType, status }: Props) => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const ListHeaderComponent = useMemo(
+    () =>
+      orderType === "all" ? (
+        <OrderFilterResultText totalItems={orders?.length || 0} />
+      ) : null,
+    [orderType],
+  );
+
   return (
     <LegendList
       recycleItems
+      ListHeaderComponent={ListHeaderComponent}
       maintainVisibleContentPosition
       showsVerticalScrollIndicator={false}
       contentContainerClassName="p-2"

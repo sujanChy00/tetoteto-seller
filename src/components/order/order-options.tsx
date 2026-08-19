@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 const Trigger = Platform.select({
   ios: (
-    <GlassView style={styles.container}>
+    <GlassView style={styles.container} hitSlop={8}>
       <SymbolView
         name={{
           android: "more_horiz",
@@ -31,7 +31,10 @@ const Trigger = Platform.select({
     </GlassView>
   ),
   android: (
-    <View className="size-8 bg-default rounded-full items-center justify-center">
+    <View
+      hitSlop={8}
+      className="size-8 bg-default rounded-full items-center justify-center"
+    >
       <SymbolView
         name={{
           android: "more_horiz",

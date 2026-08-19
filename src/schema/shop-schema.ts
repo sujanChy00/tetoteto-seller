@@ -18,6 +18,7 @@ export const ShopSchema = v.object({
   shopTiktokUrl: v.optional(v.string()),
   lowStockThreshold: v.number("Threshold is required"),
   expiryThreshold: v.number("Threshold is required"),
+  shopImage: v.optional(v.string()),
 });
 
 export type ShopFormValues = v.InferOutput<typeof ShopSchema>;

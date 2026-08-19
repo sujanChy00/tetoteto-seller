@@ -11,7 +11,7 @@ export const SubmitButton = ({ disabled = false, ...rest }: PressableProps) => {
     >
       {([isSubmitting, isValidating]) => (
         <PrimaryButton
-          disabled={isSubmitting ?? isValidating ?? disabled}
+          disabled={isSubmitting || isValidating || disabled}
           onPress={() => {
             form.handleSubmit();
           }}

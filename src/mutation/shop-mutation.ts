@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   GET_ALL_SHIPPING_COMPANY_QUERY_KEY,
   GET_ALL_SHIPPING_FEE_QUERY_KEY,
+  GET_SHOP_DETAILS_QUERY_KEY,
 } from "@/constants/query-keys";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
@@ -111,7 +112,9 @@ export const useUpdateShop = ({
       }),
     onSuccess: (data) => {
       getUser().then((user) => setUser(user));
-      queryClient.invalidateQueries({ queryKey: ["ShopDetails"] });
+      queryClient.invalidateQueries({
+        queryKey: [GET_SHOP_DETAILS_QUERY_KEY],
+      });
       successToast({
         title: t("operation_successfull"),
         description: data.message,
@@ -144,7 +147,7 @@ export const useUpdateShopImage = ({
         data: { image_url: [image] },
       }),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["ShopDetails"] });
+      queryClient.invalidateQueries({ queryKey: [GET_SHOP_DETAILS_QUERY_KEY] });
       successToast({
         title: t("operation_successfull"),
         description: "Shop image updated successfully",

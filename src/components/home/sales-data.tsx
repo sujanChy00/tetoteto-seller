@@ -1,15 +1,23 @@
 import { useRefreshOnFocus } from "@/hooks/use-refetch-onfocus";
 import { useGetSalesData } from "@/queries/home-query";
-import { dateOnlyFormatter, endOfMonth, startOfMonth } from "@/utils/date";
+import {
+  dateOnlyFormatter,
+  endOfMonth,
+  formatShortDate,
+  startOfMonth,
+} from "@/utils/date";
 import { formatCurrency } from "@/utils/format-currency";
-import { useState } from "react";
+import { BottomSheetModal } from "@expo/ui/community/bottom-sheet";
+import { useRef, useState } from "react";
 import { View } from "react-native";
 import { DateType } from "react-native-ui-datepicker";
+import { SecondaryButton } from "../ui/button";
 import { DateRangePicker } from "../ui/date-range-picker";
 import { Surface } from "../ui/surface";
 import { ThemedText } from "../ui/themed-text";
 
 export const SalesData = () => {
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [date, setDate] = useState<{
     endDate?: DateType;
     startDate?: DateType;
@@ -25,13 +33,28 @@ export const SalesData = () => {
 
   useRefreshOnFocus(refetch);
 
+  const onOpen = () => {
+    bottomSheetRef.current?.present();
+  };
+
   return (
     <View className="gap-6">
       <View className="flex-row items-center justify-between">
         <ThemedText className="font-semibold text-muted">
           Monthly Overview
         </ThemedText>
-        <DateRangePicker value={date} onChange={setDate} />
+        <SecondaryButton onPress={onOpen} className="h-8.75 px-3">
+          <SecondaryButton.Label>
+            {date.startDate && date.endDate
+              ? `${formatShortDate(new Date(date.startDate as string))} - ${formatShortDate(new Date(date.endDate as string))}`
+              : "Select Date"}
+          </SecondaryButton.Label>
+        </SecondaryButton>
+        <DateRangePicker
+          value={date}
+          onChange={setDate}
+          bottomSheetRef={bottomSheetRef}
+        />
       </View>
       <View className="flex-row items-center gap-6">
         <Surface className="border-separator/50 flex-1 border gap-0.5">

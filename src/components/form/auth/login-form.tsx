@@ -1,4 +1,5 @@
 import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
+import { TextSeparator } from "@/components/ui/text-separator";
 import { isIOS, isNative } from "@/constants/platform";
 import { useDeviceToken } from "@/hooks/use-device-token";
 import { useForm } from "@/hooks/use-form";
@@ -13,7 +14,7 @@ import { useSelector } from "@tanstack/react-form";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useCSSVariable } from "uniwind";
 import { GhostButton, PrimaryButton, SecondaryButton } from "../../ui/button";
@@ -55,13 +56,14 @@ export const LoginForm = () => {
     <KeyboardAvoidingView
       behavior={isIOS ? "padding" : "height"}
       style={{ flex: 1 }}
+      keyboardVerticalOffset={20}
     >
       <FullScreenSpinner isVisible={isPending || isAuthenticating} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
-        className="py-safe bg-background"
+        className="py-safe"
         style={{ flex: 1 }}
       >
         <View className="flex-1 pt-28">
@@ -110,17 +112,36 @@ export const LoginForm = () => {
                 )}
               />
               <View className="w-full gap-y-3">
-                <View className="flex-row gap-3 items-center">
+                <View className="gap-y-1">
                   <Form.SubmitButton className="flex-1">
-                    {isPending && <ActivityIndicator size={16} />}
                     <PrimaryButton.Label>Login</PrimaryButton.Label>
                   </Form.SubmitButton>
 
-                  {showBiometricLogin && (
+                  <GhostButton
+                    onPress={() => {
+                      router.push({
+                        pathname: "/auth/forgot-password",
+                        params: {
+                          email,
+                        },
+                      });
+                    }}
+                  >
+                    <GhostButton.Label className="text-foreground">
+                      Forgot Password?
+                    </GhostButton.Label>
+                  </GhostButton>
+                </View>
+                {showBiometricLogin && (
+                  <View className="gap-y-3">
+                    <TextSeparator text="OR" />
                     <SecondaryButton
                       onPress={() => loginWithBiometrics()}
                       disabled={isAuthenticating}
                     >
+                      <GhostButton.Label>
+                        {isIOS ? "Login with FaceID" : "Login with Fingerprint"}
+                      </GhostButton.Label>
                       <SymbolView
                         tintColor={colorPrimary as string}
                         name={{
@@ -129,21 +150,8 @@ export const LoginForm = () => {
                         }}
                       />
                     </SecondaryButton>
-                  )}
-                </View>
-
-                <GhostButton
-                  onPress={() => {
-                    router.push({
-                      pathname: "/auth/forgot-password",
-                      params: {
-                        email,
-                      },
-                    });
-                  }}
-                >
-                  <GhostButton.Label>Forgot Password?</GhostButton.Label>
-                </GhostButton>
+                  </View>
+                )}
               </View>
             </View>
           </Form.AppForm>

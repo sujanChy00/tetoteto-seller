@@ -30,7 +30,7 @@ export const PasswordForm = () => {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1 }}
-        contentContainerClassName="pt-20 px-2"
+        contentContainerClassName="pt-20 px-4"
       >
         <View className="gap-y-6">
           <Form.AppField

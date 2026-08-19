@@ -2,6 +2,11 @@ import { TextProps, View, ViewProps } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { ThemedText } from "./themed-text";
 
+interface FieldLabelProps extends TextProps {
+  isInvalid?: boolean;
+  isDisabled?: boolean;
+}
+
 const Field = ({ className, children }: ViewProps) => {
   return (
     <View className={twMerge("gap-1.5 w-full", className)}>{children}</View>
@@ -11,13 +16,15 @@ const Field = ({ className, children }: ViewProps) => {
 const FieldLabel = ({
   className,
   isInvalid = false,
+  isDisabled = false,
   ...rest
-}: TextProps & { isInvalid?: boolean }) => {
+}: FieldLabelProps) => {
   return (
     <ThemedText
       className={twMerge(
-        "text-base font-medium",
+        "font-medium",
         isInvalid ? "text-danger" : "text-foreground",
+        isDisabled ? "text-muted" : undefined,
         className,
       )}
       {...rest}
