@@ -83,7 +83,7 @@ export const ProfileForm = () => {
         <AnimatedSpacer height={450} />
       </ScrollView>
       <StickyButtonWrapper>
-        <Form.SubmitButton disabled={true}>
+        <Form.SubmitButton disabled={isPending}>
           {isProfilePending && <ActivityIndicator size={16} />}
           <PrimaryButton.Label>Update Profile</PrimaryButton.Label>
         </Form.SubmitButton>

@@ -1,9 +1,8 @@
 import { useLanguage } from "@/hooks/use-language";
 import { useUpdateItem } from "@/mutation/item-mutation";
 import { IItemDescriptionResponse } from "@/types";
-import { Switch } from "@expo/ui";
-import { Pressable, View } from "react-native";
-import { Host } from "../ui/host";
+import { View } from "react-native";
+import { SwitchInput } from "../ui/switch-input";
 import { ThemedText } from "../ui/themed-text";
 
 type Props = {
@@ -45,26 +44,19 @@ export const ItemDiscountedShippingSwitch = ({ data }: Props) => {
     isPending || data.itemDetails.itemType !== "dry" || isPending;
 
   return (
-    <Pressable
-      onPress={() => handleToggle(!discountedShipping)}
-      accessibilityRole="switch"
-      accessibilityLabel="Mergeable"
-      disabled={isDisabled}
+    <View
+      accessibilityLabel="Discounted Shipping"
       accessibilityState={{ checked: discountedShipping }}
       className={"flex-row items-center justify-between gap-3"}
     >
       <ThemedText className="text-xs font-medium">
         {t("discounted_shipping")}
       </ThemedText>
-      <View pointerEvents="none">
-        <Host matchContents>
-          <Switch
-            disabled={isDisabled}
-            value={discountedShipping}
-            onValueChange={handleToggle}
-          />
-        </Host>
-      </View>
-    </Pressable>
+      <SwitchInput
+        disabled={isDisabled}
+        value={discountedShipping}
+        onValueChange={handleToggle}
+      />
+    </View>
   );
 };

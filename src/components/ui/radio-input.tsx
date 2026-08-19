@@ -1,3 +1,4 @@
+import { useHaptics } from "@/hooks/use-haptics";
 import { RadioInputProps } from "@/types/components";
 import { Pressable, View } from "react-native";
 import { ZoomIn, ZoomOut } from "react-native-reanimated";
@@ -12,6 +13,8 @@ export const RadioInput = ({
   label,
   disabled = false,
 }: RadioInputProps) => {
+  const haptics = useHaptics();
+
   return (
     <Pressable
       disabled={disabled}
@@ -21,6 +24,7 @@ export const RadioInput = ({
         className,
       )}
       onPress={() => {
+        haptics("tick");
         onPress();
       }}
     >

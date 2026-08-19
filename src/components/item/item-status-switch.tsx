@@ -1,8 +1,7 @@
 import { useLanguage } from "@/hooks/use-language";
 import { useToggleItemStatus } from "@/mutation/item-mutation";
-import { Switch } from "@expo/ui";
-import { Pressable, View } from "react-native";
-import { Host } from "../ui/host";
+import { View } from "react-native";
+import { SwitchInput } from "../ui/switch-input";
 import { ThemedText } from "../ui/themed-text";
 
 type Props = {
@@ -19,28 +18,17 @@ export const ItemStatusSwitch = ({ itemId, value }: Props) => {
   };
 
   return (
-    <Pressable
-      onPress={() => handleToggle()}
-      accessibilityRole="switch"
-      disabled={isPending}
-      accessibilityLabel="Recommended"
-      accessibilityState={{ checked: !value }}
-      className={"flex-row items-center justify-between gap-3"}
+    <View
+      accessibilityLabel="Item Status"
+      accessibilityState={{ checked: value }}
+      className="flex-row items-center justify-between gap-3"
     >
-      <ThemedText className="text-xs font-medium">
-        {t("can_be_sent_in_cool_cart")}
-      </ThemedText>
-      <View pointerEvents="none">
-        <Host matchContents>
-          <Switch
-            disabled={isPending}
-            value={value}
-            onValueChange={() => {
-              handleToggle();
-            }}
-          />
-        </Host>
-      </View>
-    </Pressable>
+      <ThemedText className="text-xs font-medium">{t("disabled")}</ThemedText>
+      <SwitchInput
+        disabled={isPending}
+        value={value}
+        onValueChange={handleToggle}
+      />
+    </View>
   );
 };

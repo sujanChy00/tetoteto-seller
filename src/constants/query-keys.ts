@@ -54,3 +54,4 @@ export const GET_USER_CHAT_DETAILS_QUERY_KEY = "user_chat";
 
 export const GET_PROFILE_QUERY_KEY = "profile";
 export const GET_BIOMETRIC_STATUS_QUERY_KEY = "biometric_status";
+export const GET_ADDRESS_INFO_QUERY_KEY = "address_info";

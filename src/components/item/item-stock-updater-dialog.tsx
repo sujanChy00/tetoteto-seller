@@ -63,6 +63,7 @@ export const ItemStockUpdateDialog = ({ itemId, itemName, stock }: Props) => {
                 keyboardType="number-pad"
                 inputMode="numeric"
                 placeholder="Enter quantity"
+                className="bg-surface-secondary"
               />
             </Field>
             <Dialog.Footer>

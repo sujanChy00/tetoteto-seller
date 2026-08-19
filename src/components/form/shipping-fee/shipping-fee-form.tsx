@@ -55,13 +55,12 @@ export const ShippingFeeForm = ({
       <KeyboardAvoidingView
         behavior={isIOS ? "padding" : "height"}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={40}
       >
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="always"
-          className="p-4"
+          contentContainerClassName="p-4 pb-safe-offset-10"
           style={{ flex: 1 }}
         >
           <View className="flex-1 gap-y-6">

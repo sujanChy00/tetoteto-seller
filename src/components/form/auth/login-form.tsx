@@ -56,14 +56,13 @@ export const LoginForm = () => {
     <KeyboardAvoidingView
       behavior={isIOS ? "padding" : "height"}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={20}
     >
       <FullScreenSpinner isVisible={isPending || isAuthenticating} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
-        className="py-safe"
+        contentContainerClassName="pt-safe pb-safe-offset-10"
         style={{ flex: 1 }}
       >
         <View className="flex-1 pt-28">

@@ -33,7 +33,7 @@ const Trigger = Platform.select({
   android: (
     <View
       hitSlop={8}
-      className="size-8 bg-default rounded-full items-center justify-center"
+      className="size-8 rounded-full items-center justify-center"
     >
       <SymbolView
         name={{

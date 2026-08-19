@@ -89,9 +89,11 @@ export const OrderList = ({ orderType, status }: Props) => {
   const ListHeaderComponent = useMemo(
     () =>
       orderType === "all" ? (
-        <OrderFilterResultText totalItems={orders?.length || 0} />
+        <OrderFilterResultText
+          totalItems={data?.pages?.[0].totalElements || 0}
+        />
       ) : null,
-    [orderType],
+    [orderType, data],
   );
 
   return (

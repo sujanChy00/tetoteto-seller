@@ -1,7 +1,12 @@
 import { BIOMETRIC_EMAIL_KEY } from "@/constants/data";
 import { isWeb } from "@/constants/platform";
-import { GET_BIOMETRIC_STATUS_QUERY_KEY } from "@/constants/query-keys";
-import { BiometricsStatus, IProfile } from "@/types";
+import {
+  GET_ADDRESS_INFO_QUERY_KEY,
+  GET_BIOMETRIC_STATUS_QUERY_KEY,
+  GET_PROFILE_QUERY_KEY,
+} from "@/constants/query-keys";
+import { useUser } from "@/hooks/use-user";
+import { BiometricsStatus, IAddressInfo, IProfile } from "@/types";
 import { fetcher } from "@/utils/fetcher";
 import { useQuery } from "@tanstack/react-query";
 import * as LocalAuthentication from "expo-local-authentication";
@@ -38,5 +43,36 @@ export const useCheckForBiometrics = () => {
     },
     enabled: !isWeb,
     staleTime: Infinity, // hardware/enrollment status doesn't change during a session
+  });
+};
+
+export const useGetUserProfile = () => {
+  const { setUser } = useUser();
+  return useQuery({
+    queryKey: [GET_PROFILE_QUERY_KEY],
+    queryFn: async () => {
+      const res = await fetcher<IProfile>({
+        url: "/shop/assistant/profile",
+      });
+      if (res) {
+        setUser(res);
+      }
+      return res;
+    },
+  });
+};
+
+export const useGetAddressInfo = (postalCode: string) => {
+  return useQuery({
+    queryKey: [GET_ADDRESS_INFO_QUERY_KEY],
+    queryFn: async () => {
+      return await fetcher<IAddressInfo>({
+        url: "/prefecture/address-info",
+        params: {
+          postalCode,
+        },
+      });
+    },
+    enabled: !!postalCode,
   });
 };

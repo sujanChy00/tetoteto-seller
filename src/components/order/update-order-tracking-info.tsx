@@ -50,7 +50,6 @@ export const UpdateOrderTrackingInfo = ({ order, className }: Props) => {
         };
       }
 
-      console.log(value);
       mutateAsync({
         id: Number(order?.transactionId),
         data,
@@ -115,7 +114,7 @@ export const UpdateOrderTrackingInfo = ({ order, className }: Props) => {
                 <Dialog.Header>
                   <Dialog.Title>{t("select_shipping_company")}</Dialog.Title>
                 </Dialog.Header>
-                <View className="gap-3">
+                <View className="gap-y-6">
                   <Form.AppField
                     name="shippingCompany"
                     children={(Field) => (
@@ -125,31 +124,41 @@ export const UpdateOrderTrackingInfo = ({ order, className }: Props) => {
                       />
                     )}
                   />
-                  <Form.AppField
-                    name="trackingNumber"
-                    children={(Field) => (
-                      <Field.TextField
-                        maxLength={14}
-                        inputMode="numeric"
-                        keyboardType="numeric"
-                        label={t("tracking_number")}
-                        placeholder={t("enter_tracking_number")}
-                      />
-                    )}
-                  />
-                  {shippingCompany == 0 && (
+                  <View className="gap-y-3">
                     <Form.AppField
-                      name="trackingUrl"
+                      name="trackingNumber"
                       children={(Field) => (
                         <Field.TextField
-                          inputMode="url"
-                          keyboardType="url"
-                          label={t("tracking_url")}
-                          placeholder={t("enter_tracking_url")}
+                          maxLength={14}
+                          onFocus={() => {
+                            hapticFeedBack("selection");
+                          }}
+                          inputMode="numeric"
+                          keyboardType="numeric"
+                          inputClassName="bg-surface-secondary"
+                          label={t("tracking_number")}
+                          placeholder={t("enter_tracking_number")}
                         />
                       )}
                     />
-                  )}
+                    {shippingCompany == 0 && (
+                      <Form.AppField
+                        name="trackingUrl"
+                        children={(Field) => (
+                          <Field.TextField
+                            onFocus={() => {
+                              hapticFeedBack("selection");
+                            }}
+                            inputMode="url"
+                            keyboardType="url"
+                            inputClassName="bg-surface-secondary"
+                            label={t("tracking_url")}
+                            placeholder={t("enter_tracking_url")}
+                          />
+                        )}
+                      />
+                    )}
+                  </View>
                 </View>
               </ScrollView>
               <Separator />
