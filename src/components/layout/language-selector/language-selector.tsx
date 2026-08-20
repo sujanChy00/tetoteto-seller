@@ -1,3 +1,4 @@
+import { ListGroup } from "@/components/ui/list-group";
 import { Menu } from "@/components/ui/menu";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ThemedText } from "@/components/ui/themed-text";
@@ -13,9 +14,11 @@ export const LanguageSelector = () => {
   }, [language]);
 
   return (
-    <View className="flex-row items-center justify-between p-4">
-      <ThemedText>{t("change_langauge")}</ThemedText>
-      <View className="flex-1 items-end">
+    <ListGroup.Item>
+      <ListGroup.ItemContent>
+        <ListGroup.ItemTitle>{t("change_langauge")}</ListGroup.ItemTitle>
+      </ListGroup.ItemContent>
+      <ListGroup.ItemSuffix>
         <Menu
           nativeOptions={LanguageLists.map((l) => ({
             title: l.label,
@@ -43,7 +46,7 @@ export const LanguageSelector = () => {
             />
           </View>
         </Menu>
-      </View>
-    </View>
+      </ListGroup.ItemSuffix>
+    </ListGroup.Item>
   );
 };

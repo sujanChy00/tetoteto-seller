@@ -53,6 +53,7 @@ const ProfileScreen = () => {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         recycleItems
+        contentContainerClassName="px-2"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT + insets.top }}
         ListFooterComponent={<View className="h-20" />}

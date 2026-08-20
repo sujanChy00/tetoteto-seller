@@ -1,3 +1,4 @@
+import { ListGroup } from "@/components/ui/list-group";
 import { Menu } from "@/components/ui/menu";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ThemedText } from "@/components/ui/themed-text";
@@ -8,39 +9,45 @@ import { ThemeName } from "uniwind";
 export const ThemeSelector = () => {
   const { colors, currentTheme, setTheme } = useAppTheme();
   return (
-    <View className="flex-row items-center justify-between p-4">
-      <ThemedText>Select Theme</ThemedText>
-      <Menu
-        nativeOptions={[
-          {
-            id: "dark",
-            title: "Dark",
-            state: currentTheme === "dark" ? "on" : "off",
-          },
-          {
-            id: "light",
-            title: "Light",
-            state: currentTheme === "light" ? "on" : "off",
-          },
-        ]}
-        onValueChange={(theme) => {
-          setTheme(theme as ThemeName);
-        }}
-      >
-        <View className="flex-row items-center">
-          <ThemedText className="text-primary capitalize">
-            {currentTheme}
-          </ThemedText>
-          <StyledSymbolView
-            name={{
-              android: "unfold_more",
-              ios: "chevron.up.chevron.down",
+    <ListGroup>
+      <ListGroup.Item>
+        <ListGroup.ItemContent>
+          <ListGroup.ItemTitle>Select Theme</ListGroup.ItemTitle>
+        </ListGroup.ItemContent>
+        <ListGroup.ItemSuffix>
+          <Menu
+            nativeOptions={[
+              {
+                id: "dark",
+                title: "Dark",
+                state: currentTheme === "dark" ? "on" : "off",
+              },
+              {
+                id: "light",
+                title: "Light",
+                state: currentTheme === "light" ? "on" : "off",
+              },
+            ]}
+            onValueChange={(theme) => {
+              setTheme(theme as ThemeName);
             }}
-            size={20}
-            tintColorClassName={"accent-primary"}
-          />
-        </View>
-      </Menu>
-    </View>
+          >
+            <View className="flex-row items-center">
+              <ThemedText className="text-primary capitalize">
+                {currentTheme}
+              </ThemedText>
+              <StyledSymbolView
+                name={{
+                  android: "unfold_more",
+                  ios: "chevron.up.chevron.down",
+                }}
+                size={20}
+                tintColorClassName={"accent-primary"}
+              />
+            </View>
+          </Menu>
+        </ListGroup.ItemSuffix>
+      </ListGroup.Item>
+    </ListGroup>
   );
 };
