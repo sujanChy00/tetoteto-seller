@@ -67,6 +67,12 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
+        name="shipping-campaign/add"
+        options={{
+          title: "Add Shipping Campaign",
+        }}
+      />
+      <Stack.Screen
         name="shipping-fee/index"
         options={{
           title: t("shipping_fees"),

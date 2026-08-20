@@ -10,9 +10,7 @@ export const numericField = (label: string, min = 1) =>
   );
 
 export const optionalNumericField = () =>
-  v.optional(
-    v.pipe(
-      v.string(),
-      v.transform((val) => (val === "" ? undefined : Number(val))),
-    ),
+  v.pipe(
+    v.string(),
+    v.transform((val) => (val === "" ? undefined : Number(val))),
   );

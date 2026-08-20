@@ -4,9 +4,10 @@ import { GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY } from "@/constants/query-keys";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
-import { ShippingCampaignFormData } from "@/schema/campaign-schema";
+import { ShippingCampaignFormValues } from "@/schema/shipping-campaign-schema";
 import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { fetcher } from "@/utils/fetcher";
+import { purifyObject } from "@/utils/purify-object";
 import { errorToast, successToast } from "@/utils/toast";
 
 export const useUpdateShippingCampaign = ({
@@ -20,7 +21,7 @@ export const useUpdateShippingCampaign = ({
 
   return useMutation({
     mutationFn: async (
-      body: Omit<ShippingCampaignFormData, "discountType"> & {
+      body: Omit<ShippingCampaignFormValues, "discountType"> & {
         campaignId: number;
       },
     ) => {
@@ -28,7 +29,7 @@ export const useUpdateShippingCampaign = ({
       return await fetcher<IGeneralResponse>({
         url: `/shipping-campaign/${selectedShop?.shopId}/${campaignId}`,
         method: "PUT",
-        data,
+        data: purifyObject(data),
       });
     },
     onSuccess(data) {
@@ -63,11 +64,11 @@ export const useAddShippingCampaign = ({
 
   return useMutation({
     mutationFn: async (
-      body: Omit<ShippingCampaignFormData, "discountType">,
+      body: Omit<ShippingCampaignFormValues, "discountType">,
     ) => {
       return await fetcher<IGeneralResponse>({
         url: `/shipping-campaign/${selectedShop?.shopId}`,
-        data: body,
+        data: purifyObject(body),
         method: "POST",
       });
     },

@@ -1,11 +1,5 @@
-import { Text, View } from "react-native";
+import { ShippingCampaignForm } from "@/components/form/shipping-campaign/shipping-campaign-form";
 
-const AddShippingCampaignScreen = () => {
-  return (
-    <View>
-      <Text>AddShippingCampaignScreen</Text>
-    </View>
-  );
-};
+const AddShippingCampaignScreen = () => <ShippingCampaignForm />;
 
 export default AddShippingCampaignScreen;

@@ -5,6 +5,7 @@ import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { ShippingFeeFormValues } from "@/schema/shipping-fee-schema";
 import { IGeneralResponse, mutationProps } from "@/types";
 import { fetcher } from "@/utils/fetcher";
+import { purifyObject } from "@/utils/purify-object";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -24,7 +25,7 @@ export const useUpdateShippingFee = ({
       return await fetcher<IGeneralResponse>({
         url: `/shipping/seller/${args.id}/${selectedShop?.shopId}`,
         method: "PATCH",
-        data: args.shippingInfo,
+        data: purifyObject(args.shippingInfo),
       });
     },
     onSuccess: (data) => {

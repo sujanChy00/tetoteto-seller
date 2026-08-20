@@ -34,6 +34,8 @@ export const ShippingFeeForm = ({
       frozenShippingFee: String(data?.sellerShippingFrozenShippingFee ?? ""),
       shippingFee: String(data?.sellerShippingFee ?? ""),
       weight: String(data?.sellerShippingWeight ?? ""),
+      fromAreaCode: String(data?.fromAreaCode ?? ""),
+      toAreaCode: "",
       feeWithTax: String(data?.sellerShippingFee ?? ""),
     } satisfies ShippingFeeFormInput,
     validators: {

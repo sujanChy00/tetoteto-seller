@@ -124,7 +124,7 @@ export const ShopForm = ({ data }: { data: IshopDetails }) => {
             <Form.AppField
               name="shopIntroduction"
               children={(Field) => (
-                <Field.TextField label={t("promotional_message")} />
+                <Field.TextField label={t("promotional_message")} multiline />
               )}
             />
             <Form.AppField
