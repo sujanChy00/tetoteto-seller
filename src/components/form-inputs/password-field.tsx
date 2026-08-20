@@ -1,11 +1,11 @@
 import { FormInputBaseProps } from "@/types/components";
 import { useFieldContext } from "@/utils/form-hook-context";
-import { SymbolView } from "expo-symbols";
 import { useState } from "react";
 import { TextInputProps } from "react-native";
 import { GhostButton } from "../ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { InputGroup } from "../ui/input-group";
+import { StyledSymbolView } from "../ui/symbol-view";
 
 export const PasswordField = ({
   label,
@@ -29,7 +29,10 @@ export const PasswordField = ({
         isDisabled={isDisabled}
       >
         <InputGroup.Prefix isDecorative>
-          <SymbolView name={{ ios: "lock.fill", android: "lock" }} size={18} />
+          <StyledSymbolView
+            name={{ ios: "lock.fill", android: "lock" }}
+            size={18}
+          />
         </InputGroup.Prefix>
         <InputGroup.Input
           {...inputProps}
@@ -53,7 +56,7 @@ export const PasswordField = ({
             className="size-11 rounded-full"
             onPress={() => setShowPassword(!showPassword)}
           >
-            <SymbolView
+            <StyledSymbolView
               name={{
                 ios: showPassword ? "eye.slash" : "eye",
                 android: showPassword ? "visibility_off" : "visibility",

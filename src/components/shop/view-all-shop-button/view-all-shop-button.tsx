@@ -1,11 +1,9 @@
 import { SecondaryButton } from "@/components/ui/button";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
-import { useCSSVariable } from "uniwind";
 
 export const ViewAllShopButton = () => {
   const router = useRouter();
-  const primaryColor = useCSSVariable("--color-primary") as string;
   return (
     <SecondaryButton
       className="h-8 px-3"
@@ -14,8 +12,8 @@ export const ViewAllShopButton = () => {
       }}
     >
       <SecondaryButton.Label>view all</SecondaryButton.Label>
-      <SymbolView
-        tintColor={primaryColor}
+      <StyledSymbolView
+        tintColorClassName={"accent-primary"}
         size={16}
         name={{
           ios: "arrow.right",

@@ -2,11 +2,11 @@ import { useLanguage } from "@/hooks/use-language";
 import { ILanguageTexts } from "@/types";
 import type { LinkProps } from "expo-router";
 import { useRouter } from "expo-router";
-import { AndroidSymbol, SFSymbol, SymbolView } from "expo-symbols";
+import { AndroidSymbol, SFSymbol } from "expo-symbols";
 import { TouchableOpacity, View } from "react-native";
 import { Fragment } from "react/jsx-runtime";
-import { useCSSVariable } from "uniwind";
 import { Separator } from "../ui/separator";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 const LINKS: {
@@ -34,8 +34,6 @@ const LINKS: {
 
 export const LegalInfo = () => {
   const { t } = useLanguage();
-  const mutedColor = useCSSVariable("--color-muted");
-  const foregroundColor = useCSSVariable("--color-foreground");
   const router = useRouter();
   return (
     <View>
@@ -53,9 +51,9 @@ export const LegalInfo = () => {
           >
             <View className="flex-row items-center justify-between gap-3">
               <View className="flex-row items-center gap-1 flex-1">
-                <SymbolView
+                <StyledSymbolView
                   size={20}
-                  tintColor={foregroundColor as string}
+                  tintColorClassName={"accent-foreground"}
                   name={{
                     android: item.icon.android,
                     ios: item.icon.ios,
@@ -65,9 +63,9 @@ export const LegalInfo = () => {
                   {t(item.title)}
                 </ThemedText>
               </View>
-              <SymbolView
+              <StyledSymbolView
                 size={20}
-                tintColor={mutedColor as string}
+                tintColorClassName={"accent-muted"}
                 name={{
                   android: "chevron_right",
                   ios: "chevron.right",

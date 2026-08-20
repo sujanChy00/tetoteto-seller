@@ -1,19 +1,15 @@
 import { IShopUser } from "@/types";
 import { getAvatarName } from "@/utils/avatar-name";
 import { dateTimeFormatterWithouTLocale } from "@/utils/date";
-import { SymbolView } from "expo-symbols";
 import { memo } from "react";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { Avatar } from "../ui/avatar";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
-  const successColor = useCSSVariable("--color-success");
-  const dangerColor = useCSSVariable("--color-danger");
-
   const isAdmin = data.sellerRole === "admin";
 
   return (
@@ -31,12 +27,12 @@ export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
                 {data.sellerName}
               </ThemedText>
               {data.sellerApproved && (
-                <SymbolView
+                <StyledSymbolView
                   name={{
                     android: "verified",
                     ios: "checkmark.seal.fill",
                   }}
-                  tintColor={successColor as string}
+                  tintColorClassName={"accent-success"}
                   size={18}
                 />
               )}
@@ -48,12 +44,12 @@ export const ShopUserCard = memo(({ data }: { data: IShopUser }) => {
       <Card.Footer className="flex-row  items-center justify-between pt-3 border-t border-t-background">
         {isAdmin ? (
           <Chip variant="soft" color="danger">
-            <SymbolView
+            <StyledSymbolView
               name={{
                 android: "admin_panel_settings",
                 ios: "person.badge.key.fill",
               }}
-              tintColor={dangerColor as string}
+              tintColorClassName={"accent-danger"}
               size={18}
             />
             <Chip.Label>ADMIN</Chip.Label>

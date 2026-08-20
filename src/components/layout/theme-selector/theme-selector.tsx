@@ -1,7 +1,7 @@
 import { Menu } from "@/components/ui/menu";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useAppTheme } from "@/context/app-theme-provider";
-import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
 import { ThemeName } from "uniwind";
 
@@ -31,13 +31,13 @@ export const ThemeSelector = () => {
           <ThemedText className="text-primary capitalize">
             {currentTheme}
           </ThemedText>
-          <SymbolView
+          <StyledSymbolView
             name={{
               android: "unfold_more",
               ios: "chevron.up.chevron.down",
             }}
             size={20}
-            tintColor={colors.primary}
+            tintColorClassName={"accent-primary"}
           />
         </View>
       </Menu>

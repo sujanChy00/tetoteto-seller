@@ -1,8 +1,8 @@
 import { AnimatedImage } from "@/components/ui/animated-image";
 import { IOSGlassButton } from "@/components/ui/ios-glass-button";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ThemedText } from "@/components/ui/themed-text";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useState } from "react";
 import {
   Platform,
@@ -106,7 +106,7 @@ const ImageScreen = () => {
         onPress={router.back}
         className="absolute top-safe-offset-14 size-10 rounded-full bg-muted/20 items-center justify-center right-safe-offset-6 z-20"
       >
-        <SymbolView
+        <StyledSymbolView
           name={{
             android: "close",
             ios: "xmark",

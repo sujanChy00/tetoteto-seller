@@ -1,16 +1,14 @@
 import { ISellerShopDetail } from "@/types";
 import { useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import React from "react";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { PrimaryButton, SecondaryButton } from "../ui/button";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
+import { StyledSymbolView } from "../ui/symbol-view";
 
 export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
   const router = useRouter();
-  const primaryColor = useCSSVariable("--color-primary") as string;
 
   return (
     <Card className="gap-6">
@@ -51,8 +49,8 @@ export const ShopCard = React.memo(({ shop }: { shop: ISellerShopDetail }) => {
             });
           }}
         >
-          <SymbolView
-            tintColor={primaryColor}
+          <StyledSymbolView
+            tintColorClassName={"accent-primary"}
             size={18}
             name={{
               ios: "pencil",

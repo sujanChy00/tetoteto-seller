@@ -1,21 +1,13 @@
 import { useLogoutMutation } from "@/mutation/auth-mutation";
-import { Icon, RNHostView } from "@expo/ui";
-import { SymbolView } from "expo-symbols";
-import { useCSSVariable } from "uniwind";
+import { RNHostView } from "@expo/ui";
 import { AlertDialog } from "../alert-dialog";
 import { DangerButton } from "../button";
 import { Host } from "../host";
-
-const LOGOUT_ICON = Icon.select({
-  android: import("@expo/material-symbols/logout.xml"),
-  ios: "rectangle.portrait.and.arrow.right",
-});
+import { StyledSymbolView } from "../symbol-view";
 
 export const LogoutButton = () => {
   const { mutate: logout, isPending } = useLogoutMutation();
-  const dangerForegroundColor = useCSSVariable(
-    "--color-danger-foreground",
-  ) as string;
+
   return (
     <Host matchContents={{ vertical: true }}>
       <AlertDialog
@@ -29,13 +21,13 @@ export const LogoutButton = () => {
           <RNHostView matchContents>
             <DangerButton onPress={open}>
               <DangerButton.Label>Logout</DangerButton.Label>
-              <SymbolView
+              <StyledSymbolView
                 name={{
                   android: "logout",
                   ios: "rectangle.portrait.and.arrow.right",
                 }}
                 size={16}
-                tintColor={dangerForegroundColor}
+                tintColorClassName={"accent-danger-foreground"}
               />
             </DangerButton>
           </RNHostView>

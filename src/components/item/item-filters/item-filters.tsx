@@ -3,10 +3,10 @@ import { GhostButton, SecondaryButton } from "@/components/ui/button";
 import { InputGroup } from "@/components/ui/input-group";
 import { Menu } from "@/components/ui/menu";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ItemSortOptions } from "@/constants/data";
 import { useSortItems } from "@/hooks/use-sort-items";
 import { ItemSortOption } from "@/types";
-import { SymbolView } from "expo-symbols";
 import { useMemo, useState } from "react";
 import { View } from "react-native";
 import { ZoomIn, ZoomOut } from "react-native-reanimated";
@@ -44,7 +44,7 @@ export const ItemFilters = ({
           }}
         >
           <View className="size-12 items-center justify-center rounded-full bg-default">
-            <SymbolView
+            <StyledSymbolView
               name={{
                 android: "sort",
                 ios: "arrow.up.arrow.down",
@@ -85,9 +85,10 @@ export const ItemFilters = ({
                       }
                     }}
                   >
-                    <SymbolView
+                    <StyledSymbolView
                       name={{
                         android: "close",
+                        ios: "xmark",
                       }}
                     />
                   </GhostButton>
@@ -104,7 +105,7 @@ export const ItemFilters = ({
           }}
           className="px-0 size-12 rounded-full"
         >
-          <SymbolView name={{ android: "add", ios: "plus" }} />
+          <StyledSymbolView name={{ android: "add", ios: "plus" }} />
         </SecondaryButton>
       </View>
     </StickyButtonWrapper>

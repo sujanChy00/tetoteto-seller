@@ -1,17 +1,15 @@
 import { Link } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { SecondaryButton } from "../ui/button";
+import { StyledSymbolView } from "../ui/symbol-view";
 
 export const HomeLinks = () => {
-  const primaryColor = useCSSVariable("--color-primary") as string;
   return (
     <View className="flex-row items-center gap-6 justify-between">
       <Link asChild href={"/order"}>
         <SecondaryButton className="flex-1">
-          <SymbolView
-            tintColor={primaryColor}
+          <StyledSymbolView
+            tintColorClassName={"accent-primary"}
             size={20}
             name={{
               android: "shopping_cart",
@@ -23,8 +21,8 @@ export const HomeLinks = () => {
       </Link>
       <Link asChild href={"/shipments"}>
         <SecondaryButton className="flex-1">
-          <SymbolView
-            tintColor={primaryColor}
+          <StyledSymbolView
+            tintColorClassName={"accent-primary"}
             size={20}
             name={{
               ios: "shippingbox.fill",

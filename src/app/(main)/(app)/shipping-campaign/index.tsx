@@ -4,26 +4,20 @@ import { FabButton } from "@/components/ui/fab-button";
 import { ListEmpty } from "@/components/ui/list/list-empty";
 import { ListFooter } from "@/components/ui/list/list-footer";
 import { ListSeparator } from "@/components/ui/list/list-separator";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { isAndroid } from "@/constants/platform";
 import { useResponsiveListColumns } from "@/hooks/use-responsive-list-columns";
 import { useGetAllShippingCampaigns } from "@/queries/campaign-query";
 import { IShipppingCampaign } from "@/types";
 import { LegendList } from "@legendapp/list/react-native";
 import { useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 
 const renderSeparator = () => <ListSeparator />;
 
 const ShippingCampaignScreen = () => {
   const router = useRouter();
-  const [successColor, mutedColor, primaryForegroundColor] = useCSSVariable([
-    "--color-success",
-    "--color-muted",
-    "--color-primary-foreground",
-  ]) as [string, string, string];
   const { numColumns } = useResponsiveListColumns();
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, refetch } = useGetAllShippingCampaigns();
@@ -37,11 +31,7 @@ const ShippingCampaignScreen = () => {
 
   const renderItem = useCallback(
     ({ item }: { item: IShipppingCampaign }) => (
-      <ShippingCampaignCard
-        campaign={item}
-        successColor={successColor}
-        mutedColor={mutedColor}
-      />
+      <ShippingCampaignCard campaign={item} />
     ),
     [],
   );
@@ -88,13 +78,13 @@ const ShippingCampaignScreen = () => {
             }}
             className={"size-16"}
           >
-            <SymbolView
+            <StyledSymbolView
               size={28}
               name={{
                 ios: "plus",
                 android: "add",
               }}
-              tintColor={primaryForegroundColor}
+              tintColorClassName={"accent-primary-foreground"}
             />
           </PrimaryButton>
         </FabButton>

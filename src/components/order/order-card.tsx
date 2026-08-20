@@ -1,8 +1,12 @@
 import { ITransactionContent } from "@/types";
 import { dateTimestampFormatter } from "@/utils/date";
-import { orderStatusColor, transactionTypeColor } from "@/utils/order-status";
+import {
+  orderStatusColor,
+  transactionTypeColor,
+  transactionTypeIcon,
+} from "@/utils/order-status";
 import { Link } from "expo-router";
-import { JSX, memo } from "react";
+import { memo } from "react";
 import { Pressable, View } from "react-native";
 import { TertiaryButton } from "../ui/button";
 import { Card } from "../ui/card";
@@ -12,10 +16,9 @@ import { ThemedText } from "../ui/themed-text";
 
 interface Props {
   order: ITransactionContent;
-  transactionTypeIcon: Record<string, JSX.Element>;
 }
 
-export const OrderCard = memo(({ order, transactionTypeIcon }: Props) => {
+export const OrderCard = memo(({ order }: Props) => {
   const transactionDate = dateTimestampFormatter(order.orderDateTimestamp);
 
   return (

@@ -2,11 +2,11 @@ import { useGenerateInvoice } from "@/queries/order-query";
 import { Icon } from "@expo/ui";
 import { GlassView } from "expo-glass-effect";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useMemo } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import { FullScreenSpinner } from "../ui/full-screen-spinner";
 import { Menu } from "../ui/menu";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 const styles = StyleSheet.create({
@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
 const Trigger = Platform.select({
   ios: (
     <GlassView style={styles.container} hitSlop={8}>
-      <SymbolView
+      <StyledSymbolView
+        tintColorClassName="accent-foreground"
         name={{
           android: "more_horiz",
           ios: "ellipsis",
@@ -35,7 +36,8 @@ const Trigger = Platform.select({
       hitSlop={8}
       className="size-8 rounded-full items-center justify-center"
     >
-      <SymbolView
+      <StyledSymbolView
+        tintColorClassName="accent-foreground"
         name={{
           android: "more_horiz",
           ios: "ellipsis",

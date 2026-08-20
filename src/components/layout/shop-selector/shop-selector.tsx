@@ -1,3 +1,4 @@
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { useUser } from "@/hooks/use-user";
@@ -5,18 +6,12 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from "@expo/ui/community/bottom-sheet";
-import { SymbolView } from "expo-symbols";
 import { useCallback, useRef } from "react";
 import { Pressable, View } from "react-native";
 import { twMerge } from "tailwind-merge";
-import { useCSSVariable } from "uniwind";
 
 export const ShopSelector = () => {
   const sheetRef = useRef<BottomSheetModal>(null);
-  const [successColor, foregroundColor] = useCSSVariable([
-    "--color-success",
-    "--color-foreground",
-  ]);
   const { user } = useUser();
   const { selectedShop, setSelectedShop, shopLists } = useSelectedShop();
   const onOpen = useCallback(() => {
@@ -38,8 +33,8 @@ export const ShopSelector = () => {
           >
             {selectedShop?.shopName}
           </ThemedText>
-          <SymbolView
-            tintColor={foregroundColor as string}
+          <StyledSymbolView
+            tintColorClassName={"accent-foreground"}
             size={30}
             name={{
               android: "keyboard_arrow_down",
@@ -79,13 +74,13 @@ export const ShopSelector = () => {
                   }}
                 >
                   {isSelected && (
-                    <SymbolView
+                    <StyledSymbolView
                       name={{
                         ios: "checkmark",
                         android: "check",
                       }}
                       size={20}
-                      tintColor={successColor as string}
+                      tintColorClassName={"accent-success"}
                     />
                   )}
                   <ThemedText

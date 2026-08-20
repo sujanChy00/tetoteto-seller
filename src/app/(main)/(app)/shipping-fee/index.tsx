@@ -7,14 +7,10 @@ import { useGetAllShippingFee } from "@/queries/shipping-fee-query";
 import { IshippingFee } from "@/types";
 import { LegendList } from "@legendapp/list/react-native";
 import { useCallback, useMemo, useState } from "react";
-import { useCSSVariable } from "uniwind";
 
 const renderSeparator = () => <ListSeparator />;
 
 const ShippingFeeScreen = () => {
-  const primaryColor = useCSSVariable("--color-primary") as string;
-  const warningColor = useCSSVariable("--color-warning") as string;
-  const successColor = useCSSVariable("--color-success") as string;
   const { numColumns } = useResponsiveListColumns();
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, refetch } = useGetAllShippingFee();
@@ -28,12 +24,7 @@ const ShippingFeeScreen = () => {
 
   const renderItem = useCallback(
     ({ item }: { item: IshippingFee }) => (
-      <ShippingFeeCard
-        shippingFee={item}
-        primaryColor={primaryColor}
-        warningColor={warningColor}
-        successColor={successColor}
-      />
+      <ShippingFeeCard shippingFee={item} />
     ),
     [],
   );

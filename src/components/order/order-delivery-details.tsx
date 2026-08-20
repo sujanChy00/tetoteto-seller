@@ -1,6 +1,8 @@
-import { useGetOrderTypeIcon } from "@/hooks/use-get-order-type-icon";
 import { ITransactionById } from "@/types";
-import { transactionTypeColor } from "@/utils/order-status";
+import {
+  transactionTypeColor,
+  transactionTypeIcon,
+} from "@/utils/order-status";
 import { View } from "react-native";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
@@ -11,7 +13,6 @@ export const OrderDeliveryDetails = ({
 }: {
   order: ITransactionById;
 }) => {
-  const { transactionTypeIcon } = useGetOrderTypeIcon();
   return (
     <Card className="gap-6">
       <View className="flex-row items-start justify-between gap-3">

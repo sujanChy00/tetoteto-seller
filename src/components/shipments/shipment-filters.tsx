@@ -1,15 +1,13 @@
 import { shipmentFilterOptions } from "@/constants/data";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import light from "expo-symbols/androidWeights/light";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { Menu } from "../ui/menu";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShipmentFilters = () => {
   const router = useRouter();
-  const [colorPrimary] = useCSSVariable(["--color-primary"]) as [string];
   const params = useLocalSearchParams<{
     filter?: string;
   }>();
@@ -32,13 +30,13 @@ export const ShipmentFilters = () => {
         <ThemedText className="text-primary capitalize">
           {selectedValue?.label ?? "current"}
         </ThemedText>
-        <SymbolView
+        <StyledSymbolView
           weight={{ ios: "regular", android: light }}
           name={{
             android: "keyboard_arrow_down",
             ios: "chevron.down",
           }}
-          tintColor={colorPrimary}
+          tintColorClassName={"accent-primary"}
         />
       </View>
     </Menu>

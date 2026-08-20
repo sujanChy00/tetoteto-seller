@@ -1,4 +1,3 @@
-import { useGetOrderTypeIcon } from "@/hooks/use-get-order-type-icon";
 import { useRefreshOnFocus } from "@/hooks/use-refetch-onfocus";
 import { useGetAllOrdersInfiniteQuery } from "@/queries/order-query";
 import { IOrderProgress, ITransactionContent } from "@/types";
@@ -20,8 +19,6 @@ const renderSeparator = () => <ListSeparator />;
 const footerStyle = { padding: 10, alignItems: "center" as const };
 
 export const OrderList = ({ orderType, status }: Props) => {
-  const { transactionTypeIcon } = useGetOrderTypeIcon();
-
   const [refreshing, setRefreshing] = useState(false);
   const params = useLocalSearchParams<{
     orderStatus?: string;
@@ -56,10 +53,8 @@ export const OrderList = ({ orderType, status }: Props) => {
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: ITransactionContent }) => (
-      <OrderCard order={item} transactionTypeIcon={transactionTypeIcon} />
-    ),
-    [transactionTypeIcon],
+    ({ item }: { item: ITransactionContent }) => <OrderCard order={item} />,
+    [],
   );
 
   const onRefresh = useCallback(() => {

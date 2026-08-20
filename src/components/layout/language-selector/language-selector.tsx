@@ -1,14 +1,12 @@
 import { Menu } from "@/components/ui/menu";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ThemedText } from "@/components/ui/themed-text";
 import { LanguageLists } from "@/constants/data";
-import { useAppTheme } from "@/context/app-theme-provider";
 import { useLanguage } from "@/hooks/use-language";
-import { SymbolView } from "expo-symbols";
 import { useMemo } from "react";
 import { View } from "react-native";
 
 export const LanguageSelector = () => {
-  const { colors } = useAppTheme();
   const { language, setLanguage, t } = useLanguage();
   const selectedLabel = useMemo(() => {
     return LanguageLists.find((l) => l.value === language)?.label;
@@ -35,13 +33,13 @@ export const LanguageSelector = () => {
             >
               {selectedLabel}
             </ThemedText>
-            <SymbolView
+            <StyledSymbolView
               style={{
                 flexShrink: 0,
               }}
               name={{ android: "unfold_more", ios: "chevron.up.chevron.down" }}
               size={20}
-              tintColor={colors.primary}
+              tintColorClassName={"accent-primary"}
             />
           </View>
         </Menu>

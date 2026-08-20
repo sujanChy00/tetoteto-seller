@@ -1,17 +1,15 @@
 import { useUser } from "@/hooks/use-user";
 import { getAvatarName } from "@/utils/avatar-name";
 import { useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { TouchableOpacity, View } from "react-native";
 import { Fragment } from "react/jsx-runtime";
-import { useCSSVariable } from "uniwind";
 import { ViewAllShopButton } from "../shop/view-all-shop-button";
 import { Avatar } from "../ui/avatar";
 import { Separator } from "../ui/separator";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShopList = () => {
-  const mutedColor = useCSSVariable("--color-muted");
   const router = useRouter();
   const { user } = useUser();
 
@@ -53,9 +51,9 @@ export const ShopList = () => {
                   {shop.shopName}
                 </ThemedText>
               </View>
-              <SymbolView
+              <StyledSymbolView
                 size={20}
-                tintColor={mutedColor as string}
+                tintColorClassName={"accent-muted"}
                 name={{
                   android: "chevron_right",
                   ios: "chevron.right",

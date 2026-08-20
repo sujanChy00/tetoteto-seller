@@ -1,11 +1,11 @@
 import { AnimatedView } from "@/components/ui/animated-view";
 import { Avatar } from "@/components/ui/avatar";
 import { OutlineButton } from "@/components/ui/button";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ThemedText } from "@/components/ui/themed-text";
 import { getAvatarName } from "@/utils/avatar-name";
 import * as ImagePicker from "expo-image-picker";
 import { Link } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useCallback } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { FadeIn, FadeOut } from "react-native-reanimated";
@@ -121,8 +121,8 @@ export const ProfileImagePicker = ({
       </View>
       <View className="justify-center flex-row items-center gap-3">
         <OutlineButton onPress={takePicture} disabled={isUploading || disabled}>
-          <SymbolView
-            tintColor={defaultForegroundColor}
+          <StyledSymbolView
+            tintColorClassName={"accent-default-foreground"}
             name={{
               android: "photo_camera",
               ios: "camera",
@@ -132,8 +132,8 @@ export const ProfileImagePicker = ({
           <OutlineButton.Label>Camera</OutlineButton.Label>
         </OutlineButton>
         <OutlineButton onPress={pickImage} disabled={isUploading || disabled}>
-          <SymbolView
-            tintColor={defaultForegroundColor}
+          <StyledSymbolView
+            tintColorClassName={"accent-default-foreground"}
             name={{
               android: "photo_library",
               ios: "photo.on.rectangle",

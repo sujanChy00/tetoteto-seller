@@ -1,12 +1,10 @@
 import { IshopDetails } from "@/types";
-import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { Chip } from "../ui/chip";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShopTitle = ({ data }: { data: IshopDetails }) => {
-  const primaryColor = useCSSVariable("--color-primary") as string;
   return (
     <View className="gap-1">
       <View className="flex-row gap-1 items-center flex-1">
@@ -18,13 +16,13 @@ export const ShopTitle = ({ data }: { data: IshopDetails }) => {
         </Chip>
       </View>
       <View className="flex-row items-center gap-1">
-        <SymbolView
+        <StyledSymbolView
           name={{
             android: "location_on",
             ios: "mappin.and.ellipse",
           }}
           size={16}
-          tintColor={primaryColor}
+          tintColorClassName={"accent-primary"}
         />
         <ThemedText className="text-sm text-primary underline flex-1">
           {data.shopAddress}

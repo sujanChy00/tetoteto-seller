@@ -4,12 +4,12 @@ import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { InputGroup } from "@/components/ui/input-group";
 import { Menu } from "@/components/ui/menu";
 import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { orderSortOptions } from "@/constants/data";
 import { useLanguage } from "@/hooks/use-language";
 import { dateOnlyFormatter, endOfMonth, startOfMonth } from "@/utils/date";
 import { BottomSheetModal } from "@expo/ui/community/bottom-sheet";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useCallback, useRef, useState } from "react";
 import { View } from "react-native";
 import { ZoomIn, ZoomOut } from "react-native-reanimated";
@@ -51,7 +51,7 @@ export const OrderFilters = () => {
           }}
         >
           <View className="size-12 items-center justify-center rounded-full bg-default">
-            <SymbolView
+            <StyledSymbolView
               name={{
                 android: "sort",
                 ios: "arrow.up.arrow.down",
@@ -90,7 +90,7 @@ export const OrderFilters = () => {
                     }
                   }}
                 >
-                  <SymbolView
+                  <StyledSymbolView
                     name={{
                       android: "close",
                     }}
@@ -101,7 +101,7 @@ export const OrderFilters = () => {
           ) : null}
         </InputGroup>
         <SecondaryButton onPress={onOpen} className="px-0 size-12 rounded-full">
-          <SymbolView name={{ android: "date_range", ios: "calendar" }} />
+          <StyledSymbolView name={{ android: "date_range", ios: "calendar" }} />
         </SecondaryButton>
       </View>
       <DateRangePicker

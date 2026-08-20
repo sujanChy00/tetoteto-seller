@@ -7,13 +7,12 @@ import { PrimaryButton } from "@/components/ui/button";
 import { FalllBackMesage } from "@/components/ui/fallback-message";
 import { StyledImage } from "@/components/ui/image";
 import { ParallaxScrollView } from "@/components/ui/parallax-scroll-view";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { useGetShopDetails } from "@/queries/shop-query";
 import { Icon } from "@expo/ui";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useState } from "react";
 import { RefreshControl, View } from "react-native";
-import { useCSSVariable } from "uniwind";
 
 const EDIT_ICON = Icon.select({
   ios: "pencil",
@@ -22,9 +21,6 @@ const EDIT_ICON = Icon.select({
 
 const ShopDetailsScreen = () => {
   const router = useRouter();
-  const primaryForegroundColor = useCSSVariable(
-    "--color-primary-foreground",
-  ) as string;
   const [refreshing, setRefreshing] = useState(false);
   const { shopId } = useLocalSearchParams<{ shopId: string }>();
   const { data, isPending, refetch } = useGetShopDetails(shopId);
@@ -80,8 +76,8 @@ const ShopDetailsScreen = () => {
             });
           }}
         >
-          <SymbolView
-            tintColor={primaryForegroundColor}
+          <StyledSymbolView
+            tintColorClassName={"accent-primary-foreground"}
             name={{
               android: "edit",
               ios: "pencil",

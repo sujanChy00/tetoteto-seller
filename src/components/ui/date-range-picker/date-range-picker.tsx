@@ -5,7 +5,6 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from "@expo/ui/community/bottom-sheet";
-import { SymbolView } from "expo-symbols";
 import { RefObject, useState } from "react";
 import { View } from "react-native";
 import DateTimePicker, {
@@ -13,8 +12,8 @@ import DateTimePicker, {
   DateType,
   useDefaultClassNames,
 } from "react-native-ui-datepicker";
-import { useCSSVariable } from "uniwind";
 import { GhostButton, OutlineButton, PrimaryButton } from "../button";
+import { StyledSymbolView } from "../symbol-view";
 
 interface DateRangeType {
   endDate?: DateType;
@@ -29,7 +28,6 @@ interface Props extends Omit<DatePickerBaseProps, "mode" | "onChange"> {
 
 export const DateRangePicker = ({ onChange, value, bottomSheetRef }: Props) => {
   const { isDark } = useAppTheme();
-  const primaryColor = useCSSVariable("--color-primary") as string;
   const defaultClassNames = useDefaultClassNames();
   const [date, setDate] = useState<DateRangeType>({
     startDate: value.startDate
@@ -83,8 +81,8 @@ export const DateRangePicker = ({ onChange, value, bottomSheetRef }: Props) => {
             ),
             IconNext: (
               <View className="rounded-full items-center justify-center size-10">
-                <SymbolView
-                  tintColor={primaryColor}
+                <StyledSymbolView
+                  tintColorClassName={"accent-primary"}
                   name={{
                     ios: "chevron.right",
                     android: "chevron_right",
@@ -94,8 +92,8 @@ export const DateRangePicker = ({ onChange, value, bottomSheetRef }: Props) => {
             ),
             IconPrev: (
               <View className="rounded-full items-center justify-center size-10">
-                <SymbolView
-                  tintColor={primaryColor}
+                <StyledSymbolView
+                  tintColorClassName={"accent-primary"}
                   name={{
                     ios: "chevron.left",
                     android: "chevron_left",

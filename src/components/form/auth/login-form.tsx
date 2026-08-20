@@ -1,4 +1,5 @@
 import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
+import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { TextSeparator } from "@/components/ui/text-separator";
 import { isIOS, isNative } from "@/constants/platform";
 import { useDeviceToken } from "@/hooks/use-device-token";
@@ -13,15 +14,12 @@ import { LoginFormData, LoginSchema } from "@/schema/auth-schema";
 import { useSelector } from "@tanstack/react-form";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { ScrollView, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
-import { useCSSVariable } from "uniwind";
 import { GhostButton, PrimaryButton, SecondaryButton } from "../../ui/button";
 import { ThemedText } from "../../ui/themed-text";
 
 export const LoginForm = () => {
-  const [colorPrimary] = useCSSVariable(["--color-primary"]);
   const router = useRouter();
   const { deviceToken } = useDeviceToken();
   const hapticFeedBack = useHaptics();
@@ -141,8 +139,8 @@ export const LoginForm = () => {
                       <GhostButton.Label>
                         {isIOS ? "Login with FaceID" : "Login with Fingerprint"}
                       </GhostButton.Label>
-                      <SymbolView
-                        tintColor={colorPrimary as string}
+                      <StyledSymbolView
+                        tintColorClassName={"accent-primary"}
                         name={{
                           ios: "faceid",
                           android: "fingerprint",

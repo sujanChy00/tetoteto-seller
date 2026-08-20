@@ -1,15 +1,13 @@
 import { ITransactionById } from "@/types";
 import { getAvatarName } from "@/utils/avatar-name";
-import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { Avatar } from "../ui/avatar";
 import { Card } from "../ui/card";
 import { Separator } from "../ui/separator";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const OrderUserDetails = ({ order }: { order: ITransactionById }) => {
-  const [mutedColor] = useCSSVariable(["--color-muted"]);
   return (
     <Card className="gap-3">
       <Card.Header className="flex-row items-center gap-3">
@@ -23,13 +21,13 @@ export const OrderUserDetails = ({ order }: { order: ITransactionById }) => {
             {order.userDetail.name}
           </Card.Title>
           <View className="flex-row items-center gap-1">
-            <SymbolView
+            <StyledSymbolView
               name={{
                 android: "phone",
                 ios: "phone.fill",
               }}
               size={12}
-              tintColor={mutedColor as string}
+              tintColorClassName={"accent-muted"}
             />
             <Card.Description className="text-xs font-medium">
               {order.userDetail.phoneNumber}

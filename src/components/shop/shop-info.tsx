@@ -1,23 +1,20 @@
 import { IshopDetails } from "@/types";
-import { SymbolView } from "expo-symbols";
 import { Linking, Pressable, View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { Separator } from "../ui/separator";
 import { Surface } from "../ui/surface";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
-  const primaryColor = useCSSVariable("--color-primary") as string;
-
   return (
     <Surface className="rounded-2xl p-0 border border-separator">
       <View className="flex-row items-center gap-x-2 p-3.5">
-        <SymbolView
+        <StyledSymbolView
           name={{
             android: "info",
             ios: "info.circle",
           }}
-          tintColor={primaryColor}
+          tintColorClassName={"accent-primary"}
           size={20}
         />
         <ThemedText className="font-semibold">Shop Info</ThemedText>
@@ -140,13 +137,13 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
               onPress={() => Linking.openURL(shop.shopFacebookUrl)}
             >
               <ThemedText className="text-sm text-primary">View</ThemedText>
-              <SymbolView
+              <StyledSymbolView
                 name={{
                   android: "open_in_new",
                   ios: "arrow.up.right.square",
                 }}
                 size={16}
-                tintColor={primaryColor}
+                tintColorClassName={"accent-primary"}
               />
             </Pressable>
           </View>
@@ -162,13 +159,13 @@ export const ShopInfo = ({ shop }: { shop: IshopDetails }) => {
               onPress={() => Linking.openURL(shop.shopTiktokUrl)}
             >
               <ThemedText className="text-sm text-primary">View</ThemedText>
-              <SymbolView
+              <StyledSymbolView
                 name={{
                   android: "open_in_new",
                   ios: "arrow.up.right.square",
                 }}
                 size={16}
-                tintColor={primaryColor}
+                tintColorClassName={"accent-primary"}
               />
             </Pressable>
           </View>

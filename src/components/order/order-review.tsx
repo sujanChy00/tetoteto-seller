@@ -1,18 +1,13 @@
 import { ITransactionById } from "@/types";
 import * as Clipboard from "expo-clipboard";
-import { SymbolView } from "expo-symbols";
 import { useMemo } from "react";
 import { Linking, View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { GhostButton } from "../ui/button";
 import { Card } from "../ui/card";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const OrderReviews = ({ order }: { order: ITransactionById }) => {
-  const [colorPrimary, colorWarning] = useCSSVariable([
-    "--color-primary",
-    "--color-warning",
-  ]);
   const ratings = useMemo(
     () => Array.from({ length: order.userReview.rating }),
     [order.userReview.rating],
@@ -30,16 +25,15 @@ export const OrderReviews = ({ order }: { order: ITransactionById }) => {
             onPress={() => {
               Linking.openURL(order.trackingUrl);
             }}
-            // size="sm"
           >
             <GhostButton.Label className="text-primary">view</GhostButton.Label>
-            <SymbolView
+            <StyledSymbolView
               name={{
                 android: "open_in_new",
                 ios: "arrow.up.right.square",
               }}
               size={18}
-              tintColor={colorPrimary as string}
+              tintColorClassName={"accent-primary"}
             />
           </GhostButton>
         </View>
@@ -55,13 +49,13 @@ export const OrderReviews = ({ order }: { order: ITransactionById }) => {
             </ThemedText>
           </View>
           <GhostButton onPress={copyToClipboard}>
-            <SymbolView
+            <StyledSymbolView
               name={{
                 android: "content_copy",
                 ios: "doc.on.doc",
               }}
               size={18}
-              tintColor={colorPrimary as string}
+              tintColorClassName={"accent-primary"}
             />
           </GhostButton>
         </View>
@@ -69,14 +63,14 @@ export const OrderReviews = ({ order }: { order: ITransactionById }) => {
       {ratings.length > 0 && (
         <View className="flex-row items-center gap-1 pt-2">
           {ratings.map((_, index) => (
-            <SymbolView
+            <StyledSymbolView
               key={index}
               name={{
                 android: "star",
                 ios: "star.fill",
               }}
               size={18}
-              tintColor={colorWarning as string}
+              tintColorClassName={"accent-warning"}
             />
           ))}
         </View>

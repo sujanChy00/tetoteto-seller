@@ -130,9 +130,6 @@ export const UpdateOrderTrackingInfo = ({ order, className }: Props) => {
                       children={(Field) => (
                         <Field.TextField
                           maxLength={14}
-                          onFocus={() => {
-                            hapticFeedBack("selection");
-                          }}
                           inputMode="numeric"
                           keyboardType="numeric"
                           inputClassName="bg-surface-secondary"
@@ -146,9 +143,6 @@ export const UpdateOrderTrackingInfo = ({ order, className }: Props) => {
                         name="trackingUrl"
                         children={(Field) => (
                           <Field.TextField
-                            onFocus={() => {
-                              hapticFeedBack("selection");
-                            }}
                             inputMode="url"
                             keyboardType="url"
                             inputClassName="bg-surface-secondary"

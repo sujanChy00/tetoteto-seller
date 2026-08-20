@@ -1,8 +1,7 @@
-import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { Separator } from "../ui/separator";
 import { Surface } from "../ui/surface";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShopPromotionalMessage = ({
@@ -10,18 +9,17 @@ export const ShopPromotionalMessage = ({
 }: {
   promotionalMessage: string | undefined;
 }) => {
-  const primaryColor = useCSSVariable("--color-primary") as string;
   if (!promotionalMessage) return null;
 
   return (
     <Surface className="rounded-2xl p-0 border border-separator">
       <View className="flex-row items-center gap-x-2 p-3.5">
-        <SymbolView
+        <StyledSymbolView
           name={{
             android: "campaign",
             ios: "megaphone",
           }}
-          tintColor={primaryColor}
+          tintColorClassName={"accent-primary"}
           size={20}
         />
         <ThemedText className="font-semibold">Promotional Message</ThemedText>

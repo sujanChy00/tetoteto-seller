@@ -1,23 +1,21 @@
-import { SymbolView } from "expo-symbols";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 import { Card } from "../ui/card";
+import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
 export const OrderNote = ({ note }: { note: string | undefined }) => {
-  const [primaryColor] = useCSSVariable(["--color-primary"]);
   if (!note) return null;
   return (
     <Card className="gap-3">
       <View className="flex-row items-center gap-1">
         <ThemedText className="text-xs font-semibold">NOTES:</ThemedText>
-        <SymbolView
+        <StyledSymbolView
           name={{
             android: "sticky_note_2",
             ios: "note.text",
           }}
           size={15}
-          tintColor={primaryColor as string}
+          tintColorClassName={"accent-primary"}
         />
       </View>
       <View className="bg-surface-secondary rounded-lg p-3">
