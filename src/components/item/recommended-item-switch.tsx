@@ -50,6 +50,9 @@ export const RecommendedItemSwitch = ({
         <ThemedText className="text-xs font-medium">{label}</ThemedText>
       )}
       <SwitchInput
+        hostProps={{
+          matchContents: true,
+        }}
         value={recommended}
         onValueChange={handleToggle}
         disabled={isDisabled}

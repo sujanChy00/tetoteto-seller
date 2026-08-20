@@ -1,9 +1,7 @@
 import { useLanguage } from "@/hooks/use-language";
 import { useUpdateItem } from "@/mutation/item-mutation";
 import { IItemDescriptionResponse } from "@/types";
-import { View } from "react-native";
 import { SwitchInput } from "../ui/switch-input";
-import { ThemedText } from "../ui/themed-text";
 
 type Props = {
   data: IItemDescriptionResponse;
@@ -44,19 +42,11 @@ export const ItemDiscountedShippingSwitch = ({ data }: Props) => {
     isPending || data.itemDetails.itemType !== "dry" || isPending;
 
   return (
-    <View
-      accessibilityLabel="Discounted Shipping"
-      accessibilityState={{ checked: discountedShipping }}
-      className={"flex-row items-center justify-between gap-3"}
-    >
-      <ThemedText className="text-xs font-medium">
-        {t("discounted_shipping")}
-      </ThemedText>
-      <SwitchInput
-        disabled={isDisabled}
-        value={discountedShipping}
-        onValueChange={handleToggle}
-      />
-    </View>
+    <SwitchInput
+      label={t("discounted_shipping")}
+      disabled={isDisabled}
+      value={discountedShipping}
+      onValueChange={handleToggle}
+    />
   );
 };

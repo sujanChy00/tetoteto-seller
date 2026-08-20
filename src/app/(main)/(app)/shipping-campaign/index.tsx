@@ -63,7 +63,7 @@ const ShippingCampaignScreen = () => {
         onRefresh={onRefresh}
         ListEmptyComponent={ListEmptyComponent}
         data={shippingCampaigns}
-        estimatedItemSize={311}
+        estimatedItemSize={310}
         renderItem={renderItem}
         drawDistance={500}
       />

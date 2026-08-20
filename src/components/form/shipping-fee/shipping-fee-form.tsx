@@ -10,15 +10,23 @@ import {
 } from "@/schema/shipping-fee-schema";
 import { IshippingFee } from "@/types";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  View,
+} from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import * as v from "valibot";
 
-export const ShippingFeeForm = ({
-  data,
-}: {
+interface Props {
   data: IshippingFee | undefined;
-}) => {
+  refetch: () => Promise<any>;
+}
+
+export const ShippingFeeForm = ({ data, refetch }: Props) => {
+  const [refreshing, setRefreshing] = useState(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useLanguage();
   const hapticFeedBack = useHaptics();
@@ -64,6 +72,15 @@ export const ShippingFeeForm = ({
           keyboardShouldPersistTaps="always"
           contentContainerClassName="p-4 pb-safe-offset-10"
           style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+                refetch().finally(() => setRefreshing(false));
+              }}
+            />
+          }
         >
           <View className="flex-1 gap-y-6">
             <Form.AppField

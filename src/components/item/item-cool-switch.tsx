@@ -1,9 +1,7 @@
 import { useLanguage } from "@/hooks/use-language";
 import { useUpdateItem } from "@/mutation/item-mutation";
 import { IItemDescriptionResponse } from "@/types";
-import { View } from "react-native";
 import { SwitchInput } from "../ui/switch-input";
-import { ThemedText } from "../ui/themed-text";
 
 type Props = {
   data: IItemDescriptionResponse;
@@ -41,19 +39,11 @@ export const ItemCoolSwitch = ({ data }: Props) => {
   };
 
   return (
-    <View
-      accessibilityLabel="Cool Cart"
-      accessibilityState={{ checked: isMergeable }}
-      className={"flex-row items-center justify-between gap-3"}
-    >
-      <ThemedText className="text-xs font-medium">
-        {t("can_be_sent_in_cool_cart")}
-      </ThemedText>
-      <SwitchInput
-        disabled={isPending}
-        value={isMergeable}
-        onValueChange={handleToggle}
-      />
-    </View>
+    <SwitchInput
+      label={t("can_be_sent_in_cool_cart")}
+      disabled={isPending}
+      value={isMergeable}
+      onValueChange={handleToggle}
+    />
   );
 };

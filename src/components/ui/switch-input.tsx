@@ -2,13 +2,21 @@ import { useHaptics } from "@/hooks/use-haptics";
 import { Switch } from "@expo/ui";
 import { Host } from "./host";
 
+export interface SwitchInputProps extends React.ComponentProps<typeof Switch> {
+  hostProps?: React.ComponentProps<typeof Host>;
+}
+
 export const SwitchInput = ({
   onValueChange,
+  hostProps,
   ...rest
-}: React.ComponentProps<typeof Switch>) => {
+}: SwitchInputProps) => {
   const haptics = useHaptics();
   return (
-    <Host matchContents>
+    <Host
+      {...hostProps}
+      matchContents={hostProps?.matchContents ?? { vertical: true }}
+    >
       <Switch
         {...rest}
         onValueChange={(checked) => {

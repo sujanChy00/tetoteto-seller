@@ -1,26 +1,59 @@
+import { AnimatedSpacer } from "@/components/ui/animated-spacer";
+import { PrimaryButton } from "@/components/ui/button";
+import { Surface } from "@/components/ui/surface";
+import { discountTypes, itemTypes } from "@/constants/data";
 import { isIOS } from "@/constants/platform";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import {
+  useAddShippingCampaign,
+  useUpdateShippingCampaign,
+} from "@/mutation/campaign-mutation";
+import {
   ShippingCampaignFormInput,
   ShippingCampaignSchema,
 } from "@/schema/shipping-campaign-schema";
 import { IShipppingCampaign } from "@/types";
-import { Picker } from "@expo/ui/community/picker";
+import { errorToast } from "@/utils/toast";
 import { useSelector } from "@tanstack/react-form";
+import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { ScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  View,
+} from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import * as v from "valibot";
+import { ShippingAreaSelector } from "./shipping-area-selector";
 
-export const ShippingCampaignForm = ({
-  campaign,
-}: {
+interface Props {
   campaign?: IShipppingCampaign;
-}) => {
-  const [language, setLanguage] = useState("java");
+  refetch?: () => Promise<any>;
+}
+
+export const ShippingCampaignForm = ({ campaign, refetch }: Props) => {
+  const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
+
   const { t } = useLanguage();
   const hapticFeedBack = useHaptics();
+  const { mutateAsync: updateMutation, isPending: updatingCampaign } =
+    useUpdateShippingCampaign({
+      onSuccess: () => {
+        router.back();
+      },
+    });
+  const { mutateAsync: addMutation, isPending: addingCampaign } =
+    useAddShippingCampaign({
+      onSuccess: () => {
+        Form.reset();
+        router.back();
+      },
+    });
+  const isPending = updatingCampaign || addingCampaign;
   const initialDiscountType = useMemo(
     () =>
       campaign
@@ -81,13 +114,55 @@ export const ShippingCampaignForm = ({
     onSubmitInvalid: () => {
       hapticFeedBack("error");
     },
-    // onSubmit: async ({ value }) => {
-    //   const parsed = v.parse(ShippingFeeSchema, value);
-    //   await mutateAsync({
-    //     shippingInfo: parsed,
-    //     id: Number(id),
-    //   });
-    // },
+    onSubmit: async ({ value, formApi, meta }) => {
+      const parsedValue = v.parse(ShippingCampaignSchema, value);
+      const { discountType, ...body } = parsedValue;
+      const data = {
+        ...body,
+        flatShippingCharge:
+          discountType === "flatShippingCharge"
+            ? parsedValue.flatShippingCharge
+            : undefined,
+        flatShippingDiscount:
+          discountType === "flatShippingDiscount"
+            ? parsedValue.flatShippingDiscount
+            : undefined,
+        shippingCampaignDiscountPercentage:
+          discountType === "shippingCampaignDiscountPercentage"
+            ? parsedValue.shippingCampaignDiscountPercentage
+            : undefined,
+      };
+
+      if (campaign) {
+        updateMutation({
+          campaignId: campaign.shippingCampaignId as number,
+          ...data,
+        });
+        return;
+      }
+
+      if (!parsedValue[discountType]) {
+        formApi.setFieldMeta(discountType, (prev) => ({
+          ...prev,
+          errorMap: {
+            ...prev.errorMap,
+            onSubmit: discountTypeError[discountType],
+          },
+        }));
+        return;
+      }
+
+      if (!value.shippingAreas || value.shippingAreas.length === 0) {
+        errorToast({
+          title: "Error",
+          description: "Please select at least one area",
+        });
+
+        return;
+      }
+
+      addMutation(body);
+    },
   });
 
   const { discountType } = useSelector(Form.store, (state) => ({
@@ -105,13 +180,28 @@ export const ShippingCampaignForm = ({
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="always"
           contentContainerClassName="p-4 pb-safe-offset-10"
+          refreshControl={
+            refetch ? (
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => {
+                  setRefreshing(true);
+                  refetch().finally(() => setRefreshing(false));
+                }}
+              />
+            ) : undefined
+          }
           style={{ flex: 1 }}
         >
           <View className="flex-1 gap-y-6 w-full">
             <Form.AppField
               name="shippingCampaignName"
               children={(Field) => (
-                <Field.TextField multiline label={t("campaign_name")} />
+                <Field.TextField
+                  multiline
+                  returnKeyType="next"
+                  label={t("campaign_name")}
+                />
               )}
             />
             <Form.AppField
@@ -120,18 +210,22 @@ export const ShippingCampaignForm = ({
                 <Field.TextField multiline label={t("campaign_description")} />
               )}
             />
-            {/*Replace with Select*/}
             <Form.AppField
               name="shippingCampaignType"
               children={(Field) => (
-                <Field.TextField multiline label={t("item_type")} />
+                <Field.SelectField options={itemTypes} label={t("item_type")} />
               )}
             />
-            {/*Replace with Select*/}
             <Form.AppField
               name="shippingCampaignGivenBy"
               children={(Field) => (
-                <Field.TextField multiline label={t("given_by")} />
+                <Field.SelectField
+                  options={[
+                    { label: "Admin", value: "admin" },
+                    { label: "Seller", value: "seller" },
+                  ]}
+                  label={t("given_by")}
+                />
               )}
             />
             <Form.AppField
@@ -145,28 +239,17 @@ export const ShippingCampaignForm = ({
                 />
               )}
             />
-            {/*Replace with Select*/}
             <Form.AppField
               name="discountType"
               children={(Field) => (
-                <Field.TextField
+                <Field.SelectField
                   isDisabled={!!campaign}
+                  options={discountTypes}
                   label={t("discount_type")}
                 />
               )}
             />
-            <View style={{ flexDirection: "row", width: "100%" }}>
-              <Picker
-                selectedValue={language}
-                style={{ flex: 1 }}
-                onValueChange={(value) => setLanguage(value)}
-              >
-                <Picker.Item label="Java" value="java" />
-                <Picker.Item label="JavaScript" value="js" />
-                <Picker.Item label="Objective C" value="objc" />
-                <Picker.Item label="Swift" value="swift" />
-              </Picker>
-            </View>
+
             <Form.AppField
               name={discountType}
               children={(Field) => (
@@ -176,7 +259,48 @@ export const ShippingCampaignForm = ({
                 />
               )}
             />
+            <View className="flex-row gap-2">
+              <Form.AppField
+                name={"shippingCampaignStartDate"}
+                children={(Field) => (
+                  <Field.DateField label={t("start_date")} className="flex-1" />
+                )}
+              />
+              <Form.AppField
+                name={"shippingCampaignEndDate"}
+                children={(Field) => (
+                  <Field.DateField label={t("end_date")} className="flex-1" />
+                )}
+              />
+            </View>
+            <Form.AppField
+              name={"shippingCampaignActive"}
+              children={(Field) => (
+                <Surface className="px-4 py-1.5">
+                  <Field.SwitchField label={t("status")} />
+                </Surface>
+              )}
+            />
+            <Form.AppField
+              name={"shippingAreas"}
+              children={(Field) => (
+                <ShippingAreaSelector
+                  value={Field.state.value}
+                  onChange={Field.handleChange}
+                />
+              )}
+            />
+            <Form.SubmitButton disabled={isPending}>
+              {isPending && (
+                <ActivityIndicator
+                  size="small"
+                  colorClassName="accent-primary-foreground"
+                />
+              )}
+              <PrimaryButton.Label>{t("save")}</PrimaryButton.Label>
+            </Form.SubmitButton>
           </View>
+          <AnimatedSpacer height={100} />
         </ScrollView>
       </KeyboardAvoidingView>
     </Form.AppForm>

@@ -23,13 +23,14 @@ export const useGetAllShippingCampaigns = () => {
   });
 };
 
-export const useGetAllShippingArea = () => {
+export const useGetAllShippingArea = (enabled: boolean) => {
   return useQuery<IShippingArea[]>({
     queryKey: [GET_ALL_SHIPPING_AREA_QUERY_KEY],
     queryFn: async () =>
       await fetcher({
         url: "/shippingArea",
       }),
+    enabled,
   });
 };
 

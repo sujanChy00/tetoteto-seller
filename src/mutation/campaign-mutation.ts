@@ -1,13 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY } from "@/constants/query-keys";
+import {
+  GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY,
+  GET_SHIPPING_CAMPAIGN_BY_ID_QUERY_KEY,
+} from "@/constants/query-keys";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { ShippingCampaignFormValues } from "@/schema/shipping-campaign-schema";
 import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { fetcher } from "@/utils/fetcher";
-import { purifyObject } from "@/utils/purify-object";
 import { errorToast, successToast } from "@/utils/toast";
 
 export const useUpdateShippingCampaign = ({
@@ -29,12 +31,15 @@ export const useUpdateShippingCampaign = ({
       return await fetcher<IGeneralResponse>({
         url: `/shipping-campaign/${selectedShop?.shopId}/${campaignId}`,
         method: "PUT",
-        data: purifyObject(data),
+        data,
       });
     },
     onSuccess(data) {
       queryClient.invalidateQueries({
         queryKey: [GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [GET_SHIPPING_CAMPAIGN_BY_ID_QUERY_KEY],
       });
       successToast({
         title: t("operation_successfull"),
@@ -64,11 +69,11 @@ export const useAddShippingCampaign = ({
 
   return useMutation({
     mutationFn: async (
-      body: Omit<ShippingCampaignFormValues, "discountType">,
+      data: Omit<ShippingCampaignFormValues, "discountType">,
     ) => {
       return await fetcher<IGeneralResponse>({
         url: `/shipping-campaign/${selectedShop?.shopId}`,
-        data: purifyObject(body),
+        data,
         method: "POST",
       });
     },

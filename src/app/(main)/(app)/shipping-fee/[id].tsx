@@ -6,7 +6,7 @@ import { useGetAllShippingFee } from "@/queries/shipping-fee-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 
 const EditShippingFeeScreen = () => {
-  const { data, isPending, error } = useGetAllShippingFee();
+  const { data, isPending, error, refetch } = useGetAllShippingFee();
   const { t } = useLanguage();
   const { id } = useLocalSearchParams<{ id: string }>();
   if (isPending)
@@ -41,10 +41,10 @@ const EditShippingFeeScreen = () => {
     <>
       <Stack.Screen
         options={{
-          title: t("edit"),
+          title: "Edit Shipping Fee",
         }}
       />
-      <ShippingFeeForm data={shippingFee} />
+      <ShippingFeeForm data={shippingFee} refetch={refetch} />
     </>
   );
 };
