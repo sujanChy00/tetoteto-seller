@@ -31,7 +31,7 @@ export const FalllBackMesage = ({
         {children ? (
           children
         ) : (
-          <Text className="text-center font-medium text-gray-950 dark:text-red-500">
+          <Text className="text-center font-medium text-muted italic">
             {message || t(translatedMessage || "no_results")}
           </Text>
         )}

@@ -7,7 +7,7 @@ interface Props {
   openedOffset?: number;
 }
 
-export const StickyButtonWrapper = ({
+export const StickyKeyboardWrapper = ({
   closedOffset = -16,
   openedOffset = 20,
   children,

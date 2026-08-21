@@ -3,7 +3,7 @@ import { GhostButton, SecondaryButton } from "@/components/ui/button";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { InputGroup } from "@/components/ui/input-group";
 import { Menu } from "@/components/ui/menu";
-import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { orderSortOptions } from "@/constants/data";
 import { useLanguage } from "@/hooks/use-language";
@@ -36,7 +36,7 @@ export const OrderFilters = () => {
   }, []);
 
   return (
-    <StickyButtonWrapper openedOffset={-70}>
+    <StickyKeyboardWrapper openedOffset={-70}>
       <View className={"flex-row items-center gap-3 justify-between"}>
         <Menu
           nativeOptions={orderSortOptions.map((item) => ({
@@ -121,6 +121,6 @@ export const OrderFilters = () => {
         }}
         bottomSheetRef={bottomSheetRef}
       />
-    </StickyButtonWrapper>
+    </StickyKeyboardWrapper>
   );
 };

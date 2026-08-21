@@ -1,6 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { PrimaryButton } from "@/components/ui/button";
-import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUpdatePassword } from "@/mutation/auth-mutation";
@@ -69,12 +69,12 @@ export const PasswordForm = () => {
         </View>
         <AnimatedSpacer height={450} />
       </ScrollView>
-      <StickyButtonWrapper>
+      <StickyKeyboardWrapper>
         <Form.SubmitButton disabled={isPending}>
           {isPending && <ActivityIndicator size={16} />}
           <PrimaryButton.Label>Update Password</PrimaryButton.Label>
         </Form.SubmitButton>
-      </StickyButtonWrapper>
+      </StickyKeyboardWrapper>
     </Form.AppForm>
   );
 };

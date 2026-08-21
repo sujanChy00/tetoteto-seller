@@ -2,7 +2,7 @@ import { AnimatedView } from "@/components/ui/animated-view";
 import { GhostButton, SecondaryButton } from "@/components/ui/button";
 import { InputGroup } from "@/components/ui/input-group";
 import { Menu } from "@/components/ui/menu";
-import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ItemSortOptions } from "@/constants/data";
 import { useSortItems } from "@/hooks/use-sort-items";
@@ -26,7 +26,7 @@ export const ItemFilters = ({
   const sortOptions = useMemo(() => options || ItemSortOptions, [options]);
 
   return (
-    <StickyButtonWrapper openedOffset={-70}>
+    <StickyKeyboardWrapper openedOffset={-70}>
       <View
         className={twMerge(
           "flex-row items-center gap-3",
@@ -108,6 +108,6 @@ export const ItemFilters = ({
           <StyledSymbolView name={{ android: "add", ios: "plus" }} />
         </SecondaryButton>
       </View>
-    </StickyButtonWrapper>
+    </StickyKeyboardWrapper>
   );
 };

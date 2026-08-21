@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { PrimaryButton } from "@/components/ui/button";
-import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { successToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native";
@@ -86,12 +86,12 @@ export const UpdatePasswordForm = () => {
         </View>
         <AnimatedSpacer height={420} />
       </ScrollView>
-      <StickyButtonWrapper>
+      <StickyKeyboardWrapper>
         <Form.SubmitButton>
           {/*<Spinner size={16} />*/}
           <PrimaryButton.Label>Update Password</PrimaryButton.Label>
         </Form.SubmitButton>
-      </StickyButtonWrapper>
+      </StickyKeyboardWrapper>
     </Form.AppForm>
   );
 };

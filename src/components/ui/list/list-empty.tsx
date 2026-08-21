@@ -15,11 +15,16 @@ export const ListEmpty = React.memo(
     if (isPending)
       return (
         <View
-          className={twMerge("h-40 items-center justify-center", className)}
+          className={twMerge("flex-1 items-center justify-center", className)}
         >
           <ActivityIndicator size={50} />
         </View>
       );
-    return <FalllBackMesage className="pt-20" message={emptyStateMessage} />;
+    return (
+      <FalllBackMesage
+        className={className}
+        translatedMessage={emptyStateMessage}
+      />
+    );
   },
 );

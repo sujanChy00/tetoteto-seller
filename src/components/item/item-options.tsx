@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 const Trigger = Platform.select({
   ios: (
-    <GlassView hitSlop={8} style={styles.container}>
+    <GlassView hitSlop={20} style={styles.container}>
       <StyledSymbolView
         tintColorClassName="accent-foreground"
         name={{

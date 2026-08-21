@@ -1,6 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { GhostButton, PrimaryButton } from "@/components/ui/button";
-import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
 import { useScrollToBottomOnKeyboardVisible } from "@/hooks/use-scroll-to-bottom-on-keyboard-visible";
@@ -63,7 +63,7 @@ export const PasswordExpiredForm = () => {
         </View>
         <AnimatedSpacer height={500} />
       </ScrollView>
-      <StickyButtonWrapper closedOffset={-22}>
+      <StickyKeyboardWrapper closedOffset={-22}>
         <View className="gap-y-1 w-full">
           <Form.SubmitButton>
             {/*<ActivityIndicator size={16} />*/}
@@ -78,7 +78,7 @@ export const PasswordExpiredForm = () => {
             <GhostButton.Label>Login with another account?</GhostButton.Label>
           </GhostButton>
         </View>
-      </StickyButtonWrapper>
+      </StickyKeyboardWrapper>
     </Form.AppForm>
   );
 };

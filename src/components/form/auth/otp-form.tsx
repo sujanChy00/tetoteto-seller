@@ -1,6 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { PrimaryButton } from "@/components/ui/button";
-import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -70,12 +70,12 @@ export const OtpForm = () => {
         </View>
         <AnimatedSpacer height={420} />
       </ScrollView>
-      <StickyButtonWrapper>
+      <StickyKeyboardWrapper>
         <Form.SubmitButton>
           {/*<Spinner size={16} />*/}
           <PrimaryButton.Label>Send Reset Link</PrimaryButton.Label>
         </Form.SubmitButton>
-      </StickyButtonWrapper>
+      </StickyKeyboardWrapper>
     </Form.AppForm>
   );
 };

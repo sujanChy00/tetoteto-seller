@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 const Trigger = Platform.select({
   ios: (
-    <GlassView style={styles.container} hitSlop={8}>
+    <GlassView style={styles.container} hitSlop={20}>
       <StyledSymbolView
         tintColorClassName="accent-foreground"
         name={{
@@ -33,7 +33,7 @@ const Trigger = Platform.select({
   ),
   android: (
     <View
-      hitSlop={8}
+      hitSlop={20}
       className="size-8 rounded-full items-center justify-center"
     >
       <StyledSymbolView
@@ -139,6 +139,7 @@ export const OrderOptions = ({
           pathname: "/message/[userId]",
           params: {
             userId,
+            orderId,
           },
         });
         break;

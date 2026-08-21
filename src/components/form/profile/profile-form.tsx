@@ -1,6 +1,6 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { PrimaryButton } from "@/components/ui/button";
-import { StickyButtonWrapper } from "@/components/ui/sticky-button-wrapper";
+import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUploadImageAndCall } from "@/hooks/use-image-upload";
@@ -82,12 +82,12 @@ export const ProfileForm = () => {
         </View>
         <AnimatedSpacer height={450} />
       </ScrollView>
-      <StickyButtonWrapper>
+      <StickyKeyboardWrapper>
         <Form.SubmitButton disabled={isPending}>
           {isProfilePending && <ActivityIndicator size={16} />}
           <PrimaryButton.Label>Update Profile</PrimaryButton.Label>
         </Form.SubmitButton>
-      </StickyButtonWrapper>
+      </StickyKeyboardWrapper>
     </Form.AppForm>
   );
 };

@@ -1,0 +1,198 @@
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+
+import { GET_USER_CHAT_DETAILS_QUERY_KEY } from "@/constants/query-keys";
+import { useLanguage } from "@/hooks/use-language";
+import { useSelectedShop } from "@/hooks/use-selected-shop";
+import {
+  IChatMessage,
+  IMessageInput,
+  IPaginatedChatResponse,
+} from "@/types/IChat";
+import { IGeneralResponse } from "@/types/IGeneral";
+import { addLocalFileToFormData } from "@/utils/add-local-file-to-formdata";
+import { fetcher } from "@/utils/fetcher";
+import { errorToast } from "@/utils/toast";
+
+export const useDeleteMessage = () => {
+  const queryClient = useQueryClient();
+  const { t } = useLanguage();
+
+  return useMutation({
+    mutationFn: async (id: number) =>
+      await fetcher<IGeneralResponse>({
+        url: `/shop-message/${id}`,
+        method: "DELETE",
+      }),
+
+    onMutate: async (messageId) => {
+      await queryClient.cancelQueries({
+        queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+      });
+
+      const queries = queryClient.getQueriesData<
+        InfiniteData<IPaginatedChatResponse>
+      >({
+        queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+      });
+
+      const previousQueries = queries.map(([queryKey, data]) => ({
+        queryKey,
+        data,
+      }));
+
+      queryClient.setQueriesData<InfiniteData<IPaginatedChatResponse>>(
+        {
+          queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+        },
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              content: page.content.filter(
+                (message) => message.id !== messageId,
+              ),
+            })),
+          };
+        },
+      );
+
+      return { previousQueries };
+    },
+
+    onError: (error, _, context) => {
+      context?.previousQueries.forEach(({ queryKey, data }) => {
+        queryClient.setQueryData(queryKey, data);
+      });
+
+      errorToast({
+        title: t("error"),
+        description: error.message,
+      });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["Chat"],
+      });
+    },
+  });
+};
+
+export const useSendMessage = () => {
+  const { selectedShop } = useSelectedShop();
+  const queryClient = useQueryClient();
+  const { t } = useLanguage();
+  return useMutation({
+    mutationFn: async (data: IMessageInput) => {
+      const { userId, text, image, itemId } = data;
+      const formData = new FormData();
+      if (text) {
+        formData.append("text", text.trim());
+      }
+      if (itemId) {
+        formData.append("itemId", itemId);
+      }
+      formData.append("userId", String(userId));
+
+      if (image) {
+        if (typeof image === "string") {
+          addLocalFileToFormData(image, formData, "image");
+        } else {
+          formData.append("image", image);
+        }
+      }
+
+      await fetcher({
+        url: `/shop-message/${selectedShop?.shopId}`,
+        method: "POST",
+        data: formData,
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+    },
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({
+        queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+      });
+      const previousData = queryClient.getQueriesData({
+        queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+      });
+
+      const optimisticMsg: IChatMessage = {
+        id: Math.random(),
+        text: variables.text,
+        image:
+          typeof variables.image === "string" ? variables.image : undefined,
+        user: false,
+        admin: false,
+        createdAt: new Date().toISOString(),
+        item: variables.item as any,
+        sending: true,
+      };
+
+      queryClient.setQueriesData<InfiniteData<IPaginatedChatResponse>>(
+        {
+          queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+          predicate: (query) => {
+            return (
+              query.queryKey[0] === GET_USER_CHAT_DETAILS_QUERY_KEY &&
+              (query.queryKey[1] as any)?.userId === variables.userId
+            );
+          },
+        },
+        (old) => {
+          if (!old) return old;
+
+          const newPages = [...old.pages];
+          if (newPages.length > 0) {
+            newPages[0] = {
+              ...newPages[0],
+              content: [optimisticMsg, ...newPages[0].content],
+            };
+          }
+
+          return {
+            ...old,
+            pages: newPages,
+          };
+        },
+      );
+
+      return { previousData };
+    },
+    onError(error, _, context) {
+      if (context?.previousData) {
+        context.previousData.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
+        });
+      }
+      errorToast({
+        title: t("error"),
+        description: error.message,
+      });
+    },
+    onSettled: (_, __, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+        predicate: (query) => {
+          return (
+            query.queryKey[0] === GET_USER_CHAT_DETAILS_QUERY_KEY &&
+            (query.queryKey[1] as any)?.userId === variables.userId
+          );
+        },
+      });
+    },
+  });
+};
