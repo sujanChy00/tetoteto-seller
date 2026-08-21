@@ -47,17 +47,18 @@ const ChatDetailScreen = () => {
         }}
       />
       <ChatFetchingIndicator visible={isFetchingNextPage && hasNextPage} />
-      <ChatList
-        isPending={isPending}
-        messages={messages}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        fetchNextPage={fetchNextPage}
-      />
-      <View className="px-2">
-        <ChatActions isPending={isPending} canReply={canReply ?? true} />
-        <AvoidKeyboard />
-      </View>
+      <AvoidKeyboard>
+        <ChatList
+          isPending={isPending}
+          messages={messages}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          fetchNextPage={fetchNextPage}
+        />
+        <View className="px-2">
+          <ChatActions isPending={isPending} canReply={canReply ?? true} />
+        </View>
+      </AvoidKeyboard>
     </View>
   );
 };

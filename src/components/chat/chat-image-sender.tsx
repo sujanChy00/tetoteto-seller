@@ -81,7 +81,7 @@ export const ChatImageSender = ({ disabled, className }: Props) => {
         )}
       >
         <StyledSymbolView
-          tintColorClassName="accent-primary-foreground"
+          tintColorClassName="accent-foreground"
           name={{
             android: "photo",
             ios: "photo",

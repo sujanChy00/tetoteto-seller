@@ -7,7 +7,7 @@ import {
   BottomSheetScrollView,
 } from "@expo/ui/community/bottom-sheet";
 import { useLocalSearchParams } from "expo-router";
-import { useCallback, useRef, useState } from "react";
+import { Fragment, useCallback, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, View } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { Avatar } from "../ui/avatar";
@@ -71,7 +71,7 @@ export const ChatItemSelector = ({ disabled, className }: Props) => {
         )}
       >
         <StyledSymbolView
-          tintColorClassName="accent-primary-foreground"
+          tintColorClassName="accent-foreground"
           name={{
             android: "view_cozy",
             ios: "square.grid.2x2",
@@ -118,43 +118,49 @@ const ItemsList = ({
   return (
     <ListGroup className="p-4">
       <ListGroup.Body>
-        {order.items.map((item) => (
-          <ListGroup.Item
-            key={item.id}
-            onPress={() =>
-              onItemSend({
-                itemId: item.id,
-                itemPhotoUrl: item.thumbnailImage,
-                itemName: item.name,
-                itemPriceBeforeTax: item.price,
-              })
-            }
-          >
-            <ListGroup.ItemPrefix>
-              <Avatar.Image
-                source={item.thumbnailImage}
-                alt={item.name}
-                contentFit="cover"
-              />
-              <Avatar.Fallback source={item.thumbnailImage}>
-                {getAvatarName(item.name)}
-              </Avatar.Fallback>
-            </ListGroup.ItemPrefix>
-            <ListGroup.ItemContent>
-              <ListGroup.ItemTitle numberOfLines={1}>
-                {item.name}asdklfnldkgjbldfgbsljdfgbsdfjgbsgfkjbsdkgfjsdkgfjhb
-              </ListGroup.ItemTitle>
-            </ListGroup.ItemContent>
-            <ListGroup.ItemSuffix className="self-end">
-              <ThemedText className="font-medium text-primary text-right">
-                ¥{item.totalPriceBeforeTax?.toLocaleString()}
-              </ThemedText>
-              <ThemedText className="text-muted text-right">
-                {item.price?.toLocaleString()} (with tax)
-              </ThemedText>
-            </ListGroup.ItemSuffix>
-          </ListGroup.Item>
-        ))}
+        {order.items.map((item, index) => {
+          const isLast = index === order.items.length - 1;
+          return (
+            <Fragment key={item.id}>
+              <ListGroup.Item
+                onPress={() =>
+                  onItemSend({
+                    itemId: item.id,
+                    itemPhotoUrl: item.thumbnailImage,
+                    itemName: item.name,
+                    itemPriceBeforeTax: item.price,
+                  })
+                }
+              >
+                <ListGroup.ItemPrefix>
+                  <Avatar.Image
+                    source={item.thumbnailImage}
+                    alt={item.name}
+                    contentFit="cover"
+                  />
+                  <Avatar.Fallback source={item.thumbnailImage}>
+                    {getAvatarName(item.name)}
+                  </Avatar.Fallback>
+                </ListGroup.ItemPrefix>
+                <ListGroup.ItemContent>
+                  <ListGroup.ItemTitle numberOfLines={1}>
+                    {item.name}
+                    asdklfnldkgjbldfgbsljdfgbsdfjgbsgfkjbsdkgfjsdkgfjhb
+                  </ListGroup.ItemTitle>
+                </ListGroup.ItemContent>
+                <ListGroup.ItemSuffix className="self-end">
+                  <ThemedText className="font-medium text-primary text-right">
+                    ¥{item.totalPriceBeforeTax?.toLocaleString()}
+                  </ThemedText>
+                  <ThemedText className="text-muted text-right">
+                    {item.price?.toLocaleString()} (with tax)
+                  </ThemedText>
+                </ListGroup.ItemSuffix>
+              </ListGroup.Item>
+              {!isLast && <ListGroup.ItemSeparator />}
+            </Fragment>
+          );
+        })}
       </ListGroup.Body>
     </ListGroup>
   );

@@ -52,7 +52,7 @@ export const ChatActions = ({ canReply, isPending }: Props) => {
           editable={!isPending}
           className="flex-1 rounded-3xl text-foreground"
           multiline
-          placeholder={isPending ? "please wait..." : "your message"}
+          placeholder={isPending ? "please wait..." : "Your message here..."}
         />
       </View>
       <PrimaryButton
