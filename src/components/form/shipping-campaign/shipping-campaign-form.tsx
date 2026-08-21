@@ -243,7 +243,7 @@ export const ShippingCampaignForm = ({ campaign, refetch }: Props) => {
               name="discountType"
               children={(Field) => (
                 <Field.SelectField
-                  isDisabled={!!campaign}
+                  disabled={!!campaign}
                   options={discountTypes}
                   label={t("discount_type")}
                 />

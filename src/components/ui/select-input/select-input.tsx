@@ -23,7 +23,7 @@ export const SelectInput = ({
   options,
   value,
   onValueChange,
-  disabled,
+  disabled = false,
   className,
   placeholder,
 }: SelectInputProps) => {

@@ -46,7 +46,7 @@ const ListGroupBody = ({
 }: ViewProps) => {
   return (
     <View
-      className={twMerge("bg-surface rounded-3xl", className)}
+      className={twMerge("bg-surface rounded-3xl shadow", className)}
       style={[
         style,
         {

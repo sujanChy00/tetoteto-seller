@@ -21,7 +21,6 @@ const ShippingCampaignScreen = () => {
   const { numColumns } = useResponsiveListColumns();
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, refetch } = useGetAllShippingCampaigns();
-  () => <ListSeparator />;
   const shippingCampaigns = useMemo(() => data || [], [data]);
 
   const onRefresh = useCallback(() => {
@@ -48,13 +47,12 @@ const ShippingCampaignScreen = () => {
   return (
     <View className="flex-1">
       <LegendList
-        key={numColumns}
-        numColumns={numColumns}
-        columnWrapperStyle={numColumns > 1 ? { gap: 10 } : undefined}
+        // key={numColumns}
+        // numColumns={numColumns}
+        // columnWrapperStyle={numColumns > 1 ? { gap: 10 } : undefined}
         recycleItems
-        maintainVisibleContentPosition={{ data: true }}
+        maintainVisibleContentPosition
         contentContainerClassName="p-2"
-        contentInsetAdjustmentBehavior="automatic"
         refreshing={refreshing}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={renderSeparator}
@@ -66,6 +64,11 @@ const ShippingCampaignScreen = () => {
         estimatedItemSize={310}
         renderItem={renderItem}
         drawDistance={500}
+        experimental_adaptiveRender={{
+          enterVelocity: 6,
+          exitVelocity: 3,
+          exitDelay: 250,
+        }}
       />
 
       {isAndroid ? (

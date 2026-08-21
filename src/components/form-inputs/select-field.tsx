@@ -5,14 +5,14 @@ import { SelectInput } from "../ui/select-input";
 
 interface SelectFieldProps {
   options: { label: string; value: string }[];
-  isDisabled?: boolean;
+  disabled?: boolean;
   className?: string;
 }
 
 export const SelectField = ({
   options,
   label,
-  isDisabled,
+  disabled = false,
   className,
   description,
 }: FormInputBaseProps<SelectFieldProps>) => {
@@ -23,12 +23,12 @@ export const SelectField = ({
   return (
     <Field className={className}>
       {!!label && (
-        <FieldLabel isDisabled={isDisabled} isInvalid={isInvalid}>
+        <FieldLabel isDisabled={disabled} isInvalid={isInvalid}>
           {label}
         </FieldLabel>
       )}
       <SelectInput
-        disabled={!isDisabled}
+        disabled={disabled}
         onValueChange={(v) => {
           field.handleChange(v.toString());
         }}

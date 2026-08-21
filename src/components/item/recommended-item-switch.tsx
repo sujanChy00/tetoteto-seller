@@ -2,10 +2,7 @@ import {
   useAddRecommendedItems,
   useRemoveRecommendedItems,
 } from "@/mutation/item-mutation";
-import { View } from "react-native";
-import { twMerge } from "tailwind-merge";
 import { SwitchInput } from "../ui/switch-input";
-import { ThemedText } from "../ui/themed-text";
 
 type Props = {
   itemId: string;
@@ -41,22 +38,12 @@ export const RecommendedItemSwitch = ({
   };
 
   return (
-    <View
-      accessibilityLabel="Recommended Item"
-      accessibilityState={{ checked: recommended }}
-      className={twMerge("flex-row items-center", className)}
-    >
-      {label && (
-        <ThemedText className="text-xs font-medium">{label}</ThemedText>
-      )}
-      <SwitchInput
-        hostProps={{
-          matchContents: true,
-        }}
-        value={recommended}
-        onValueChange={handleToggle}
-        disabled={isDisabled}
-      />
-    </View>
+    <SwitchInput
+      label={label}
+      labelClassName="text-xs font-medium"
+      value={recommended}
+      onValueChange={handleToggle}
+      disabled={isDisabled}
+    />
   );
 };
