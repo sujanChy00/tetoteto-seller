@@ -39,7 +39,7 @@ export const RecommendedItemSwitch = ({
 
   return (
     <SwitchInput
-      label={label}
+      // label={label}
       labelClassName="text-xs font-medium"
       value={recommended}
       onValueChange={handleToggle}

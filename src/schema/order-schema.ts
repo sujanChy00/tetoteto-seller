@@ -2,7 +2,7 @@ import * as v from "valibot";
 
 export const ShippingAddressSchema = v.object({
   address1: v.pipe(v.string(), v.minLength(1, "Address 1 is required")),
-  address2: v.optional(v.string()),
+  address2: v.string(),
   city: v.pipe(v.string(), v.minLength(1, "City is required")),
   postalCode: v.pipe(
     v.string(),

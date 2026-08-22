@@ -86,6 +86,26 @@ const ShopDetailsScreen = () => {
           />
           <PrimaryButton.Label>Edit Shop</PrimaryButton.Label>
         </PrimaryButton>
+        <PrimaryButton
+          onPress={() => {
+            router.push({
+              pathname: "/shop/[shopId]/legal-info",
+              params: {
+                shopId,
+              },
+            });
+          }}
+        >
+          <StyledSymbolView
+            tintColorClassName={"accent-primary-foreground"}
+            name={{
+              android: "edit",
+              ios: "pencil",
+            }}
+            size={18}
+          />
+          <PrimaryButton.Label>Legal Info</PrimaryButton.Label>
+        </PrimaryButton>
       </View>
       <View className="h-5" />
     </ParallaxScrollView>

@@ -62,9 +62,15 @@ export const useGetUserProfile = () => {
   });
 };
 
-export const useGetAddressInfo = (postalCode: string) => {
+export const useGetAddressInfo = ({
+  postalCode,
+  enabled,
+}: {
+  postalCode: string;
+  enabled?: boolean;
+}) => {
   return useQuery({
-    queryKey: [GET_ADDRESS_INFO_QUERY_KEY],
+    queryKey: [GET_ADDRESS_INFO_QUERY_KEY, postalCode],
     queryFn: async () => {
       return await fetcher<IAddressInfo>({
         url: "/prefecture/address-info",
@@ -73,6 +79,6 @@ export const useGetAddressInfo = (postalCode: string) => {
         },
       });
     },
-    enabled: !!postalCode,
+    enabled,
   });
 };
