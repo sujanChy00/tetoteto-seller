@@ -1,8 +1,9 @@
 import { IChatMessage } from "@/types";
 import { LegendList } from "@legendapp/list/react-native";
 import { useCallback } from "react";
-import { View } from "react-native";
+import { ScrollViewProps, View } from "react-native";
 import { PendingComponent } from "../layout/pending-component";
+import { VirtualizedListScrollView } from "../layout/virtualized-list-scroll-view";
 import { ListSeparator } from "../ui/list/list-separator";
 import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
@@ -61,12 +62,19 @@ export const ChatList = ({
         </ThemedText>
       </View>
     );
+
+  const memoList = useCallback(
+    (props: ScrollViewProps) => <VirtualizedListScrollView {...props} />,
+    [],
+  );
+
   return (
     <LegendList
       showsVerticalScrollIndicator={false}
       data={messages}
       getItemType={getItemType}
       recycleItems
+      renderScrollComponent={memoList}
       renderItem={renderItem}
       estimatedItemSize={100}
       maintainVisibleContentPosition={{ data: true, size: true }}
@@ -77,8 +85,8 @@ export const ChatList = ({
       ListFooterComponent={ListFooterComponent}
       ItemSeparatorComponent={renderSeparator}
       keyExtractor={keyExtractor}
-      alignItemsAtEnd
       onStartReached={onStartReached}
+      alignItemsAtEnd
       maintainScrollAtEnd
       initialScrollAtEnd
       maintainScrollAtEndThreshold={0.1}

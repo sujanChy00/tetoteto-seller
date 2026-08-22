@@ -24,7 +24,6 @@ const ChatScreen = () => {
     hasNextPage,
     fetchNextPage,
     refetch,
-    error,
     isFetchingNextPage,
     isPending,
   } = useGetMessages({ size: 20 });
@@ -90,7 +89,6 @@ const ChatScreen = () => {
       onRefresh={onRefresh}
       ListEmptyComponent={ListEmptyComponent}
       onEndReached={onEndReached}
-      // ListFooterComponentStyle={footerStyle}
       ListFooterComponent={ListFooterComponent}
       experimental_adaptiveRender={{
         enterVelocity: 6,

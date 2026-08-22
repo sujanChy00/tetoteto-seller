@@ -1,12 +1,13 @@
 import { ChatActions } from "@/components/chat/chat-actions";
 import { ChatFetchingIndicator } from "@/components/chat/chat-fetching-indicator";
 import { ChatList } from "@/components/chat/chat-list";
-import { AvoidKeyboard } from "@/components/ui/avoid-keyboard";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useGetUserMessagesById } from "@/queries/chat-query";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
+import { KeyboardStickyView } from "react-native-keyboard-controller";
+import { twMerge } from "tailwind-merge";
 
 const ChatDetailScreen = () => {
   const { userId } = useLocalSearchParams<{
@@ -24,7 +25,7 @@ const ChatDetailScreen = () => {
   }, [data]);
 
   return (
-    <View className="flex-1 pb-safe-offset-6">
+    <View className="flex-1">
       <Stack.Screen
         options={{
           title: isPending ? "Loading..." : (user?.name ?? "Chat Detail"),
@@ -47,18 +48,28 @@ const ChatDetailScreen = () => {
         }}
       />
       <ChatFetchingIndicator visible={isFetchingNextPage && hasNextPage} />
-      <AvoidKeyboard>
-        <ChatList
-          isPending={isPending}
-          messages={messages}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          fetchNextPage={fetchNextPage}
-        />
-        <View className="px-2">
+      <ChatList
+        isPending={isPending}
+        messages={messages}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        fetchNextPage={fetchNextPage}
+      />
+      <KeyboardStickyView
+        offset={{
+          closed: 0,
+          opened: 15,
+        }}
+      >
+        <View
+          className={twMerge(
+            "p-2 pb-safe-offset-6",
+            canReply ? "bg-background" : "",
+          )}
+        >
           <ChatActions isPending={isPending} canReply={canReply ?? true} />
         </View>
-      </AvoidKeyboard>
+      </KeyboardStickyView>
     </View>
   );
 };
