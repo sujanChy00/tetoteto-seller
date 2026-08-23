@@ -1,14 +1,18 @@
-import { SurfaceProps } from "@/types/components";
-import { TextProps, View, ViewProps } from "react-native";
+import { TextProps } from "react-native";
 import { twMerge } from "tailwind-merge";
-import { Surface } from "./surface";
+import { AnimatedView, AnimatedViewProps } from "./animated-view";
 import { ThemedText } from "./themed-text";
 
-const Root = (props: SurfaceProps) => <Surface {...props} />;
-
-const Header = (props: ViewProps) => <View {...props} />;
-const Body = (props: ViewProps) => <View {...props} />;
-const Footer = (props: ViewProps) => <View {...props} />;
+const Root = ({ style, className, ...props }: AnimatedViewProps) => (
+  <AnimatedView
+    style={style}
+    className={twMerge("bg-surface rounded-3xl shadow p-3", className)}
+    {...props}
+  />
+);
+const Header = (props: AnimatedViewProps) => <AnimatedView {...props} />;
+const Body = (props: AnimatedViewProps) => <AnimatedView {...props} />;
+const Footer = (props: AnimatedViewProps) => <AnimatedView {...props} />;
 const Title = ({ className, ...props }: TextProps) => (
   <ThemedText
     className={twMerge("text-lg font-medium text-foreground", className)}
@@ -21,7 +25,6 @@ const Description = ({ className, ...props }: TextProps) => (
     {...props}
   />
 );
-
 export const Card = Object.assign(Root, {
   Header,
   Body,

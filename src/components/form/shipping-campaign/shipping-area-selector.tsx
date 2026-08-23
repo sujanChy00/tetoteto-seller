@@ -1,10 +1,8 @@
+import { Accordion } from "@/components/ui/accordion";
 import { Chip } from "@/components/ui/chip";
-import { Host } from "@/components/ui/host";
-import { Surface } from "@/components/ui/surface";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useGetAllShippingArea } from "@/queries/campaign-query";
 import { IShippingArea } from "@/types";
-import { Collapsible, RNHostView } from "@expo/ui";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { twMerge } from "tailwind-merge";
@@ -15,27 +13,35 @@ interface Props {
 }
 
 export const ShippingAreaSelector = ({ value, onChange }: Props) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const { data: shippingAreas, isPending } = useGetAllShippingArea(collapsed);
+  const [accordionValue, setAccordionValue] = useState("");
+  const { data: shippingAreas, isPending } = useGetAllShippingArea(
+    accordionValue === "shipping-areas",
+  );
   return (
-    <Surface className="p-0">
-      <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-        <Collapsible
-          isOpen={collapsed}
-          onOpenChange={setCollapsed}
-          label="Select Shipping Areas"
-        >
-          <RNHostView matchContents>
-            <ShippingAreaSelectorContent
-              isPending={isPending}
-              shippingAreas={shippingAreas ?? []}
-              value={value}
-              onChange={onChange}
-            />
-          </RNHostView>
-        </Collapsible>
-      </Host>
-    </Surface>
+    <Accordion
+      isCollapsible
+      selectionMode="single"
+      value={accordionValue}
+      variant="surface"
+      onValueChange={(value) => {
+        setAccordionValue(value as string);
+      }}
+    >
+      <Accordion.Item value="shipping-areas">
+        <Accordion.Trigger className="py-4 px-6">
+          <ThemedText className="flex-1">Select Shipping Areas</ThemedText>
+          <Accordion.Indicator />
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <ShippingAreaSelectorContent
+            isPending={isPending}
+            shippingAreas={shippingAreas ?? []}
+            value={value}
+            onChange={onChange}
+          />
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
   );
 };
 

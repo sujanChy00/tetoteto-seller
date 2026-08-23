@@ -1,15 +1,17 @@
 import { OrderPackingProvider } from "@/context/order-packing-provider";
 import { ITransactionById } from "@/types";
-import { Collapsible, RNHostView } from "@expo/ui";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
-import { Host } from "../ui/host";
+import { Accordion } from "../ui/accordion";
+import { Separator } from "../ui/separator";
+import { ThemedText } from "../ui/themed-text";
+import { ItemsToPackSheet } from "./items-to-pack-sheet";
+import { OrderPackingButtons } from "./order-packing-buttons";
+import { OrderPackingControl } from "./order-packing-control";
 import { OrderdItemCard } from "./ordered-item-card";
 
 export const OrderedItems = ({ order }: { order: ITransactionById }) => {
-  const [surfaceColor] = useCSSVariable(["--color-surface"]);
   const params = useLocalSearchParams<{ orderId: string }>();
   const [open, setOpen] = useState(false);
   const sellerAcknowledged = order.orderProgress === "SELLER_ACKNOWLEDGED";
@@ -19,30 +21,29 @@ export const OrderedItems = ({ order }: { order: ITransactionById }) => {
       orderId={Number(params.orderId)}
       orderedItems={order.items}
     >
-      <Host
-        matchContents={{ vertical: true }}
-        style={{
-          backgroundColor: surfaceColor as string,
-          borderRadius: 24,
-        }}
-      >
-        <Collapsible
-          label={`Ordered Items (${order.items.length})`}
-          isOpen={open}
-          onOpenChange={setOpen}
-          labelStyle={{
-            fontWeight: "600",
-          }}
-        >
-          <RNHostView matchContents>
-            <View className="gap-3 overflow-hidden">
-              {order.items.map((item) => (
-                <OrderdItemCard key={item.id} item={item} />
-              ))}
+      <Accordion selectionMode="single" isCollapsible variant="surface">
+        <Accordion.Item value="ordered-items">
+          <Accordion.Trigger className="py-6">
+            <ThemedText className="flex-1">
+              Ordered Items ({order.items.length})
+            </ThemedText>
+            <Accordion.Indicator />
+          </Accordion.Trigger>
+          <Accordion.Content>
+            <View className="gap-3">
+              <ItemsToPackSheet />
+              {sellerAcknowledged && <OrderPackingControl />}
+              <Separator />
+              <View className="gap-3 overflow-hidden">
+                {order.items.map((item) => (
+                  <OrderdItemCard key={item.id} item={item} />
+                ))}
+              </View>
+              <OrderPackingButtons />
             </View>
-          </RNHostView>
-        </Collapsible>
-      </Host>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
     </OrderPackingProvider>
   );
 };
