@@ -107,6 +107,32 @@ const DangerGhostLabel = ({ className, ...props }: TextProps) => {
     />
   );
 };
+const WarningRoot = ({
+  className,
+  disabled = false,
+  ...props
+}: PressableProps) => {
+  return (
+    <Pressable
+      className={twMerge(
+        "bg-warning flex-row items-center justify-center h-12 px-4 gap-2 rounded-3xl",
+        disabled && "opacity-50",
+        className,
+      )}
+      disabled={disabled}
+      {...props}
+    />
+  );
+};
+
+const WarningtLabel = ({ className, ...props }: TextProps) => {
+  return (
+    <ThemedText
+      className={twMerge("text-white font-medium", className)}
+      {...props}
+    />
+  );
+};
 
 const DangerSoftRoot = ({
   className,
@@ -241,4 +267,8 @@ export const DangerSoftButton = Object.assign(DangerSoftRoot, {
 
 export const DangerGhostButton = Object.assign(DangerGhostRoot, {
   Label: DangerGhostLabel,
+});
+
+export const WarningButton = Object.assign(WarningRoot, {
+  Label: WarningtLabel,
 });

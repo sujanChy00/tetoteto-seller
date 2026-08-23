@@ -116,6 +116,18 @@ const AppLayout = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="user-orders/[userId]"
+        options={{
+          headerTitle: "User Orders",
+        }}
+      />
+      <Stack.Screen
+        name="order/[orderId]/update-address"
+        options={{
+          headerTitle: "Update Address",
+        }}
+      />
       {/*<Stack.Screen
         name="order/[orderId]/track"
         options={{

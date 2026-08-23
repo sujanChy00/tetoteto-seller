@@ -1,22 +1,20 @@
 import { OrderTrackingResponse } from "@/types";
 import { dateTimestampFormatter } from "@/utils/date";
-import { Collapsible, RNHostView } from "@expo/ui";
 import { useRecyclingState } from "@legendapp/list/react-native";
 import { Link } from "expo-router";
 import React, { memo } from "react";
 import { Pressable, View } from "react-native";
+import { Accordion, AccordionLayoutTransition } from "../ui/accordion";
 import { Card } from "../ui/card";
-import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { ThemedText } from "../ui/themed-text";
 
 interface Props {
   shipment: OrderTrackingResponse;
-  primaryColor: string;
 }
 
-export const ShipmentCard = memo(({ shipment, primaryColor }: Props) => {
-  const [isOpen, setIsOpen] = useRecyclingState(false);
+export const ShipmentCard = memo(({ shipment }: Props) => {
+  const [value, setValue] = useRecyclingState("");
   return (
     <Link
       asChild
@@ -28,8 +26,8 @@ export const ShipmentCard = memo(({ shipment, primaryColor }: Props) => {
       }}
     >
       <Pressable>
-        <Card className="p-0">
-          <Card.Header className="p-3 pb-0">
+        <Card className="p-0" layout={AccordionLayoutTransition}>
+          <Card.Header className="p-3 pb-0" layout={AccordionLayoutTransition}>
             <Card.Description className="uppercase text-[10px] font-semibold">
               ORDER ID
             </Card.Description>
@@ -41,7 +39,10 @@ export const ShipmentCard = memo(({ shipment, primaryColor }: Props) => {
               </ThemedText>
             </ThemedText>
           </Card.Header>
-          <Card.Body className="gap-1 py-6 px-3">
+          <Card.Body
+            className="gap-1 py-6 px-3"
+            layout={AccordionLayoutTransition}
+          >
             <View className="flex-row items-center gap-2">
               <ThemedText className="text-muted flex-[0.5]">Name:</ThemedText>
               <ThemedText className="text-left flex-[0.5]">
@@ -66,18 +67,20 @@ export const ShipmentCard = memo(({ shipment, primaryColor }: Props) => {
             </View>
           </Card.Body>
           <Separator />
-          <Card.Footer className="">
-            <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
-              <Collapsible
-                isOpen={isOpen}
-                onOpenChange={setIsOpen}
-                label="View Details"
-                labelStyle={{
-                  color: primaryColor,
-                }}
-              >
-                <RNHostView matchContents>
-                  <View className="gap-6 p-3">
+          <Card.Footer layout={AccordionLayoutTransition}>
+            <Accordion
+              isCollapsible
+              selectionMode="single"
+              value={value}
+              onValueChange={(v) => setValue(v as string)}
+            >
+              <Accordion.Item value="shipment-details">
+                <Accordion.Trigger>
+                  <ThemedText className="flex-1">View Details</ThemedText>
+                  <Accordion.Indicator />
+                </Accordion.Trigger>
+                <Accordion.Content>
+                  <View className="gap-6">
                     <View className="rounded-xl bg-primary-soft p-3">
                       <ThemedText className="uppercase text-muted text-[10px] font-medium">
                         Shipping Company: {shipment.shippingCompany}
@@ -113,9 +116,9 @@ export const ShipmentCard = memo(({ shipment, primaryColor }: Props) => {
                       </View>
                     )}
                   </View>
-                </RNHostView>
-              </Collapsible>
-            </Host>
+                </Accordion.Content>
+              </Accordion.Item>
+            </Accordion>
           </Card.Footer>
         </Card>
       </Pressable>

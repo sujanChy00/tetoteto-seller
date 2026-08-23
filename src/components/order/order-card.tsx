@@ -7,7 +7,7 @@ import {
 } from "@/utils/order-status";
 import { Link } from "expo-router";
 import { memo } from "react";
-import { Pressable, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { TertiaryButton } from "../ui/button";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
@@ -31,7 +31,7 @@ export const OrderCard = memo(({ order }: Props) => {
       }}
       asChild
     >
-      <Pressable>
+      <TouchableOpacity>
         <Card className="gap-3">
           <Card.Header className="flex-row justify-between items-center gap-3">
             <View className="flex-1 gap-1">
@@ -135,7 +135,7 @@ export const OrderCard = memo(({ order }: Props) => {
             </View>
           </Card.Footer>
         </Card>
-      </Pressable>
+      </TouchableOpacity>
     </Link>
   );
 });

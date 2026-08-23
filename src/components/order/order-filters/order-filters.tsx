@@ -50,7 +50,7 @@ export const OrderFilters = () => {
             });
           }}
         >
-          <View className="size-12 items-center justify-center rounded-full bg-default">
+          <View className="size-12 items-center justify-center rounded-full bg-default shadow">
             <StyledSymbolView
               name={{
                 android: "sort",
@@ -59,7 +59,7 @@ export const OrderFilters = () => {
             />
           </View>
         </Menu>
-        <InputGroup className="w-auto flex-1 rounded-full pl-3 bg-default">
+        <InputGroup className="w-auto flex-1 rounded-full pl-3 bg-default shadow">
           <InputGroup.Input
             placeholder="search..."
             returnKeyType="done"
@@ -100,7 +100,10 @@ export const OrderFilters = () => {
             </AnimatedView>
           ) : null}
         </InputGroup>
-        <SecondaryButton onPress={onOpen} className="px-0 size-12 rounded-full">
+        <SecondaryButton
+          onPress={onOpen}
+          className="px-0 size-12 rounded-full shadow"
+        >
           <StyledSymbolView name={{ android: "date_range", ios: "calendar" }} />
         </SecondaryButton>
       </View>

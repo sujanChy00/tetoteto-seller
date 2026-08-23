@@ -5,7 +5,7 @@ import { ListFetchingMore } from "@/components/ui/list/list-fetching-more";
 import { ListSeparator } from "@/components/ui/list/list-separator";
 import { useRefreshOnFocus } from "@/hooks/use-refetch-onfocus";
 import { useInfiniteStockItemQuery } from "@/queries/item-query";
-import { IStockItem } from "@/types";
+import { IPaginatedParams, IStockItem } from "@/types";
 import { LegendList } from "@legendapp/list/react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
@@ -29,7 +29,7 @@ const StockItemScreen = () => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useInfiniteStockItemQuery(params);
+  } = useInfiniteStockItemQuery(params as IPaginatedParams);
 
   useRefreshOnFocus(refetch);
 

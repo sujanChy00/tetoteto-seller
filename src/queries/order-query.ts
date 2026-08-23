@@ -4,6 +4,7 @@ import {
   GET_ALL_ORDERS_QUERY_KEY,
   GET_ALL_SHIPMENTS_QUERY_KEY,
   GET_ORDER_DETAILS_QUERY_KEY,
+  GET_USER_ORDERS_QUERY_KEY,
 } from "@/constants/query-keys";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
 import {
@@ -13,6 +14,7 @@ import {
   ITransactionById,
   ITransactionResponse,
   OrderTrackingResponse,
+  UserOrders,
 } from "@/types";
 import { fetcher } from "@/utils/fetcher";
 import { purifyObject } from "@/utils/purify-object";
@@ -142,5 +144,19 @@ export const useGetAllShipmentsQuery = (params: { filter?: string }) => {
         params,
       }),
     enabled: !!selectedShop,
+  });
+};
+
+export const useGetUserOrders = ({ userId }: { userId: number }) => {
+  const { selectedShop } = useSelectedShop();
+
+  return useQuery({
+    queryKey: [GET_USER_ORDERS_QUERY_KEY, userId],
+    queryFn: async () =>
+      await fetcher<UserOrders[]>({
+        url: `/order/user/${userId}`,
+        params: { shopId: selectedShop?.shopId },
+      }),
+    enabled: !!userId && !!selectedShop?.shopId,
   });
 };

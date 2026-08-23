@@ -38,6 +38,7 @@ export const Root = ({ children, isOpen, onClose }: DialogRootProps) => {
       visible={isOpen}
       onRequestClose={onClose}
       allowSwipeDismissal
+      animationType="fade"
     >
       <View className="flex-1 items-center justify-center">{children}</View>
     </Modal>

@@ -41,7 +41,6 @@ export const GET_ITEM_VARIATIONS_QUERY_KEY = "item_variations";
 
 export const GET_TRACKING_DETAILS_QUERY_KEY = "tracking_details";
 export const GET_ORDER_TRACKING_DETAILS_QUERY_KEY = "tracking_details";
-export const GET_USER_ORDERS_QUERY_KEY = "order_details";
 export const GET_ALL_SHIPMENTS_QUERY_KEY = "all_shipments";
 export const GET_ALL_INFINITE_SHIPMENTS_QUERY_KEY = "infinite_all_shipments";
 export const GET_ORDER_DETAILS_QUERY_KEY = "order_details";
@@ -55,3 +54,4 @@ export const GET_USER_CHAT_DETAILS_QUERY_KEY = "user_chat";
 export const GET_PROFILE_QUERY_KEY = "profile";
 export const GET_BIOMETRIC_STATUS_QUERY_KEY = "biometric_status";
 export const GET_ADDRESS_INFO_QUERY_KEY = "address_info";
+export const GET_USER_ORDERS_QUERY_KEY = "user_orders";

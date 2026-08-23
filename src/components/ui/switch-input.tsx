@@ -1,13 +1,12 @@
 import { useHaptics } from "@/hooks/use-haptics";
-import { Switch } from "@expo/ui";
-import { View } from "react-native";
+import { Switch, View } from "react-native";
 import { twMerge } from "tailwind-merge";
-import { Host } from "./host";
 import { ThemedText } from "./themed-text";
 
 export interface SwitchInputProps extends React.ComponentProps<typeof Switch> {
   className?: string;
   labelClassName?: string;
+  label?: string;
 }
 
 export const SwitchInput = ({
@@ -23,15 +22,13 @@ export const SwitchInput = ({
       className={twMerge("flex-row items-center justify-between", className)}
     >
       {label && <ThemedText className={labelClassName}>{label}</ThemedText>}
-      <Host matchContents>
-        <Switch
-          {...rest}
-          onValueChange={(checked) => {
-            haptics(checked ? "toggle-on" : "toggle-off");
-            onValueChange(checked);
-          }}
-        />
-      </Host>
+      <Switch
+        {...rest}
+        onValueChange={(checked) => {
+          haptics(checked ? "toggle-on" : "toggle-off");
+          onValueChange?.(checked);
+        }}
+      />
     </View>
   );
 };

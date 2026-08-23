@@ -23,11 +23,7 @@ export const OrderPackingControl = () => {
       >
         Total Packed: {totalPackedOrders || "0"}/{totalOrderQuantity}
       </ThemedText>
-      <SwitchInput
-        hostProps={{ matchContents: true }}
-        value={startPacking}
-        onValueChange={setStartPacking}
-      />
+      <SwitchInput value={startPacking} onValueChange={setStartPacking} />
     </View>
   );
 };

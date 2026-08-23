@@ -39,6 +39,7 @@ export const RecommendedItemSwitch = ({
 
   return (
     <SwitchInput
+      className={className}
       label={label}
       labelClassName="text-xs font-medium"
       value={recommended}

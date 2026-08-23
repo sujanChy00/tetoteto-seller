@@ -11,13 +11,11 @@ import { LegendList } from "@legendapp/list/react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
 
 const renderSeparator = () => <ListSeparator />;
 const footerStyle = { padding: 10, alignItems: "center" as const };
 
 const Shipments = () => {
-  const [primaryColor] = useCSSVariable(["--color-primary"]) as [string];
   const [refreshing, setRefreshing] = useState(false);
   const params = useLocalSearchParams<{
     filter?: string;
@@ -42,7 +40,7 @@ const Shipments = () => {
   );
   const renderItem = useCallback(
     ({ item }: { item: OrderTrackingResponse }) => (
-      <ShipmentCard primaryColor={primaryColor} shipment={item} />
+      <ShipmentCard shipment={item} />
     ),
     [],
   );
