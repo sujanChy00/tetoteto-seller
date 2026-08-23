@@ -1,7 +1,7 @@
-import DOMComponent from "@/components/dom-example";
 import { PendingComponent } from "@/components/layout/pending-component";
 import { useGetShopDetails } from "@/queries/shop-query";
 import { useLocalSearchParams } from "expo-router";
+import { View } from "react-native";
 
 export default function PlaygroundScreen() {
   const { shopId } = useLocalSearchParams<{ shopId: string }>();
@@ -9,5 +9,5 @@ export default function PlaygroundScreen() {
 
   if (isPending) return <PendingComponent />;
 
-  return <DOMComponent name="Sujan Chauda" />;
+  return <View></View>;
 }

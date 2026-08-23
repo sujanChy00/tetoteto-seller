@@ -8,6 +8,7 @@ import { ThemedText } from "./themed-text";
 export interface SwitchInputProps extends React.ComponentProps<typeof Switch> {
   className?: string;
   labelClassName?: string;
+  hostProps?: React.ComponentProps<typeof Host>;
 }
 
 export const SwitchInput = ({
@@ -15,6 +16,7 @@ export const SwitchInput = ({
   label,
   className,
   labelClassName,
+  hostProps,
   ...rest
 }: SwitchInputProps) => {
   const haptics = useHaptics();
@@ -23,7 +25,7 @@ export const SwitchInput = ({
       className={twMerge("flex-row items-center justify-between", className)}
     >
       {label && <ThemedText className={labelClassName}>{label}</ThemedText>}
-      <Host matchContents>
+      <Host matchContents {...hostProps}>
         <Switch
           {...rest}
           onValueChange={(checked) => {

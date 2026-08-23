@@ -43,7 +43,7 @@ export const ItemFilters = ({
             onSort(v);
           }}
         >
-          <View className="size-12 items-center justify-center rounded-full bg-default">
+          <View className="size-12 items-center justify-center rounded-full bg-default shadow">
             <StyledSymbolView
               name={{
                 android: "sort",
@@ -54,7 +54,7 @@ export const ItemFilters = ({
         </Menu>
 
         {showSearch ? (
-          <InputGroup className="w-auto flex-1 rounded-full pl-3 bg-default">
+          <InputGroup className="w-auto flex-1 rounded-full pl-3 bg-default shadow">
             <InputGroup.Input
               placeholder="search..."
               returnKeyType="done"
@@ -103,7 +103,7 @@ export const ItemFilters = ({
               pathname: "/item/add",
             });
           }}
-          className="px-0 size-12 rounded-full"
+          className="px-0 size-12 rounded-full shadow"
         >
           <StyledSymbolView name={{ android: "add", ios: "plus" }} />
         </SecondaryButton>

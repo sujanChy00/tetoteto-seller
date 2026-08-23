@@ -1,5 +1,6 @@
 import { useLanguage } from "@/hooks/use-language";
 import { useUpdateItemStock } from "@/mutation/item-mutation";
+import { useRecyclingState } from "@legendapp/list/react-native";
 import { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
@@ -17,7 +18,7 @@ interface Props {
 
 export const ItemStockUpdateDialog = ({ itemId, itemName, stock }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [quantity, setQuantity] = useState<string>(stock?.toString());
+  const [quantity, setQuantity] = useRecyclingState<string>(stock?.toString());
   const { t } = useLanguage();
 
   const { mutateAsync, isPending } = useUpdateItemStock({

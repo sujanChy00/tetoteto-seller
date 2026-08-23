@@ -43,10 +43,11 @@ const UserOrderScreen = () => {
       recycleItems
       maintainVisibleContentPosition
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="p-2"
+      contentContainerClassName="p-2 pb-safe-offset-10"
       drawDistance={500}
       keyboardDismissMode="on-drag"
       onEndReachedThreshold={0.5}
+      estimatedItemSize={195}
       data={orders}
       ItemSeparatorComponent={renderSeparator}
       renderItem={renderItem}
