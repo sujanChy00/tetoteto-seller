@@ -26,7 +26,7 @@ export const useUploadImageAndCall = () => {
   });
   const uploadImage = async (
     uris: string[],
-    call: (image: string[]) => Promise<void>,
+    call: (image: string[]) => void | Promise<void>,
   ) => {
     const formData = new FormData();
     uris.forEach((uri) => addLocalFileToFormData(uri, formData, "files"));

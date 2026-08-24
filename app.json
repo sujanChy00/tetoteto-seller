@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tetoteto-seller",
+    "name": "Tetoteto Seller",
     "slug": "tetoteto-seller",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -48,7 +48,12 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/splash.png",
+          "dark": {
+            "image": "./assets/images/splash.png",
+            "backgroundColor": "#000000"
+          },
+
           "imageWidth": 76
         }
       ],

@@ -1,6 +1,6 @@
-import { ShopForm } from "@/components/form/shop/shop-form";
 import { PendingComponent } from "@/components/layout/pending-component";
 import { FalllBackMesage } from "@/components/ui/fallback-message";
+import { ShopForm } from "@/form/shop/shop-form";
 import { useLanguage } from "@/hooks/use-language";
 import { useGetShopDetails } from "@/queries/shop-query";
 import { Stack, useLocalSearchParams } from "expo-router";

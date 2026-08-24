@@ -141,7 +141,7 @@ export type IItemAddBody = {
   stock: number;
   type: string;
   weight: number;
-  indianShop?: string;
+  indianShop?: boolean;
 };
 
 export type IItemLanguageList = {

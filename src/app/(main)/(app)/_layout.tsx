@@ -128,6 +128,31 @@ const AppLayout = () => {
           headerTitle: "Update Address",
         }}
       />
+      <Stack.Screen
+        name="item/[itemId]/edit"
+        options={{
+          headerTitle: "Edit Item",
+        }}
+      />
+      <Stack.Screen
+        name="item/[itemId]/copy"
+        options={{
+          headerTitle: "Copy Item",
+        }}
+      />
+      <Stack.Screen
+        name="item/add"
+        options={{
+          headerTitle: "Add Item",
+        }}
+      />
+      <Stack.Screen
+        name="item/[itemId]/manage-image"
+        options={{
+          headerTitle: "Manage Image",
+        }}
+      />
+
       {/*<Stack.Screen
         name="order/[orderId]/track"
         options={{

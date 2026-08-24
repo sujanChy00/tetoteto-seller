@@ -4,10 +4,10 @@ import {
   GET_ALL_SHIPPING_CAMPAIGN_QUERY_KEY,
   GET_SHIPPING_CAMPAIGN_BY_ID_QUERY_KEY,
 } from "@/constants/query-keys";
+import { ShippingCampaignFormValues } from "@/form/shipping-campaign/shipping-campaign-schema";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
-import { ShippingCampaignFormValues } from "@/schema/shipping-campaign-schema";
 import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { fetcher } from "@/utils/fetcher";
 import { errorToast, successToast } from "@/utils/toast";

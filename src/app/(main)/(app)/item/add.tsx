@@ -1,11 +1,7 @@
-import { Text, View } from "react-native";
+import { ItemFormTab } from "@/form/item/item-form-tab";
 
 const ItemAddScreen = () => {
-  return (
-    <View>
-      <Text>ItemAddScreen</Text>
-    </View>
-  );
+  return <ItemFormTab />;
 };
 
 export default ItemAddScreen;

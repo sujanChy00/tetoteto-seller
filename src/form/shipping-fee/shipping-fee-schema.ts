@@ -1,5 +1,8 @@
+import {
+  numericField,
+  optionalNumericField,
+} from "@/utils/number-converter-schema";
 import * as v from "valibot";
-import { numericField, optionalNumericField } from "./number-converter-schema";
 
 export const ShippingFeeSchema = v.object({
   coolShippingFee: numericField("Cool shipping fee"),

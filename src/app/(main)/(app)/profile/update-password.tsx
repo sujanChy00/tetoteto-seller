@@ -1,4 +1,4 @@
-import { PasswordForm } from "@/components/form/profile/password-form";
+import { PasswordForm } from "@/form/profile/password-form";
 
 const UpdateProfilePasswordScreen = () => <PasswordForm />;
 

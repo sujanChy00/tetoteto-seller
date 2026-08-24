@@ -1,7 +1,14 @@
+import {
+  GhostButton,
+  PrimaryButton,
+  SecondaryButton,
+} from "@/components/ui/button";
 import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { TextSeparator } from "@/components/ui/text-separator";
+import { ThemedText } from "@/components/ui/themed-text";
 import { isIOS, isNative } from "@/constants/platform";
+import { LoginFormData, LoginSchema } from "@/form/auth/auth-schema";
 import { useDeviceToken } from "@/hooks/use-device-token";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
@@ -10,14 +17,11 @@ import {
   useLoginMutation,
 } from "@/mutation/auth-mutation";
 import { useCheckForBiometrics } from "@/queries/auth-query";
-import { LoginFormData, LoginSchema } from "@/schema/auth-schema";
 import { useSelector } from "@tanstack/react-form";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
-import { GhostButton, PrimaryButton, SecondaryButton } from "../../ui/button";
-import { ThemedText } from "../../ui/themed-text";
 
 export const LoginForm = () => {
   const router = useRouter();

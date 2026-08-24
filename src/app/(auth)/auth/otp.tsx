@@ -1,4 +1,4 @@
-import { OtpForm } from "@/components/form/auth/otp-form";
+import { OtpForm } from "@/form/auth/otp-form";
 
 const OptScreen = () => <OtpForm />;
 

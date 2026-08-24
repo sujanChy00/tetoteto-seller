@@ -4,10 +4,6 @@ import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useUpdateShippingFee } from "@/mutation/shipping-fee-mutation";
-import {
-  ShippingFeeFormInput,
-  ShippingFeeSchema,
-} from "@/schema/shipping-fee-schema";
 import { IshippingFee } from "@/types";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
@@ -19,6 +15,7 @@ import {
 } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import * as v from "valibot";
+import { ShippingFeeFormInput, ShippingFeeSchema } from "./shipping-fee-schema";
 
 interface Props {
   data: IshippingFee | undefined;

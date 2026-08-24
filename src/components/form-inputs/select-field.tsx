@@ -5,16 +5,20 @@ import { SelectInput } from "../ui/select-input";
 
 interface SelectFieldProps {
   options: { label: string; value: string }[];
-  disabled?: boolean;
   className?: string;
+  onValueChange?: (value: string) => void;
+  snapPoints?: string[];
 }
 
 export const SelectField = ({
   options,
   label,
-  disabled = false,
   className,
   description,
+  onValueChange,
+  inputClassName,
+  isDisabled,
+  snapPoints,
 }: FormInputBaseProps<SelectFieldProps>) => {
   const field = useFieldContext<string | undefined>();
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
@@ -23,14 +27,17 @@ export const SelectField = ({
   return (
     <Field className={className}>
       {!!label && (
-        <FieldLabel isDisabled={disabled} isInvalid={isInvalid}>
+        <FieldLabel isDisabled={isDisabled} isInvalid={isInvalid}>
           {label}
         </FieldLabel>
       )}
       <SelectInput
-        disabled={disabled}
+        className={inputClassName}
+        disabled={isDisabled}
+        snapPoints={snapPoints}
         onValueChange={(v) => {
           field.handleChange(v.toString());
+          onValueChange?.(v.toString());
         }}
         value={field.state.value ?? ""}
         options={options}

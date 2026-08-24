@@ -1,6 +1,10 @@
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { PrimaryButton } from "@/components/ui/button";
 import { isIOS } from "@/constants/platform";
+import {
+  ShippingAddressFormValues,
+  ShippingAddressSchema,
+} from "@/form/order/order-schema";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
@@ -9,10 +13,6 @@ import {
   useUpdateShippingAddress,
 } from "@/mutation/order-mutation";
 import { useGetAddressInfo } from "@/queries/auth-query";
-import {
-  ShippingAddressFormValues,
-  ShippingAddressSchema,
-} from "@/schema/order-schema";
 import { ITransactionById } from "@/types";
 import { successToast } from "@/utils/toast";
 import { useSelector } from "@tanstack/react-form";

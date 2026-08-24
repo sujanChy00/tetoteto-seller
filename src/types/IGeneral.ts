@@ -47,7 +47,7 @@ export class BiometricLoginError extends Error {
   }
 }
 
-export type mutationProps<T> = {
-  onSuccess?: (data: T) => void;
+export type mutationProps<T, V extends undefined | string = undefined> = {
+  onSuccess?: (data: T, variables?: V) => void;
   onError?: (error: Error) => void;
 };

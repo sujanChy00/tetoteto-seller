@@ -17,6 +17,7 @@ interface SelectInputProps {
   disabled?: boolean;
   className?: string;
   placeholder?: string;
+  snapPoints?: string[];
 }
 
 export const SelectInput = ({
@@ -26,6 +27,7 @@ export const SelectInput = ({
   disabled = false,
   className,
   placeholder,
+  snapPoints,
 }: SelectInputProps) => {
   const { t } = useLanguage();
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -56,7 +58,7 @@ export const SelectInput = ({
         disabled={disabled}
         className={className}
       >
-        <SecondaryButton.Label className="text-foreground">
+        <SecondaryButton.Label>
           {selectedLabel || t("select")}
         </SecondaryButton.Label>
         <StyledSymbolView
@@ -64,11 +66,18 @@ export const SelectInput = ({
             android: "unfold_more",
             ios: "arrow.up.and.down",
           }}
-          tintColorClassName="accent-primary"
+          tintColorClassName="accent-muted"
         />
       </SecondaryButton>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetRef}>
-        <BottomSheetScrollView contentContainerClassName="pb-safe-offset-12">
+      <BottomSheetModal
+        snapPoints={snapPoints}
+        enablePanDownToClose
+        ref={bottomSheetRef}
+      >
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerClassName="pb-safe-offset-12"
+        >
           <View className="px-4">
             {options.map((item) => {
               const isSelected = item.value === value;

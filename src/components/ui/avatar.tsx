@@ -25,7 +25,7 @@ const AvatarImage = ({
   if (!!source)
     return (
       <StyledImage
-        // className={twMerge("rounded-full size-10 object-cover", className)}
+        className={twMerge("rounded-full size-10 object-cover", className)}
         source={source}
         contentFit="cover"
         {...rest}

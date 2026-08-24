@@ -23,6 +23,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import { AnimatedView } from "../animated-view";
 import { ThemedText } from "../themed-text";
 import {
   ItemMeasurements,
@@ -360,9 +361,9 @@ const Content = ({ children, value, className, ...rest }: TabsContentProps) => {
   if (activeValue !== value) return null;
 
   return (
-    <View className={content({ className })} {...rest}>
+    <AnimatedView className={content({ className })} {...rest}>
       {children}
-    </View>
+    </AnimatedView>
   );
 };
 

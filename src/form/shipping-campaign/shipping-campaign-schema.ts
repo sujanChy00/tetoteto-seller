@@ -1,5 +1,8 @@
+import {
+  numericField,
+  optionalNumericField,
+} from "@/utils/number-converter-schema";
 import * as v from "valibot";
-import { numericField, optionalNumericField } from "./number-converter-schema";
 
 export const ShippingCampaignSchema = v.object({
   shippingCampaignStartDate: v.date("Start date required"),

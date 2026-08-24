@@ -1,4 +1,4 @@
-import { ShippingCampaignForm } from "@/components/form/shipping-campaign/shipping-campaign-form";
+import { ShippingCampaignForm } from "@/form/shipping-campaign/shipping-campaign-form";
 import { PendingComponent } from "@/components/layout/pending-component";
 import { FalllBackMesage } from "@/components/ui/fallback-message";
 import { useLanguage } from "@/hooks/use-language";

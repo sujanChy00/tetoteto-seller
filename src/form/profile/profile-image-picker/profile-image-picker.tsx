@@ -9,7 +9,6 @@ import { Link } from "expo-router";
 import { useCallback } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { FadeIn, FadeOut } from "react-native-reanimated";
-import { useCSSVariable } from "uniwind";
 
 interface ProfileImagePickerProps {
   value: string | undefined;
@@ -32,10 +31,6 @@ export const ProfileImagePicker = ({
   fallback,
   imagePickerOptions,
 }: ProfileImagePickerProps) => {
-  const defaultForegroundColor = useCSSVariable(
-    "--color-default-foreground",
-  ) as string;
-
   const pickImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],

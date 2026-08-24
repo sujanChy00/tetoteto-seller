@@ -1,11 +1,7 @@
-import { Text, View } from "react-native";
+import { ItemFormTab } from "@/form/item/item-form-tab";
 
 const EditItemScreen = () => {
-  return (
-    <View>
-      <Text>EditItemScreen</Text>
-    </View>
-  );
+  return <ItemFormTab canUpdateImage={false} />;
 };
 
 export default EditItemScreen;

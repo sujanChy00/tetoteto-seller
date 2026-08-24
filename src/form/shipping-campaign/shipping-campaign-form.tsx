@@ -10,10 +10,7 @@ import {
   useAddShippingCampaign,
   useUpdateShippingCampaign,
 } from "@/mutation/campaign-mutation";
-import {
-  ShippingCampaignFormInput,
-  ShippingCampaignSchema,
-} from "@/schema/shipping-campaign-schema";
+
 import { IShipppingCampaign } from "@/types";
 import { errorToast } from "@/utils/toast";
 import { useSelector } from "@tanstack/react-form";
@@ -28,6 +25,10 @@ import {
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import * as v from "valibot";
 import { ShippingAreaSelector } from "./shipping-area-selector";
+import {
+  ShippingCampaignFormInput,
+  ShippingCampaignSchema,
+} from "./shipping-campaign-schema";
 
 interface Props {
   campaign?: IShipppingCampaign;
@@ -243,7 +244,7 @@ export const ShippingCampaignForm = ({ campaign, refetch }: Props) => {
               name="discountType"
               children={(Field) => (
                 <Field.SelectField
-                  disabled={!!campaign}
+                  isDisabled={!!campaign}
                   options={discountTypes}
                   label={t("discount_type")}
                 />

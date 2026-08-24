@@ -1,4 +1,4 @@
-import { PasswordExpiredForm } from "@/components/form/auth/password-expired-form";
+import { PasswordExpiredForm } from "@/form/auth/password-expired-form";
 
 const PasswordExpiredScreen = () => <PasswordExpiredForm />;
 

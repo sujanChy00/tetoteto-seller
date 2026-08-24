@@ -13,10 +13,10 @@ import {
   GET_ITEM_VARIATIONS_QUERY_KEY,
   GET_LOW_STOCK_ITEMS_QUERY_KEY,
 } from "@/constants/query-keys";
+import { ItemVariationValues } from "@/form/item/item-variation-schema";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
-import { ItemVariationValues } from "@/schema/item-variation-schema";
 import {
   AddImagesResponse,
   IItemAddBody,
@@ -169,7 +169,7 @@ export const useAddItem = ({
           ...rest,
         },
         params: {
-          indianShop: indianShop == "true",
+          indianShop,
         },
       });
     },
@@ -469,7 +469,7 @@ export const useCopyItem = ({
           ...body,
         },
         params: {
-          indianShop: indianShop == "true",
+          indianShop,
         },
       });
     },
@@ -498,7 +498,7 @@ export const useCopyItem = ({
 export const useDeleteItemImage = ({
   onSuccess,
   onError,
-}: mutationProps<IGeneralResponse> = {}) => {
+}: mutationProps<IGeneralResponse, string> = {}) => {
   const haptics = useHaptics();
   const { t } = useLanguage();
   return useMutation({
@@ -514,12 +514,12 @@ export const useDeleteItemImage = ({
         },
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       successToast({
         title: t("operation_successfull"),
         description: data.message,
       });
-      onSuccess?.(data);
+      onSuccess?.(data, variables);
     },
     onError: (error) => {
       haptics("error");
@@ -539,11 +539,22 @@ export const useUploadItemImage = ({
   const { t } = useLanguage();
   const haptics = useHaptics();
   return useMutation({
-    mutationFn: async (data: FormData) => {
+    mutationFn: async (uris: string[]) => {
+      const formData = new FormData();
+      try {
+        uris.forEach((uri) => addLocalFileToFormData(uri, formData, "files"));
+      } catch (error) {
+        haptics("error");
+        errorToast({
+          title: t("error"),
+          description: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      }
       return await fetcher<string[]>({
         url: "/image/temp",
         method: "POST",
-        data,
+        data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
         },

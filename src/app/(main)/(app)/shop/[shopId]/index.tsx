@@ -9,15 +9,9 @@ import { StyledImage } from "@/components/ui/image";
 import { ParallaxScrollView } from "@/components/ui/parallax-scroll-view";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { useGetShopDetails } from "@/queries/shop-query";
-import { Icon } from "@expo/ui";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { RefreshControl, View } from "react-native";
-
-const EDIT_ICON = Icon.select({
-  ios: "pencil",
-  android: import("@expo/material-symbols/edit.xml"),
-});
 
 const ShopDetailsScreen = () => {
   const router = useRouter();
@@ -66,46 +60,27 @@ const ShopDetailsScreen = () => {
         <ShopPrefectures prefectures={data.supportedPrefectures} />
       </View>
       <View className="px-2 pt-4">
-        <PrimaryButton
-          onPress={() => {
-            router.push({
-              pathname: "/shop/[shopId]/edit",
-              params: {
-                shopId,
-              },
-            });
+        <Link
+          asChild
+          href={{
+            pathname: "/shop/[shopId]/edit",
+            params: {
+              shopId,
+            },
           }}
         >
-          <StyledSymbolView
-            tintColorClassName={"accent-primary-foreground"}
-            name={{
-              android: "edit",
-              ios: "pencil",
-            }}
-            size={18}
-          />
-          <PrimaryButton.Label>Edit Shop</PrimaryButton.Label>
-        </PrimaryButton>
-        <PrimaryButton
-          onPress={() => {
-            router.push({
-              pathname: "/shop/[shopId]/legal-info",
-              params: {
-                shopId,
-              },
-            });
-          }}
-        >
-          <StyledSymbolView
-            tintColorClassName={"accent-primary-foreground"}
-            name={{
-              android: "edit",
-              ios: "pencil",
-            }}
-            size={18}
-          />
-          <PrimaryButton.Label>Legal Info</PrimaryButton.Label>
-        </PrimaryButton>
+          <PrimaryButton>
+            <StyledSymbolView
+              tintColorClassName={"accent-primary-foreground"}
+              name={{
+                android: "edit",
+                ios: "pencil",
+              }}
+              size={18}
+            />
+            <PrimaryButton.Label>Edit Shop</PrimaryButton.Label>
+          </PrimaryButton>
+        </Link>
       </View>
       <View className="h-5" />
     </ParallaxScrollView>

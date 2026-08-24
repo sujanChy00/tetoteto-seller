@@ -55,3 +55,6 @@ export const GET_PROFILE_QUERY_KEY = "profile";
 export const GET_BIOMETRIC_STATUS_QUERY_KEY = "biometric_status";
 export const GET_ADDRESS_INFO_QUERY_KEY = "address_info";
 export const GET_USER_ORDERS_QUERY_KEY = "user_orders";
+export const GET_ALL_CATEGORIES_QUERY_KEY = "all_categories";
+export const GET_ALL_CATEGORIES_BY_COUNTRY_AND_LANGUAGE_QUERY_KEY =
+  "all_categories_by_country_and_language";

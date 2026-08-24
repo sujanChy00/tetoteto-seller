@@ -7,10 +7,11 @@ import {
 } from "@/constants/query-keys";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
+
 import {
   ShipOrderFormValues,
   ShippingAddressFormValues,
-} from "@/schema/order-schema";
+} from "@/form/order/order-schema";
 import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { IOrderProgress, ITransactionById } from "@/types/ITransaction";
 import { fetcher } from "@/utils/fetcher";

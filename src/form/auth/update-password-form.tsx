@@ -4,11 +4,11 @@ import { View } from "react-native";
 import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { PrimaryButton } from "@/components/ui/button";
 import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
+import { ThemedText } from "@/components/ui/themed-text";
 import { successToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemedText } from "../../ui/themed-text";
 
 export const UpdatePasswordForm = () => {
   const { bottom } = useSafeAreaInsets();

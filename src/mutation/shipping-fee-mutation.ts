@@ -1,8 +1,8 @@
 import { GET_ALL_SHIPPING_FEE_QUERY_KEY } from "@/constants/query-keys";
+import { ShippingFeeFormValues } from "@/form/shipping-fee/shipping-fee-schema";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
-import { ShippingFeeFormValues } from "@/schema/shipping-fee-schema";
 import { IGeneralResponse, mutationProps } from "@/types";
 import { fetcher } from "@/utils/fetcher";
 import { purifyObject } from "@/utils/purify-object";

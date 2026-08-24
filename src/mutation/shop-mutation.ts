@@ -5,12 +5,12 @@ import {
   GET_ALL_SHIPPING_FEE_QUERY_KEY,
   GET_SHOP_DETAILS_QUERY_KEY,
 } from "@/constants/query-keys";
+import { ShopFormValues } from "@/form/shop/shop-schema";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
 import { useUser } from "@/hooks/use-user";
 import { getUser } from "@/queries/auth-query";
-import { ShopFormValues } from "@/schema/shop-schema";
 import { IGeneralResponse, mutationProps } from "@/types/IGeneral";
 import { IProfile } from "@/types/IProfile";
 import { IshopDetails } from "@/types/IShop";

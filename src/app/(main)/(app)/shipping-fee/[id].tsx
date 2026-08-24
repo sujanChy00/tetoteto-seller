@@ -1,6 +1,6 @@
-import { ShippingFeeForm } from "@/components/form/shipping-fee/shipping-fee-form";
 import { PendingComponent } from "@/components/layout/pending-component";
 import { FalllBackMesage } from "@/components/ui/fallback-message";
+import { ShippingFeeForm } from "@/form/shipping-fee/shipping-fee-form";
 import { useLanguage } from "@/hooks/use-language";
 import { useGetAllShippingFee } from "@/queries/shipping-fee-query";
 import { Stack, useLocalSearchParams } from "expo-router";

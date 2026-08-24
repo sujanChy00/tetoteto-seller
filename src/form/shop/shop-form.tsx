@@ -5,12 +5,12 @@ import { useHaptics } from "@/hooks/use-haptics";
 import { useUploadImageAndCall } from "@/hooks/use-image-upload";
 import { useLanguage } from "@/hooks/use-language";
 import { useUpdateShop, useUpdateShopImage } from "@/mutation/shop-mutation";
-import { ShopFormValues, ShopSchema } from "@/schema/shop-schema";
 import { IshopDetails } from "@/types";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { ProfileImagePicker } from "../profile/profile-image-picker";
+import { ShopFormValues, ShopSchema } from "./shop-schema";
 
 export const ShopForm = ({ data }: { data: IshopDetails }) => {
   const { t } = useLanguage();

@@ -1,4 +1,4 @@
-import { ProfileForm } from "@/components/form/profile/profile-form";
+import { ProfileForm } from "@/form/profile/profile-form";
 
 const UpdateProfileScreen = () => <ProfileForm />;
 

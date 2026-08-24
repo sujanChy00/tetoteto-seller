@@ -4,8 +4,8 @@ import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { useForm } from "@/hooks/use-form";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useUpdatePassword } from "@/mutation/auth-mutation";
-import { PasswordFormData, PasswordSchema } from "@/schema/auth-schema";
 import { ActivityIndicator, ScrollView, View } from "react-native";
+import { PasswordFormData, PasswordSchema } from "../auth/auth-schema";
 
 export const PasswordForm = () => {
   const hapticFeedBack = useHaptics();
