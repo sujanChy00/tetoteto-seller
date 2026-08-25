@@ -14,6 +14,7 @@ import { formatDate } from "@/utils/date";
 import { errorToast } from "@/utils/toast";
 import { useRouter } from "expo-router";
 import { useCallback } from "react";
+import * as v from "valibot";
 import { ItemFormInput, itemFormSchema } from "./item-schema";
 
 interface Props {
@@ -93,43 +94,46 @@ export const useItemForm = ({ item, itemId, copyItem }: Props) => {
       onSubmit: itemFormSchema,
     },
     onSubmit: async ({ value }) => {
-      if (value.discountedShipping && Number(value.weight) > 2) {
+      const parsed = v.parse(itemFormSchema, value);
+      if (parsed.discountedShipping && Number(parsed.weight) > 2) {
         errorToast({
           title: t("discounted_shipping_error_message"),
         });
         return;
       }
-      const { itemImages, ...rest } = value;
+      const { itemImages, ...rest } = parsed;
       const body = {
         ...rest,
-        manufactureDate: formatDate(value.manufactureDate),
-        expiryDate: formatDate(value.expiryDate),
-        categoryId: Number(value.categoryId),
-        weight: Number(value.weight),
+        manufactureDate: formatDate(parsed.manufactureDate),
+        expiryDate: formatDate(parsed.expiryDate),
+        categoryId: Number(parsed.categoryId),
+        weight: Number(parsed.weight),
         canBeMerged:
-          value.type === "cool" ? false : (value.canBeMerged as boolean),
-        markedPrice: Number(value.markedPrice),
-        price: Number(value.price),
-        stock: Number(value.stock),
+          parsed.type === "cool" ? false : (parsed.canBeMerged as boolean),
+        markedPrice: Number(parsed.markedPrice),
+        price: Number(parsed.price),
+        stock: Number(parsed.stock),
         discountedShipping:
-          value.type !== "dry" ? false : (value.discountedShipping as boolean),
+          parsed.type !== "dry"
+            ? false
+            : (parsed.discountedShipping as boolean),
       };
       const languageList = [
-        value.englishLanguageList,
+        parsed.englishLanguageList,
         getDefaultItem(
-          value.nepaliLanguageList,
+          parsed.nepaliLanguageList,
           "ne_NP",
-          value.englishLanguageList,
+          parsed.englishLanguageList,
         ),
         getDefaultItem(
-          value.vientameseLanguageList,
+          parsed.vientameseLanguageList,
           "vi_VN",
-          value.englishLanguageList,
+          parsed.englishLanguageList,
         ),
         getDefaultItem(
-          value.japaneseLanguageList,
+          parsed.japaneseLanguageList,
           "ja_JP",
-          value.englishLanguageList,
+          parsed.englishLanguageList,
         ),
       ];
       const newImages: string[] = itemImages?.map((img) =>
@@ -140,8 +144,8 @@ export const useItemForm = ({ item, itemId, copyItem }: Props) => {
 
       if (item && !!itemId) {
         const isSameImages =
-          value.itemImages.length === item.itemImages.images.length &&
-          value.itemImages.every(
+          parsed.itemImages.length === item.itemImages.images.length &&
+          parsed.itemImages.every(
             (value, index) => value === item.itemImages.images[index],
           );
         if (copyItem) {

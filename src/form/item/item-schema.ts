@@ -19,7 +19,7 @@ export const itemFormSchema = v.object({
   stock: optionalNumericField(),
   canBeMerged: v.boolean(),
   type: v.picklist(["dry", "frozen", "cool"]),
-  weight: numericField("Weight is required", 1),
+  weight: numericField("Weight is required", 0.001),
   markedPrice: optionalNumericField(),
   price: numericField("Price is required", 1),
   sku: v.string(),

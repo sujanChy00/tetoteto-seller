@@ -189,7 +189,6 @@ export const ShippingCampaignForm = ({ campaign, refetch }: Props) => {
               />
             ) : undefined
           }
-          style={{ flex: 1 }}
         >
           <View className="flex-1 gap-y-6 w-full">
             <Form.AppField

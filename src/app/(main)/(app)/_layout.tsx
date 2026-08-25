@@ -108,6 +108,12 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
+        name="item/[itemId]/variation/add"
+        options={{
+          headerTitle: "Add Variation",
+        }}
+      />
+      <Stack.Screen
         name="item/[itemId]/copy"
         options={{
           headerShown: false,

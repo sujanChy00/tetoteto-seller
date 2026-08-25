@@ -13,7 +13,7 @@ import {
   GET_ITEM_VARIATIONS_QUERY_KEY,
   GET_LOW_STOCK_ITEMS_QUERY_KEY,
 } from "@/constants/query-keys";
-import { ItemVariationValues } from "@/form/item/item-variation-schema";
+import { ItemVariationValues } from "@/form/item-variation/item-variation-schema";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useSelectedShop } from "@/hooks/use-selected-shop";

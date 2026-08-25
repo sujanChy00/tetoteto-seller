@@ -68,7 +68,6 @@ export const ShippingFeeForm = ({ data, refetch }: Props) => {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="always"
           contentContainerClassName="p-4 pb-safe-offset-10"
-          style={{ flex: 1 }}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

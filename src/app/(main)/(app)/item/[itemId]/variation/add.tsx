@@ -1,11 +1,5 @@
-import { Text, View } from "react-native";
+import { ItemVariationForm } from "@/form/item-variation/item-variation-form";
 
-const ItemVariationAddScreen = () => {
-  return (
-    <View>
-      <Text>ItemVariationAddScreen</Text>
-    </View>
-  );
-};
+const ItemVariationAddScreen = () => <ItemVariationForm />;
 
 export default ItemVariationAddScreen;

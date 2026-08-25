@@ -3,8 +3,7 @@ import { IItem } from "@/types";
 import { getAvatarName } from "@/utils/avatar-name";
 import { Link, useRouter } from "expo-router";
 import { memo } from "react";
-import { View } from "react-native";
-import { AlertDialog } from "../ui/alert-dialog";
+import { Alert, View } from "react-native";
 import { Avatar } from "../ui/avatar";
 import { Card } from "../ui/card";
 import { Chip } from "../ui/chip";
@@ -15,8 +14,13 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
   const router = useRouter();
   const { mutateAsync: deleteItem, isPending } = useDeleteItem();
 
+  const handleDelete = async () => {
+    await deleteItem(item.item_id);
+  };
+
   return (
     <Link
+      disabled={isPending}
       href={{
         pathname: "/item/[itemId]",
         params: {
@@ -142,17 +146,23 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
         >
           <ThemedText>Manage Image</ThemedText>
         </Link.MenuAction>
-        <AlertDialog
-          title={`Delete ${item.item_name}`}
-          message="Are you sure you want to delete this item?"
-          onConfirm={() => deleteItem(item.item_id)}
-          isConfirming={isPending}
-          trigger={(open) => (
-            <Link.MenuAction icon="trash.fill" destructive onPress={open}>
-              <ThemedText>Delete</ThemedText>
-            </Link.MenuAction>
-          )}
-        />
+
+        <Link.MenuAction
+          icon="trash"
+          destructive
+          onPress={() => {
+            Alert.alert(
+              "Delete",
+              "Are you sure you want to delete this item?",
+              [
+                { text: "Cancel", style: "cancel" },
+                { text: "Delete", style: "destructive", onPress: handleDelete },
+              ],
+            );
+          }}
+        >
+          <ThemedText>Delete</ThemedText>
+        </Link.MenuAction>
       </Link.Menu>
     </Link>
   );

@@ -61,11 +61,12 @@ export const ItemForm = withForm({
               const weight = fieldApi.form.getFieldValue("weight");
 
               if (Number(value) > 0 && Number(value) < Number(price)) {
-                return t("item_marked_price_less_than_price");
+                return { message: t("item_marked_price_less_than_price") };
               }
               if (Number(weight) > 25) {
-                return t("item_weight_error_message");
+                return { message: t("item_weight_error_message") };
               }
+              return undefined;
             },
           }}
           children={(Field) => (
@@ -86,12 +87,16 @@ export const ItemForm = withForm({
                 case "cool":
                 case "frozen":
                   if (Number(value) > selectedShop?.coolWeightLimit!) {
-                    return `item weight limit is ${selectedShop?.coolWeightLimit}`;
+                    return {
+                      message: `item weight limit is ${selectedShop?.coolWeightLimit}`,
+                    };
                   }
                   break;
                 case "dry":
                   if (Number(value) > selectedShop?.dryWeightLimit!) {
-                    return `item weight limit is ${selectedShop?.dryWeightLimit}`;
+                    return {
+                      message: `item weight limit is ${selectedShop?.dryWeightLimit}`,
+                    };
                   }
                   break;
                 default:

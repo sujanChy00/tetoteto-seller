@@ -34,9 +34,7 @@ export const TextField = ({
         onChangeText={field.handleChange}
       />
       {!!description && <FieldDescription>{description}</FieldDescription>}
-      {!!fieldError && (
-        <FieldError>{fieldError ?? fieldError?.message}</FieldError>
-      )}
+      {!!fieldError?.message && <FieldError>{fieldError?.message}</FieldError>}
     </Field>
   );
 };
