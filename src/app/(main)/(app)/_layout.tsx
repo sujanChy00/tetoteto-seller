@@ -131,25 +131,25 @@ const AppLayout = () => {
       <Stack.Screen
         name="item/[itemId]/edit"
         options={{
-          headerTitle: "Edit Item",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="item/[itemId]/copy"
         options={{
-          headerTitle: "Copy Item",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="item/add"
         options={{
-          headerTitle: "Add Item",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="item/[itemId]/manage-image"
         options={{
-          headerTitle: "Manage Image",
+          headerShown: false,
         }}
       />
 

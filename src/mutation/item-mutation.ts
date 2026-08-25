@@ -501,6 +501,7 @@ export const useDeleteItemImage = ({
 }: mutationProps<IGeneralResponse, string> = {}) => {
   const haptics = useHaptics();
   const { t } = useLanguage();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (image: string) => {
       const formData = new FormData();
@@ -519,6 +520,7 @@ export const useDeleteItemImage = ({
         title: t("operation_successfull"),
         description: data.message,
       });
+      queryClient.invalidateQueries({ queryKey: [GET_ITEM_DETAILS_QUERY_KEY] });
       onSuccess?.(data, variables);
     },
     onError: (error) => {

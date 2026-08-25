@@ -9,7 +9,7 @@ import { OTPField } from "@/components/ui/otp-field";
 import { fieldContext, formContext } from "@/utils/form-hook-context";
 import { createFormHook } from "@tanstack/react-form";
 
-const { useAppForm: useForm } = createFormHook({
+const { useAppForm: useForm, withForm } = createFormHook({
   fieldComponents: {
     TextField,
     PasswordField,
@@ -26,4 +26,4 @@ const { useAppForm: useForm } = createFormHook({
   formContext,
 });
 
-export { useForm };
+export { useForm, withForm };

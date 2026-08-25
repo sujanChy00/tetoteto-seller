@@ -24,6 +24,8 @@ export const SwitchInput = ({
       {label && <ThemedText className={labelClassName}>{label}</ThemedText>}
       <Switch
         {...rest}
+        trackColorOffClassName="accent-muted"
+        trackColorOnClassName="accent-primary-soft"
         onValueChange={(checked) => {
           haptics(checked ? "toggle-on" : "toggle-off");
           onValueChange?.(checked);

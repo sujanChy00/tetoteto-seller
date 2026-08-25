@@ -14,15 +14,9 @@ import {
 } from "@expo/ui/community/bottom-sheet";
 import * as ImagePicker from "expo-image-picker";
 import { Link } from "expo-router";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Pressable, TouchableOpacity, View } from "react-native";
-import {
-  Easing,
-  LinearTransition,
-  ZoomIn,
-  ZoomOut,
-} from "react-native-reanimated";
-import { twMerge } from "tailwind-merge";
+import { ZoomIn, ZoomOut } from "react-native-reanimated";
 
 interface ItemImageSelectorProps {
   onChange: (images: string[]) => void;
@@ -33,6 +27,7 @@ export const ItemImageSelector = ({
   onChange,
   value,
 }: ItemImageSelectorProps) => {
+  const [newImagesSelected, setNewImagesSelected] = useState(false);
   const uploadMutation = useUploadItemImage();
   const deleteMutation = useDeleteItemImage({
     onSuccess: (_, img) => {
@@ -60,7 +55,7 @@ export const ItemImageSelector = ({
       mediaTypes: ["images"],
       quality: 1,
       allowsMultipleSelection: true,
-      selectionLimit: 4 - value.length,
+      selectionLimit: 4,
     });
 
     if (result.canceled || result.assets.length === 0) return;
@@ -70,7 +65,8 @@ export const ItemImageSelector = ({
 
     await uploadMutation.mutateAsync(uris, {
       onSuccess: (data) => {
-        onChange([...value, ...data]);
+        onChange(data);
+        setNewImagesSelected(true);
       },
     });
   }, [value, onChange, closeSheet]);
@@ -92,7 +88,8 @@ export const ItemImageSelector = ({
     closeSheet();
     await uploadMutation.mutateAsync(uris, {
       onSuccess: (data) => {
-        onChange([...value, ...data]);
+        onChange(data);
+        setNewImagesSelected(true);
       },
     });
   }, [value, onChange, closeSheet]);
@@ -100,21 +97,15 @@ export const ItemImageSelector = ({
   const isPending = uploadMutation.isPending || deleteMutation.isPending;
 
   return (
-    <View className="flex-row items-center justify-between gap-3 border border-separator rounded-3xl p-2">
-      <FullScreenSpinner isVisible={isPending} />
-      {value.length > 0 ? (
-        <AnimatedView
-          layout={LinearTransition.easing(Easing.ease)}
-          className={twMerge(
-            "flex-row items-center gap-3 flex-1",
-            value.length === 4 ? "justify-between" : "",
-          )}
-        >
-          {value.map((item) => (
+    <View className="gap-y-1">
+      <View className="flex-row items-center gap-3 border border-border dark:border-separator rounded-3xl p-2">
+        <FullScreenSpinner isVisible={isPending} />
+        {value.length > 0 ? (
+          value.map((item) => (
             <AnimatedView
               exiting={ZoomOut.duration(100)}
               entering={ZoomIn.duration(100)}
-              className="size-14 relative"
+              className="h-14 w-12 relative"
               key={item}
             >
               <Link
@@ -131,68 +122,73 @@ export const ItemImageSelector = ({
                   contentFit="contain"
                 />
               </Link>
-              <Pressable
-                hitSlop={8}
-                className="absolute -top-2 right-2 bg-separator rounded-full size-4 items-center justify-center"
-                onPress={() => onDelete(item)}
-              >
-                <StyledSymbolView
-                  size={12}
-                  tintColorClassName="accent-danger"
-                  name={{
-                    android: "remove",
-                    ios: "minus",
-                  }}
-                />
-              </Pressable>
+              {newImagesSelected && (
+                <AnimatedView
+                  className={"absolute -top-2 right-2"}
+                  exiting={ZoomOut.duration(100)}
+                  entering={ZoomIn.duration(100)}
+                >
+                  <Pressable
+                    hitSlop={8}
+                    className=" bg-separator rounded-full size-4 items-center justify-center"
+                    onPress={() => onDelete(item)}
+                  >
+                    <StyledSymbolView
+                      size={12}
+                      tintColorClassName="accent-danger"
+                      name={{
+                        android: "remove",
+                        ios: "minus",
+                      }}
+                    />
+                  </Pressable>
+                </AnimatedView>
+              )}
             </AnimatedView>
-          ))}
-        </AnimatedView>
-      ) : (
-        <ThemedText className="text-muted font-semibold pl-6">
-          Upload images
-        </ThemedText>
-      )}
-      {value.length < 4 && (
-        <AnimatedView
-          exiting={ZoomOut.duration(100)}
-          entering={ZoomIn.duration(100)}
+          ))
+        ) : (
+          <ThemedText className="text-muted font-semibold pl-6">
+            Upload images
+          </ThemedText>
+        )}
+
+        <TouchableOpacity
+          disabled={isPending}
+          onPress={openSheet}
+          className="size-14 rounded-2xl items-center justify-center dark:bg-separator bg-border ml-auto"
         >
-          <TouchableOpacity
-            disabled={isPending}
-            onPress={openSheet}
-            className="size-14 rounded-2xl items-center justify-center bg-separator"
-          >
-            <StyledSymbolView
-              tintColorClassName="accent-primary"
-              name={{
-                android: "upload",
-                ios: "square.and.arrow.up",
-              }}
-            />
-          </TouchableOpacity>
-        </AnimatedView>
-      )}
-      <BottomSheetModal ref={bottomSheetRef} enablePanDownToClose>
-        <BottomSheetView>
-          <View className="gap-3 p-4">
-            <SecondaryButton onPress={pickImage}>
-              <StyledSymbolView
-                name={{ android: "photo", ios: "photo" }}
-                tintColorClassName="accent-primary"
-              />
-              <SecondaryButton.Label>Open Gallery</SecondaryButton.Label>
-            </SecondaryButton>
-            <SecondaryButton onPress={takePicture}>
-              <StyledSymbolView
-                name={{ android: "camera", ios: "camera" }}
-                tintColorClassName="accent-primary"
-              />
-              <SecondaryButton.Label>Take Photo</SecondaryButton.Label>
-            </SecondaryButton>
-          </View>
-        </BottomSheetView>
-      </BottomSheetModal>
+          <StyledSymbolView
+            tintColorClassName="accent-primary"
+            name={{
+              android: "upload",
+              ios: "square.and.arrow.up",
+            }}
+          />
+        </TouchableOpacity>
+        <BottomSheetModal ref={bottomSheetRef} enablePanDownToClose>
+          <BottomSheetView>
+            <View className="gap-3 p-4">
+              <SecondaryButton onPress={pickImage}>
+                <StyledSymbolView
+                  name={{ android: "photo", ios: "photo" }}
+                  tintColorClassName="accent-primary"
+                />
+                <SecondaryButton.Label>Open Gallery</SecondaryButton.Label>
+              </SecondaryButton>
+              <SecondaryButton onPress={takePicture}>
+                <StyledSymbolView
+                  name={{ android: "camera", ios: "camera" }}
+                  tintColorClassName="accent-primary"
+                />
+                <SecondaryButton.Label>Take Photo</SecondaryButton.Label>
+              </SecondaryButton>
+            </View>
+          </BottomSheetView>
+        </BottomSheetModal>
+      </View>
+      <ThemedText className="text-muted text-xs">
+        *You can only upload up to 4 images.
+      </ThemedText>
     </View>
   );
 };

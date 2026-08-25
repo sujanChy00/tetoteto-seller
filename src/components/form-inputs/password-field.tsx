@@ -67,7 +67,9 @@ export const PasswordField = ({
         </InputGroup.Suffix>
       </InputGroup>
       {!!description && <FieldDescription>{description}</FieldDescription>}
-      {!!fieldError?.message && <FieldError>{fieldError?.message}</FieldError>}
+      {!!fieldError && (
+        <FieldError>{fieldError ?? fieldError?.message}</FieldError>
+      )}
     </Field>
   );
 };

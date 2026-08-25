@@ -1,14 +1,11 @@
-import { LegendList } from "@legendapp/list/react-native";
 import { Link } from "expo-router";
 import { useRef } from "react";
 import { Animated, Dimensions, Pressable, View } from "react-native";
-import { AnimatedView } from "./animated-view";
 import { StyledImage } from "./image";
 
 export const Carousel = ({ images }: { images: string[] }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const width = Dimensions.get("window").width;
-
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
     { useNativeDriver: false },
@@ -16,12 +13,7 @@ export const Carousel = ({ images }: { images: string[] }) => {
 
   const renderItem = ({ item }: { item: string }) => (
     <Link
-      href={{
-        pathname: "/image/[image]",
-        params: {
-          image: item,
-        },
-      }}
+      href={{ pathname: "/image/[image]", params: { image: item } }}
       asChild
     >
       <Pressable>
@@ -36,8 +28,7 @@ export const Carousel = ({ images }: { images: string[] }) => {
 
   return (
     <View>
-      <LegendList
-        recycleItems
+      <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         snapToAlignment="center"
@@ -53,7 +44,7 @@ export const Carousel = ({ images }: { images: string[] }) => {
       {images.length > 1 && (
         <View className="flex-row items-center justify-center gap-3 -translate-y-2">
           {images?.map((_, imageIndex) => {
-            const viewWidth = scrollX.interpolate({
+            const dotWidth = scrollX.interpolate({
               inputRange: [
                 width * (imageIndex - 1),
                 width * imageIndex,
@@ -63,14 +54,10 @@ export const Carousel = ({ images }: { images: string[] }) => {
               extrapolate: "clamp",
             });
             return (
-              <AnimatedView
+              <Animated.View
                 key={imageIndex}
-                className={"bg-muted"}
-                style={{
-                  width: viewWidth,
-                  height: 8,
-                  borderRadius: 100,
-                }}
+                className="bg-muted"
+                style={{ width: dotWidth, height: 8, borderRadius: 100 }}
               />
             );
           })}

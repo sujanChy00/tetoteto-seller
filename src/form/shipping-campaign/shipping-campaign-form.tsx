@@ -115,7 +115,7 @@ export const ShippingCampaignForm = ({ campaign, refetch }: Props) => {
     onSubmitInvalid: () => {
       hapticFeedBack("error");
     },
-    onSubmit: async ({ value, formApi, meta }) => {
+    onSubmit: async ({ value, formApi }) => {
       const parsedValue = v.parse(ShippingCampaignSchema, value);
       const { discountType, ...body } = parsedValue;
       const data = {
@@ -143,13 +143,10 @@ export const ShippingCampaignForm = ({ campaign, refetch }: Props) => {
       }
 
       if (!parsedValue[discountType]) {
-        formApi.setFieldMeta(discountType, (prev) => ({
-          ...prev,
-          errorMap: {
-            ...prev.errorMap,
-            onSubmit: discountTypeError[discountType],
-          },
-        }));
+        errorToast({
+          title: "Error",
+          description: discountTypeError[discountType],
+        });
         return;
       }
 
