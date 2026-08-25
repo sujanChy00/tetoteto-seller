@@ -1,5 +1,4 @@
 import { Link } from "expo-router";
-import { useState } from "react";
 import {
   FadeInDown,
   FadeInUp,
@@ -13,7 +12,6 @@ interface Props {
 }
 
 export const ItemCurrentThumbnail = ({ currentThumbnail }: Props) => {
-  const [a, b] = useState(false);
   if (!currentThumbnail) return null;
   return (
     <AnimatedView
