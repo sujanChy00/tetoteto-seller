@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Platform } from "react-native";
 
+import { isWeb } from "@/constants/platform";
 import {
   GET_ALL_ITEMS_INFINITE_QUERY_KEY,
   GET_ALL_ITEMS_QUERY_KEY,
@@ -594,7 +594,7 @@ export const useAddItemImages = ({
     }) => {
       const formData = new FormData();
 
-      if (Platform.OS == "web") {
+      if (isWeb) {
         await Promise.all(
           images.map(async (uri, index) => {
             const blob = await uriToBlob(uri);

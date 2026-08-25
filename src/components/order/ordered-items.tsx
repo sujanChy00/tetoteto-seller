@@ -1,11 +1,12 @@
 import { OrderPackingProvider } from "@/context/order-packing-provider";
 import { ITransactionById } from "@/types";
+import { Collapsible, RNHostView } from "@expo/ui";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { Accordion } from "../ui/accordion";
+import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
-import { ThemedText } from "../ui/themed-text";
+import { Surface } from "../ui/surface";
 import { ItemsToPackSheet } from "./items-to-pack-sheet";
 import { OrderPackingButtons } from "./order-packing-buttons";
 import { OrderPackingControl } from "./order-packing-control";
@@ -17,33 +18,33 @@ export const OrderedItems = ({ order }: { order: ITransactionById }) => {
   const sellerAcknowledged = order.orderProgress === "SELLER_ACKNOWLEDGED";
 
   return (
-    <OrderPackingProvider
-      orderId={Number(params.orderId)}
-      orderedItems={order.items}
-    >
-      <Accordion selectionMode="single" isCollapsible variant="surface">
-        <Accordion.Item value="ordered-items">
-          <Accordion.Trigger className="py-6">
-            <ThemedText className="flex-1">
-              Ordered Items ({order.items.length})
-            </ThemedText>
-            <Accordion.Indicator />
-          </Accordion.Trigger>
-          <Accordion.Content>
-            <View className="gap-3">
-              <ItemsToPackSheet />
-              {sellerAcknowledged && <OrderPackingControl />}
-              <Separator />
-              <View className="gap-3 overflow-hidden">
-                {order.items.map((item) => (
-                  <OrderdItemCard key={item.id} item={item} />
-                ))}
+    <Surface className="p-0">
+      <OrderPackingProvider
+        orderId={Number(params.orderId)}
+        orderedItems={order.items}
+      >
+        <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
+          <Collapsible
+            isOpen={open}
+            onOpenChange={setOpen}
+            label={`Ordered Items (${order.items.length})`}
+          >
+            <RNHostView matchContents>
+              <View className="gap-3 px-3">
+                <ItemsToPackSheet />
+                {sellerAcknowledged && <OrderPackingControl />}
+                <Separator />
+                <View className="gap-3 overflow-hidden">
+                  {order.items.map((item) => (
+                    <OrderdItemCard key={item.id} item={item} />
+                  ))}
+                </View>
+                <OrderPackingButtons />
               </View>
-              <OrderPackingButtons />
-            </View>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
-    </OrderPackingProvider>
+            </RNHostView>
+          </Collapsible>
+        </Host>
+      </OrderPackingProvider>
+    </Surface>
   );
 };

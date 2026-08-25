@@ -78,7 +78,7 @@ const ItemScreen = () => {
         keyboardDismissMode="on-drag"
         onEndReachedThreshold={0.5}
         data={allItems}
-        estimatedItemSize={142}
+        estimatedItemSize={126}
         ItemSeparatorComponent={renderSeparator}
         renderItem={renderItem}
         refreshing={refreshing}

@@ -25,7 +25,7 @@ export const ItemCard = memo(({ item }: { item: IItem }) => {
       }}
     >
       <Link.Trigger>
-        <Card className="flex-row items-center gap-3">
+        <Card className="flex-row items-center gap-3 py-1">
           <Avatar className="rounded-xl size-20">
             <Avatar.Image
               alt={item.item_name}

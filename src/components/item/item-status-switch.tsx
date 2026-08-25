@@ -17,6 +17,7 @@ export const ItemStatusSwitch = ({ itemId, value }: Props) => {
 
   return (
     <SwitchInput
+      className="justify-between"
       label={t("disabled")}
       disabled={isPending}
       value={value}

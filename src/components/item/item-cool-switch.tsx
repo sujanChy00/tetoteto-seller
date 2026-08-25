@@ -40,6 +40,7 @@ export const ItemCoolSwitch = ({ data }: Props) => {
 
   return (
     <SwitchInput
+      className="justify-between"
       label={t("can_be_sent_in_cool_cart")}
       disabled={isPending}
       value={isMergeable}

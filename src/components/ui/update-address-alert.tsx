@@ -29,7 +29,7 @@ export const UpdateAddressAlert = ({ orderId, isSellerRequest }: Props) => {
         <View className="flex-row justify-end items-center gap-3">
           {isSellerRequest && (
             <WarningButton
-              className="px-6"
+              className="px-6 h-10"
               disabled={cancelling || isPending}
               onPress={cancelAddressUpdate}
             >
@@ -41,7 +41,7 @@ export const UpdateAddressAlert = ({ orderId, isSellerRequest }: Props) => {
           )}
           {!isSellerRequest && (
             <DangerButton
-              className="px-6"
+              className="px-6 h-10"
               disabled={isPending || cancelling}
               onPress={approveAddressUpdate}
             >

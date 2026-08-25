@@ -25,6 +25,7 @@ export const ShippingCampaignStatusSwitch = ({ campaign }: Props) => {
     <Surface className="bg-surface-secondary/80 rounded-2xl p-3">
       <SwitchInput
         label="Campaign Status"
+        className="justify-between"
         disabled={isPending}
         value={campaign.shippingCampaignActive}
         onValueChange={updateCampaign}

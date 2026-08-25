@@ -1,9 +1,9 @@
+import { Link } from "expo-router";
 import { memo } from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { twMerge } from "tailwind-merge";
 import { SecondaryButton } from "../ui/button";
 import { StyledImage } from "../ui/image";
-import { Surface } from "../ui/surface";
 import { StyledSymbolView } from "../ui/symbol-view";
 import { ThemedText } from "../ui/themed-text";
 
@@ -18,9 +18,12 @@ interface Props {
 export const ItemDraggableImage = memo(
   ({ thumbnail, index, item, onThumbnailChange, onDeleteImage }: Props) => {
     return (
-      <Surface
+      <Pressable
+        onPress={() => {
+          onThumbnailChange(item);
+        }}
         className={twMerge(
-          "flex-row items-center gap-3 justify-between border shadow-none p-2 rounded-2xl",
+          "flex-row items-center gap-3 bg-surface justify-between border shadow-none p-2 rounded-2xl",
           thumbnail == item
             ? "border-primary bg-primary-soft"
             : "border-border",
@@ -55,24 +58,26 @@ export const ItemDraggableImage = memo(
           />
         </View>
         <View className="flex-row items-center gap-3">
-          <SecondaryButton
-            onPress={() => {
-              onThumbnailChange(item);
+          <Link
+            asChild
+            href={{
+              pathname: "/image/[image]",
+              params: {
+                image: item,
+              },
             }}
-            className={twMerge(
-              "px-0 h-8 w-8 gap-0 rounded-xl",
-              thumbnail === item ? "bg-primary/20" : "",
-            )}
           >
-            <StyledSymbolView
-              name={{
-                android: "star",
-                ios: "star",
-              }}
-              size={16}
-              tintColorClassName="accent-muted"
-            />
-          </SecondaryButton>
+            <SecondaryButton className={"px-0 h-8 w-8 gap-0 rounded-xl"}>
+              <StyledSymbolView
+                name={{
+                  android: "visibility",
+                  ios: "eye",
+                }}
+                size={16}
+                tintColorClassName="accent-muted"
+              />
+            </SecondaryButton>
+          </Link>
           <SecondaryButton
             onPress={() => {
               onDeleteImage(item);
@@ -89,7 +94,7 @@ export const ItemDraggableImage = memo(
             />
           </SecondaryButton>
         </View>
-      </Surface>
+      </Pressable>
     );
   },
 );

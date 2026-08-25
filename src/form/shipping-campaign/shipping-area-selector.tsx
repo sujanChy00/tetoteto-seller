@@ -1,8 +1,10 @@
-import { Accordion } from "@/components/ui/accordion";
 import { Chip } from "@/components/ui/chip";
+import { Host } from "@/components/ui/host";
+import { Surface } from "@/components/ui/surface";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useGetAllShippingArea } from "@/queries/campaign-query";
 import { IShippingArea } from "@/types";
+import { Collapsible, RNHostView } from "@expo/ui";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { twMerge } from "tailwind-merge";
@@ -13,35 +15,29 @@ interface Props {
 }
 
 export const ShippingAreaSelector = ({ value, onChange }: Props) => {
-  const [accordionValue, setAccordionValue] = useState("");
-  const { data: shippingAreas, isPending } = useGetAllShippingArea(
-    accordionValue === "shipping-areas",
-  );
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: shippingAreas, isPending } = useGetAllShippingArea(isOpen);
   return (
-    <Accordion
-      isCollapsible
-      selectionMode="single"
-      value={accordionValue}
-      variant="surface"
-      onValueChange={(value) => {
-        setAccordionValue(value as string);
-      }}
-    >
-      <Accordion.Item value="shipping-areas">
-        <Accordion.Trigger className="py-4 px-6">
-          <ThemedText className="flex-1">Select Shipping Areas</ThemedText>
-          <Accordion.Indicator />
-        </Accordion.Trigger>
-        <Accordion.Content>
-          <ShippingAreaSelectorContent
-            isPending={isPending}
-            shippingAreas={shippingAreas ?? []}
-            value={value}
-            onChange={onChange}
-          />
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
+    <Surface className="p-0">
+      <Host matchContents={{ vertical: true }}>
+        <Collapsible
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          label="Select Shipping Areas"
+        >
+          <RNHostView matchContents>
+            <View className="p-3">
+              <ShippingAreaSelectorContent
+                isPending={isPending}
+                shippingAreas={shippingAreas ?? []}
+                value={value}
+                onChange={onChange}
+              />
+            </View>
+          </RNHostView>
+        </Collapsible>
+      </Host>
+    </Surface>
   );
 };
 
@@ -72,7 +68,7 @@ const ShippingAreaSelectorContent = ({
     );
 
   return (
-    <View className="flex-row items-center gap-3 flex-wrap p-3">
+    <View className="flex-row items-center gap-3 flex-wrap ">
       {shippingAreas.map((area) => {
         const isSelected = value.includes(area.shippingAreaId);
         return (

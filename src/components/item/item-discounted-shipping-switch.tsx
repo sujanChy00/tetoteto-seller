@@ -43,6 +43,7 @@ export const ItemDiscountedShippingSwitch = ({ data }: Props) => {
 
   return (
     <SwitchInput
+      className="justify-between"
       label={t("discounted_shipping")}
       disabled={isDisabled}
       value={discountedShipping}

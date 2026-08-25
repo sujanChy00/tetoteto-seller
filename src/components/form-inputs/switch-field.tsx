@@ -1,4 +1,5 @@
 import { useFieldContext } from "@/utils/form-hook-context";
+import { twMerge } from "tailwind-merge";
 import { Field, FieldDescription } from "../ui/field";
 import { SwitchInput, SwitchInputProps } from "../ui/switch-input";
 
@@ -19,7 +20,7 @@ export const SwitchField = ({
     <Field className={className}>
       <SwitchInput
         {...props}
-        className={inputClassName}
+        className={twMerge("justify-between", inputClassName)}
         onValueChange={field.handleChange}
         value={field.state.value ?? false}
       />

@@ -1,11 +1,12 @@
 import { OrderTrackingResponse } from "@/types";
 import { dateTimestampFormatter } from "@/utils/date";
+import { Collapsible, RNHostView } from "@expo/ui";
 import { useRecyclingState } from "@legendapp/list/react-native";
 import { Link } from "expo-router";
 import React, { memo } from "react";
 import { Pressable, View } from "react-native";
-import { Accordion, AccordionLayoutTransition } from "../ui/accordion";
 import { Card } from "../ui/card";
+import { Host } from "../ui/host";
 import { Separator } from "../ui/separator";
 import { ThemedText } from "../ui/themed-text";
 
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export const ShipmentCard = memo(({ shipment }: Props) => {
-  const [value, setValue] = useRecyclingState("");
+  const [isOpen, setIsOpen] = useRecyclingState(false);
   return (
     <Link
       asChild
@@ -26,8 +27,8 @@ export const ShipmentCard = memo(({ shipment }: Props) => {
       }}
     >
       <Pressable>
-        <Card className="p-0" layout={AccordionLayoutTransition}>
-          <Card.Header className="p-3 pb-0" layout={AccordionLayoutTransition}>
+        <Card className="p-0">
+          <Card.Header className="p-3 pb-0">
             <Card.Description className="uppercase text-[10px] font-semibold">
               ORDER ID
             </Card.Description>
@@ -39,10 +40,7 @@ export const ShipmentCard = memo(({ shipment }: Props) => {
               </ThemedText>
             </ThemedText>
           </Card.Header>
-          <Card.Body
-            className="gap-1 py-6 px-3"
-            layout={AccordionLayoutTransition}
-          >
+          <Card.Body className="gap-1 py-6 px-3">
             <View className="flex-row items-center gap-2">
               <ThemedText className="text-muted flex-[0.5]">Name:</ThemedText>
               <ThemedText className="text-left flex-[0.5]">
@@ -67,20 +65,15 @@ export const ShipmentCard = memo(({ shipment }: Props) => {
             </View>
           </Card.Body>
           <Separator />
-          <Card.Footer layout={AccordionLayoutTransition}>
-            <Accordion
-              isCollapsible
-              selectionMode="single"
-              value={value}
-              onValueChange={(v) => setValue(v as string)}
-            >
-              <Accordion.Item value="shipment-details">
-                <Accordion.Trigger>
-                  <ThemedText className="flex-1">View Details</ThemedText>
-                  <Accordion.Indicator />
-                </Accordion.Trigger>
-                <Accordion.Content>
-                  <View className="gap-6">
+          <Card.Footer>
+            <Host matchContents={{ vertical: true }}>
+              <Collapsible
+                label="View Details"
+                isOpen={isOpen}
+                onOpenChange={setIsOpen}
+              >
+                <RNHostView matchContents>
+                  <View className="gap-6 px-4">
                     <View className="rounded-xl bg-primary-soft p-3">
                       <ThemedText className="uppercase text-muted text-[10px] font-medium">
                         Shipping Company: {shipment.shippingCompany}
@@ -116,9 +109,9 @@ export const ShipmentCard = memo(({ shipment }: Props) => {
                       </View>
                     )}
                   </View>
-                </Accordion.Content>
-              </Accordion.Item>
-            </Accordion>
+                </RNHostView>
+              </Collapsible>
+            </Host>
           </Card.Footer>
         </Card>
       </Pressable>

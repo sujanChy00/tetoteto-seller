@@ -274,7 +274,7 @@ export const ShippingCampaignForm = ({ campaign, refetch }: Props) => {
             <Form.AppField
               name={"shippingCampaignActive"}
               children={(Field) => (
-                <Surface className="px-6 py-4">
+                <Surface className="py-1">
                   <Field.SwitchField label={t("status")} />
                 </Surface>
               )}

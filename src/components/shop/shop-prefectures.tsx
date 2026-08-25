@@ -1,7 +1,10 @@
 import { SupportedPrefectures } from "@/types";
+import { Collapsible, RNHostView } from "@expo/ui";
+import { useState } from "react";
 import { View } from "react-native";
-import { Accordion } from "../ui/accordion";
 import { Chip } from "../ui/chip";
+import { Host } from "../ui/host";
+import { Surface } from "../ui/surface";
 import { ThemedText } from "../ui/themed-text";
 
 export const ShopPrefectures = ({
@@ -9,39 +12,39 @@ export const ShopPrefectures = ({
 }: {
   prefectures: SupportedPrefectures[] | undefined;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Accordion
-      selectionMode="single"
-      isCollapsible
-      variant="surface"
-      className="border border-separator"
-    >
-      <Accordion.Item value="prefectures">
-        <Accordion.Trigger className="py-5">
-          <ThemedText className="flex-1">Supported Prefectures</ThemedText>
-          <Accordion.Indicator />
-        </Accordion.Trigger>
-        <Accordion.Content>
-          {prefectures?.length ? (
-            <View className="p-3 flex-row items-center gap-3 flex-wrap border-t-hairline border-t-separator">
-              {prefectures?.map((prefecture) => (
-                <Chip
-                  variant="soft"
-                  color="success"
-                  key={prefecture.id}
-                  className="p-2"
-                >
-                  <ThemedText>{prefecture.name}</ThemedText>
-                </Chip>
-              ))}
+    <Surface className="p-0 border border-separator rounded-2xl">
+      <Host matchContents={{ vertical: true }}>
+        <Collapsible
+          label="Supported Prefectures"
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+        >
+          <RNHostView matchContents>
+            <View className="p-3 ">
+              {prefectures?.length ? (
+                <View className="flex-row items-center gap-3 flex-wrap border-t-hairline border-t-separator">
+                  {prefectures?.map((prefecture) => (
+                    <Chip
+                      variant="soft"
+                      color="success"
+                      key={prefecture.id}
+                      className="p-2"
+                    >
+                      <ThemedText>{prefecture.name}</ThemedText>
+                    </Chip>
+                  ))}
+                </View>
+              ) : (
+                <ThemedText className="text-muted italic">
+                  No prefectures available
+                </ThemedText>
+              )}
             </View>
-          ) : (
-            <ThemedText className="text-muted italic">
-              No prefectures available
-            </ThemedText>
-          )}
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
+          </RNHostView>
+        </Collapsible>
+      </Host>
+    </Surface>
   );
 };

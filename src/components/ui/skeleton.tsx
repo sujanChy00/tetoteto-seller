@@ -1,27 +1,15 @@
 import { useEffect } from "react";
-import { ViewStyle } from "react-native";
-import Animated, {
+import {
   Easing,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { useCSSVariable } from "uniwind";
+import { twMerge } from "tailwind-merge";
+import { AnimatedView, AnimatedViewProps } from "./animated-view";
 
-interface SkeletonProps {
-  width?: number | string;
-  height?: number;
-  style?: ViewStyle;
-}
-
-export const Skeleton = ({
-  width = "100%",
-  height = 100,
-  style,
-}: SkeletonProps) => {
-  const mutedColor = useCSSVariable("--color-muted");
-  // Start the opacity at its lowest point
+export const Skeleton = ({ className, style, ...rest }: AnimatedViewProps) => {
   const opacity = useSharedValue(0.5);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -29,7 +17,7 @@ export const Skeleton = ({
       opacity: opacity.value,
     };
   });
-
+  Skeleton;
   useEffect(() => {
     // We only define the animation going from 0.5 -> 1.
     // The `withRepeat` function will handle reversing it automatically.
@@ -45,18 +33,12 @@ export const Skeleton = ({
   }, []); // Use an empty dependency array as the shared value object is stable
 
   return (
-    <Animated.View
+    <AnimatedView
       accessibilityElementsHidden
+      className={twMerge("bg-surface-secondary w-full h-25", className)}
       accessibilityLabel="Loading content"
-      style={[
-        {
-          width: width as any,
-          height,
-          backgroundColor: mutedColor as string,
-        },
-        animatedStyle,
-        style,
-      ]}
+      style={[animatedStyle, style]}
+      {...rest}
     />
   );
 };

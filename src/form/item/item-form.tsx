@@ -191,7 +191,7 @@ export const ItemForm = withForm({
           <Form.AppField
             name="indianShop"
             children={(Field) => (
-              <Surface>
+              <Surface className="py-1">
                 <Field.SwitchField
                   label={t("add_to_indian_shop")}
                   description="If toggled on it will be added to Indian Shop else it will be added to Nepali Shop"
@@ -203,7 +203,7 @@ export const ItemForm = withForm({
         <Form.AppField
           name="discountedShipping"
           children={(Field) => (
-            <Surface>
+            <Surface className="py-1">
               <Field.SwitchField label={t("discounted_shipping")} />
             </Surface>
           )}
@@ -211,7 +211,7 @@ export const ItemForm = withForm({
         <Form.AppField
           name="canBeMerged"
           children={(Field) => (
-            <Surface>
+            <Surface className="py-1">
               <Field.SwitchField label={t("can_be_sent_in_cool_cart")} />
             </Surface>
           )}
