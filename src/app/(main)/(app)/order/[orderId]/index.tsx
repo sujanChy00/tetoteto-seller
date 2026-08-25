@@ -13,9 +13,11 @@ import { TrackOrderButton } from "@/components/order/track-order-button";
 import { UpdateOrderTrackingInfo } from "@/components/order/update-order-tracking-info";
 import { AnimatedView } from "@/components/ui/animated-view";
 import { FalllBackMesage } from "@/components/ui/fallback-message";
+import { FullScreenSpinner } from "@/components/ui/full-screen-spinner";
+import { ThemedText } from "@/components/ui/themed-text";
 import { UpdateAddressAlert } from "@/components/ui/update-address-alert";
 import { useOrder } from "@/hooks/use-order";
-import { useGetOrderById } from "@/queries/order-query";
+import { useGenerateInvoice, useGetOrderById } from "@/queries/order-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
@@ -24,6 +26,7 @@ import { SlideInDown } from "react-native-reanimated";
 const OrderDetailScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { orderId } = useLocalSearchParams<{ orderId: string }>();
+  const { getInvoice, isLoading } = useGenerateInvoice(Number(orderId));
   const {
     data: order,
     isPending,
@@ -45,44 +48,48 @@ const OrderDetailScreen = () => {
   if (isPending)
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerTitle: "Loading...",
-          }}
-        />
         <PendingComponent />
+        <Stack.Title>Loading...</Stack.Title>
       </>
     );
 
   if (!order)
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerTitle: "!Oops",
-          }}
-        />
         <FalllBackMesage message={error.message || "Item not found"} />
+        <Stack.Title>!Oops</Stack.Title>
       </>
     );
 
   const showOrderActions =
     isOrderChanged || trackingDetailsAvailable || canShipOrder;
 
+  const isWaitingPayment = order.orderStatus === "WAIT_PAYMENT";
+
   return (
     <View className="flex-1">
-      <Stack.Screen
-        options={{
-          headerTitle: `#${order.transactionId}`,
-          headerRight: () => (
-            <OrderOptions
-              isWaitingPayment={order.orderStatus === "WAIT_PAYMENT"}
-              canUpdateAddress={canUpdateAddress}
-              userId={String(order.userDetail.id)}
-            />
-          ),
-        }}
+      <FullScreenSpinner
+        isVisible={isLoading}
+        loadingText={
+          <View className="items-center">
+            <ThemedText className="text-center text-base">
+              Please wait...
+            </ThemedText>
+            <ThemedText className="text-center text-muted">
+              Invoice is being generated...
+            </ThemedText>
+          </View>
+        }
       />
+      <Stack.Title>#{order.transactionId}</Stack.Title>
+      <Stack.Toolbar placement="right">
+        <OrderOptions
+          getInvoice={getInvoice}
+          isWaitingPayment={isWaitingPayment}
+          canUpdateAddress={canUpdateAddress}
+          userId={String(order.userDetail.id)}
+        />
+      </Stack.Toolbar>
       <ScrollView
         contentContainerClassName="p-2 pt-6"
         refreshControl={

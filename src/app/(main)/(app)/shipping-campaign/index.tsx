@@ -1,16 +1,14 @@
 import { ShippingCampaignCard } from "@/components/shipping-campaign/shipping-campaign-card";
-import { PrimaryButton } from "@/components/ui/button";
-import { FabButton } from "@/components/ui/fab-button";
 import { ListEmpty } from "@/components/ui/list/list-empty";
 import { ListFooter } from "@/components/ui/list/list-footer";
 import { ListSeparator } from "@/components/ui/list/list-separator";
-import { StyledSymbolView } from "@/components/ui/symbol-view";
-import { isAndroid } from "@/constants/platform";
+import { useLanguage } from "@/hooks/use-language";
 import { useResponsiveListColumns } from "@/hooks/use-responsive-list-columns";
 import { useGetAllShippingCampaigns } from "@/queries/campaign-query";
 import { IShipppingCampaign } from "@/types";
+import PLUST_ICON from "@expo/material-symbols/add.xml";
 import { LegendList } from "@legendapp/list/react-native";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 
@@ -18,6 +16,7 @@ const renderSeparator = () => <ListSeparator />;
 
 const ShippingCampaignScreen = () => {
   const router = useRouter();
+  const { t } = useLanguage();
   const { numColumns } = useResponsiveListColumns();
   const [refreshing, setRefreshing] = useState(false);
   const { data, isPending, refetch } = useGetAllShippingCampaigns();
@@ -46,6 +45,20 @@ const ShippingCampaignScreen = () => {
   );
   return (
     <View className="flex-1">
+      <Stack.Title>{t("shipping_campaigns")}</Stack.Title>
+      <Stack.Toolbar placement="right">
+        <Stack.Toolbar.Button
+          variant="prominent"
+          onPress={() => {
+            router.push({
+              pathname: "/shipping-campaign/add",
+            });
+          }}
+        >
+          <Stack.Toolbar.Icon sf="plus" src={PLUST_ICON} />
+          <Stack.Toolbar.Label>Add</Stack.Toolbar.Label>
+        </Stack.Toolbar.Button>
+      </Stack.Toolbar>
       <LegendList
         // key={numColumns}
         // numColumns={numColumns}
@@ -70,28 +83,6 @@ const ShippingCampaignScreen = () => {
           exitDelay: 250,
         }}
       />
-
-      {isAndroid ? (
-        <FabButton>
-          <PrimaryButton
-            onPress={() => {
-              router.push({
-                pathname: "/shipping-campaign/add",
-              });
-            }}
-            className={"size-16"}
-          >
-            <StyledSymbolView
-              size={28}
-              name={{
-                ios: "plus",
-                android: "add",
-              }}
-              tintColorClassName={"accent-primary-foreground"}
-            />
-          </PrimaryButton>
-        </FabButton>
-      ) : null}
     </View>
   );
 };

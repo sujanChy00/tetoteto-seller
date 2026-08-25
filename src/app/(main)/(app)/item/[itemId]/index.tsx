@@ -45,12 +45,10 @@ const ItemDetailScreen = () => {
     );
   return (
     <View className="flex-1">
-      <Stack.Screen
-        options={{
-          headerTitle: "Product Details",
-          headerRight: () => <ItemOptions itemId={itemId} />,
-        }}
-      />
+      <Stack.Title>Product Details</Stack.Title>
+      <Stack.Toolbar placement="right">
+        <ItemOptions />
+      </Stack.Toolbar>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic"

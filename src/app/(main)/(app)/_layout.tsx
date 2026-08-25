@@ -1,6 +1,4 @@
-import { ResetShippingFee } from "@/components/shipping-fee/reset-shipping-fee";
-import { IOSGlassButton } from "@/components/ui/ios-glass-button";
-import { isAndroid, isIOS } from "@/constants/platform";
+import { isAndroid } from "@/constants/platform";
 import { useLanguage } from "@/hooks/use-language";
 import { Stack, useRouter } from "expo-router";
 
@@ -49,34 +47,9 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
-        name="shipping-campaign/index"
-        options={{
-          title: t("shipping_campaigns"),
-          headerRight: () =>
-            isIOS ? (
-              <IOSGlassButton
-                size="small"
-                label={t("add")}
-                onPress={() => {
-                  router.push({
-                    pathname: "/shipping-campaign/add",
-                  });
-                }}
-              />
-            ) : null,
-        }}
-      />
-      <Stack.Screen
         name="shipping-campaign/add"
         options={{
           title: "Add Shipping Campaign",
-        }}
-      />
-      <Stack.Screen
-        name="shipping-fee/index"
-        options={{
-          title: t("shipping_fees"),
-          headerRight: () => <ResetShippingFee />,
         }}
       />
       <Stack.Screen
@@ -152,13 +125,12 @@ const AppLayout = () => {
           headerShown: false,
         }}
       />
-
-      {/*<Stack.Screen
+      <Stack.Screen
         name="order/[orderId]/track"
         options={{
           headerTitle: "Tracking Details",
         }}
-      />*/}
+      />
     </Stack>
   );
 };

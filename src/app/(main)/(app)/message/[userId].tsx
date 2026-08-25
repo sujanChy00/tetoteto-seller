@@ -1,35 +1,17 @@
 import { ChatActions } from "@/components/chat/chat-actions";
 import { ChatFetchingIndicator } from "@/components/chat/chat-fetching-indicator";
 import { ChatList } from "@/components/chat/chat-list";
-import { IOSGlassButton } from "@/components/ui/ios-glass-button";
-import { StyledSymbolView } from "@/components/ui/symbol-view";
-import { ThemedText } from "@/components/ui/themed-text";
+// import { IOSGlassButton } from "@/components/ui/ios-glass-button";
 import { useGetUserMessagesById } from "@/queries/chat-query";
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import SHOPPING_BAG_ICON from "@expo/material-symbols/local_mall.xml";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
-import { Platform, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
 import { twMerge } from "tailwind-merge";
 
-const ORDER_BUTTON = Platform.select({
-  android: (
-    <TouchableOpacity hitSlop={10}>
-      <View className="flex-row items-center gap-1">
-        <ThemedText className="text-primary">orders</ThemedText>
-        <StyledSymbolView
-          size={16}
-          tintColorClassName="accent-primary"
-          name={{
-            android: "arrow_right_alt",
-          }}
-        />
-      </View>
-    </TouchableOpacity>
-  ),
-  ios: <IOSGlassButton label="orders" size="small" />,
-});
-
 const ChatDetailScreen = () => {
+  const router = useRouter();
   const { userId } = useLocalSearchParams<{
     userId: string;
   }>();
@@ -46,25 +28,22 @@ const ChatDetailScreen = () => {
 
   return (
     <View className="flex-1">
-      <Stack.Screen
-        options={{
-          title: isPending ? "Loading..." : (user?.name ?? "Chat Detail"),
-          headerRight: () =>
-            isPending ? null : (
-              <Link
-                href={{
-                  pathname: "/user-orders/[userId]",
-                  params: {
-                    userId,
-                  },
-                }}
-                asChild
-              >
-                {ORDER_BUTTON}
-              </Link>
-            ),
-        }}
-      />
+      <Stack.Title>{isPending ? "Loading..." : user?.name}</Stack.Title>
+      <Stack.Toolbar placement="right">
+        <Stack.Toolbar.Button
+          onPress={() => {
+            router.push({
+              pathname: "/user-orders/[userId]",
+              params: {
+                userId,
+              },
+            });
+          }}
+        >
+          <Stack.Toolbar.Label>orders</Stack.Toolbar.Label>
+          <Stack.Toolbar.Icon sf="cart" src={SHOPPING_BAG_ICON} />
+        </Stack.Toolbar.Button>
+      </Stack.Toolbar>
       <ChatFetchingIndicator visible={isFetchingNextPage && hasNextPage} />
       <ChatList
         isPending={isPending}

@@ -4,6 +4,7 @@ import {
   GET_ALL_ORDERS_QUERY_KEY,
   GET_ALL_SHIPMENTS_QUERY_KEY,
   GET_ORDER_DETAILS_QUERY_KEY,
+  GET_ORDER_TRACKING_DETAILS_QUERY_KEY,
   GET_USER_ORDERS_QUERY_KEY,
 } from "@/constants/query-keys";
 import { useSelectedShop } from "@/hooks/use-selected-shop";
@@ -158,5 +159,15 @@ export const useGetUserOrders = ({ userId }: { userId: number }) => {
         params: { shopId: selectedShop?.shopId },
       }),
     enabled: !!userId && !!selectedShop?.shopId,
+  });
+};
+
+export const useGetOrderTrackingDetails = (orderId: number) => {
+  return useQuery({
+    queryKey: [GET_ORDER_TRACKING_DETAILS_QUERY_KEY, orderId],
+    queryFn: async () =>
+      await fetcher<OrderTrackingResponse>({
+        url: `/order/track/${orderId}`,
+      }),
   });
 };

@@ -1,53 +1,38 @@
-import { itemOptionsList } from "@/constants/data";
 import { useDeleteItem } from "@/mutation/item-mutation";
-import { GlassView } from "expo-glass-effect";
-import { useRouter } from "expo-router";
-import { useCallback } from "react";
-import { Alert, Platform, StyleSheet, View } from "react-native";
-import { Menu } from "../ui/menu";
-import { StyledSymbolView } from "../ui/symbol-view";
+import MORE_HORIZ_ICON from "@expo/material-symbols/more_horiz.xml";
+import { Icon } from "@expo/ui";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Alert } from "react-native";
 
-const styles = StyleSheet.create({
-  container: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+const EDIT_ICON = Icon.select({
+  ios: "pencil",
+  android: import("@expo/material-symbols/edit.xml"),
 });
 
-const Trigger = Platform.select({
-  ios: (
-    <GlassView hitSlop={20} style={styles.container}>
-      <StyledSymbolView
-        tintColorClassName="accent-foreground"
-        name={{
-          android: "more_horiz",
-          ios: "ellipsis",
-        }}
-      />
-    </GlassView>
-  ),
-  android: (
-    <View
-      hitSlop={20}
-      className="size-8 rounded-full items-center justify-center"
-    >
-      <StyledSymbolView
-        tintColorClassName="accent-foreground"
-        name={{
-          android: "more_horiz",
-          ios: "ellipsis",
-        }}
-      />
-    </View>
-  ),
+const COPY_ICON = Icon.select({
+  ios: "doc.on.doc",
+  android: import("@expo/material-symbols/content_copy.xml"),
 });
 
-export const ItemOptions = ({ itemId }: { itemId: string }) => {
+const VARIATION_ICON = Icon.select({
+  ios: "square.on.square",
+  android: import("@expo/material-symbols/tune.xml"),
+});
+
+const MANAGE_IMAGES_ICON = Icon.select({
+  ios: "photo.on.rectangle.angled",
+  android: import("@expo/material-symbols/photo_library.xml"),
+});
+
+const DELETE_ICON = Icon.select({
+  ios: "trash",
+  android: import("@expo/material-symbols/delete.xml"),
+});
+
+export const ItemOptions = () => {
+  const { itemId } = useLocalSearchParams<{ itemId: string }>();
   const router = useRouter();
-  const { mutateAsync: deleteItem, isPending } = useDeleteItem({
+  const { mutateAsync: deleteItem } = useDeleteItem({
     onSuccess: () => {
       router.back();
     },
@@ -57,44 +42,65 @@ export const ItemOptions = ({ itemId }: { itemId: string }) => {
     await deleteItem(itemId);
   };
 
-  const handleValueChange = useCallback((value: string) => {
-    switch (value) {
-      case "edit":
-        router.push({
-          pathname: "/item/[itemId]/edit",
-          params: { itemId },
-        });
-        break;
-      case "copy":
-        router.push({
-          pathname: "/item/[itemId]/copy",
-          params: { itemId },
-        });
-        break;
-      case "variation":
-        router.push({
-          pathname: "/item/[itemId]/variation",
-          params: { itemId },
-        });
-        break;
-      case "manage-images":
-        router.push({
-          pathname: "/item/[itemId]/manage-image",
-          params: { itemId },
-        });
-        break;
-      case "delete":
-        Alert.alert("Delete", "Are you sure you want to delete this item?", [
-          { text: "Cancel", style: "cancel" },
-          { text: "Delete", style: "destructive", onPress: handleDelete },
-        ]);
-        break;
-    }
-  }, []);
-
   return (
-    <Menu onValueChange={handleValueChange} nativeOptions={itemOptionsList}>
-      {Trigger}
-    </Menu>
+    <Stack.Toolbar.Menu>
+      <Stack.Toolbar.Icon sf="ellipsis.circle" src={MORE_HORIZ_ICON} />
+      <Stack.Toolbar.MenuAction
+        icon={EDIT_ICON}
+        onPress={() => {
+          router.push({
+            pathname: "/item/[itemId]/edit",
+            params: { itemId },
+          });
+        }}
+      >
+        Edit
+      </Stack.Toolbar.MenuAction>
+      <Stack.Toolbar.MenuAction
+        icon={COPY_ICON}
+        onPress={() => {
+          router.push({
+            pathname: "/item/[itemId]/copy",
+            params: { itemId },
+          });
+        }}
+      >
+        Copy
+      </Stack.Toolbar.MenuAction>
+      <Stack.Toolbar.MenuAction
+        icon={VARIATION_ICON}
+        onPress={() => {
+          router.push({
+            pathname: "/item/[itemId]/variation",
+            params: { itemId },
+          });
+        }}
+      >
+        Variation
+      </Stack.Toolbar.MenuAction>
+      <Stack.Toolbar.MenuAction
+        icon={MANAGE_IMAGES_ICON}
+        onPress={() => {
+          router.push({
+            pathname: "/item/[itemId]/manage-image",
+            params: { itemId },
+          });
+        }}
+      >
+        Manage Images
+      </Stack.Toolbar.MenuAction>
+      <Stack.Toolbar.MenuAction
+        destructive
+        icon={DELETE_ICON}
+        onPress={() => {
+          Alert.alert("Delete", "Are you sure you want to delete this item?", [
+            { text: "Cancel", style: "cancel" },
+            { text: "Delete", style: "destructive", onPress: handleDelete },
+          ]);
+        }}
+      >
+        Delete
+      </Stack.Toolbar.MenuAction>
+    </Stack.Toolbar.Menu>
   );
 };

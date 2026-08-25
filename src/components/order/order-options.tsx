@@ -1,51 +1,6 @@
-import { useGenerateInvoice } from "@/queries/order-query";
+import MORE_HORIZ_ICON from "@expo/material-symbols/more_horiz.xml";
 import { Icon } from "@expo/ui";
-import { GlassView } from "expo-glass-effect";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { useMemo } from "react";
-import { Platform, StyleSheet, View } from "react-native";
-import { FullScreenSpinner } from "../ui/full-screen-spinner";
-import { Menu } from "../ui/menu";
-import { StyledSymbolView } from "../ui/symbol-view";
-import { ThemedText } from "../ui/themed-text";
-
-const styles = StyleSheet.create({
-  container: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
-
-const Trigger = Platform.select({
-  ios: (
-    <GlassView style={styles.container} hitSlop={20}>
-      <StyledSymbolView
-        tintColorClassName="accent-foreground"
-        name={{
-          android: "more_horiz",
-          ios: "ellipsis",
-        }}
-      />
-    </GlassView>
-  ),
-  android: (
-    <View
-      hitSlop={20}
-      className="size-8 rounded-full items-center justify-center"
-    >
-      <StyledSymbolView
-        tintColorClassName="accent-foreground"
-        name={{
-          android: "more_horiz",
-          ios: "ellipsis",
-        }}
-      />
-    </View>
-  ),
-});
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
 const USER_ORDERS_ICON = Icon.select({
   ios: "bag",
@@ -71,102 +26,73 @@ interface Props {
   userId: string;
   canUpdateAddress: boolean;
   isWaitingPayment: boolean;
+  getInvoice: () => void;
 }
 
 export const OrderOptions = ({
   userId,
   canUpdateAddress,
   isWaitingPayment,
+  getInvoice,
 }: Props) => {
   const router = useRouter();
   const { orderId } = useLocalSearchParams<{ orderId: string }>();
-  const { getInvoice, isLoading } = useGenerateInvoice(Number(orderId));
-
-  const options = useMemo(
-    () => [
-      {
-        title: "User Orders",
-        id: "user-orders",
-        image: USER_ORDERS_ICON,
-      },
-      ...(canUpdateAddress
-        ? [
-            {
-              title: "Update Address",
-              id: "update-address",
-              image: UPDATE_ADDRESS_ICON,
-            },
-          ]
-        : []),
-      {
-        title: "Message User",
-        id: "message-user",
-        image: MESSAGE_USER_ICON,
-      },
-      ...(!isWaitingPayment
-        ? [
-            {
-              title: "View Invoice",
-              id: "view-invoice",
-              image: VIEW_INVOICE_ICON,
-            },
-          ]
-        : []),
-    ],
-    [canUpdateAddress, isWaitingPayment],
-  );
-
-  const handleValueChange = (value: string) => {
-    switch (value) {
-      case "user-orders":
-        router.push({
-          pathname: "/user-orders/[userId]",
-          params: {
-            userId,
-          },
-        });
-        break;
-      case "update-address":
-        router.push({
-          pathname: "/order/[orderId]/update-address",
-          params: {
-            orderId,
-          },
-        });
-        break;
-      case "message-user":
-        router.push({
-          pathname: "/message/[userId]",
-          params: {
-            userId,
-            orderId,
-          },
-        });
-        break;
-      case "view-invoice":
-        getInvoice();
-        break;
-    }
-  };
 
   return (
-    <>
-      <FullScreenSpinner
-        isVisible={isLoading}
-        loadingText={
-          <View className="items-center">
-            <ThemedText className="text-center text-base">
-              Please wait...
-            </ThemedText>
-            <ThemedText className="text-center text-muted">
-              Invoice is being generated...
-            </ThemedText>
-          </View>
-        }
-      />
-      <Menu onValueChange={handleValueChange} nativeOptions={options}>
-        {Trigger}
-      </Menu>
-    </>
+    <Stack.Toolbar.Menu>
+      <Stack.Toolbar.Icon sf="ellipsis.circle" src={MORE_HORIZ_ICON} />
+      <Stack.Toolbar.MenuAction
+        icon={USER_ORDERS_ICON}
+        onPress={() => {
+          router.push({
+            pathname: "/user-orders/[userId]",
+            params: {
+              userId,
+            },
+          });
+        }}
+      >
+        User Orders
+      </Stack.Toolbar.MenuAction>
+      {canUpdateAddress && (
+        <Stack.Toolbar.MenuAction
+          icon={UPDATE_ADDRESS_ICON}
+          onPress={() => {
+            router.push({
+              pathname: "/order/[orderId]/update-address",
+              params: {
+                orderId,
+              },
+            });
+          }}
+        >
+          Update Address
+        </Stack.Toolbar.MenuAction>
+      )}
+      <Stack.Toolbar.MenuAction
+        icon={MESSAGE_USER_ICON}
+        onPress={() => {
+          router.push({
+            pathname: "/message/[userId]",
+            params: {
+              userId,
+              orderId,
+            },
+          });
+        }}
+      >
+        Message User
+      </Stack.Toolbar.MenuAction>
+      {!isWaitingPayment && (
+        <Stack.Toolbar.MenuAction
+          icon={VIEW_INVOICE_ICON}
+          onPress={() => {
+            getInvoice();
+          }}
+        >
+          View Invoice
+        </Stack.Toolbar.MenuAction>
+      )}
+    </Stack.Toolbar.Menu>
   );
 };
