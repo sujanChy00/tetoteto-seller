@@ -7,7 +7,7 @@ import { PendingComponent } from "@/components/layout/pending-component";
 import { PrimaryButton } from "@/components/ui/button";
 import { useItemThumbnail } from "@/hooks/use-item-thumbnail";
 import { useCallback } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, RefreshControl, View } from "react-native";
 import Animated from "react-native-reanimated";
 import type { SortableGridRenderItem } from "react-native-sortables";
 import Sortable from "react-native-sortables";
@@ -29,6 +29,9 @@ const ManageItemImageScreen = () => {
     numberOfImageSelected,
     addingImages,
     onDragEnd,
+    refetch,
+    refreshing,
+    setIsRefreshing,
     warningColor,
   } = useItemThumbnail();
   const renderItem = useCallback<SortableGridRenderItem<string>>(
@@ -51,6 +54,15 @@ const ManageItemImageScreen = () => {
         ref={scrollableRef}
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setIsRefreshing(true);
+              refetch().finally(() => setIsRefreshing(false));
+            }}
+          />
+        }
       >
         <View className="pt-safe-offset-20 gap-y-10 px-4">
           <ManageItemThumbnailTitle images={images} />

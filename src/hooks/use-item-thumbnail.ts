@@ -14,6 +14,7 @@ import { useRefreshOnFocus } from "./use-refetch-onfocus";
 
 export const useItemThumbnail = () => {
   const router = useRouter();
+  const [refreshing, setIsRefreshing] = useState(false);
   const removedImagesRef = useRef<string[]>([]);
   const { t } = useLanguage();
   const scrollableRef = useAnimatedRef<Animated.ScrollView>();
@@ -23,8 +24,8 @@ export const useItemThumbnail = () => {
   const [currentThumbnail, setCurrentThumbnail] = useState(
     data?.itemImages.thumbnailImage ?? "",
   );
-  const [numberOfImageSelected, setNumberOfImageSelected] = useState(0);
   useRefreshOnFocus(refetch);
+  const [numberOfImageSelected, setNumberOfImageSelected] = useState(0);
   const [images, setImages] = useState<string[]>(
     data?.itemImages?.images ?? [],
   );
@@ -95,5 +96,8 @@ export const useItemThumbnail = () => {
     addingImages,
     onDragEnd,
     warningColor,
+    refetch,
+    refreshing,
+    setIsRefreshing,
   };
 };
