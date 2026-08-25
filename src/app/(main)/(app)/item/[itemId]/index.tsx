@@ -24,22 +24,14 @@ const ItemDetailScreen = () => {
     return (
       <>
         <PendingComponent />
-        <Stack.Screen
-          options={{
-            headerTitle: "Loading...",
-          }}
-        />
+        <Stack.Title>Loading...</Stack.Title>
       </>
     );
 
   if (!data)
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerTitle: "!Oops",
-          }}
-        />
+        <Stack.Title>!Oops</Stack.Title>
         <FalllBackMesage message={error.message || "Item not found"} />
       </>
     );
