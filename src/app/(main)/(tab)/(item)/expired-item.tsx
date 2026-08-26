@@ -5,7 +5,7 @@ import { ListFetchingMore } from "@/components/ui/list/list-fetching-more";
 import { ListSeparator } from "@/components/ui/list/list-separator";
 import { useRefreshOnFocus } from "@/hooks/use-refetch-onfocus";
 import { useInfiniteExpiredItemQuery } from "@/queries/item-query";
-import { ILowStockItem } from "@/types";
+import { ILowStockItem, ItemSortOption } from "@/types";
 import { LegendList } from "@legendapp/list/react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
@@ -67,6 +67,19 @@ const ExpiredItemScreen = () => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const sortOptions: ItemSortOption[] = useMemo(() => {
+    return [
+      {
+        label: "stock",
+        value: "stock",
+      },
+      {
+        label: "expiry_date",
+        value: "exp_date",
+      },
+    ];
+  }, []);
+
   return (
     <View className="flex-1">
       <LegendList
@@ -94,7 +107,7 @@ const ExpiredItemScreen = () => {
           exitDelay: 250,
         }}
       />
-      <ItemFilters />
+      <ItemFilters options={sortOptions} />
     </View>
   );
 };

@@ -6,6 +6,7 @@ import {
 } from "@/constants/query-keys";
 import { useAppInit } from "@/hooks/use-app-init";
 import { useHaptics } from "@/hooks/use-haptics";
+import { useLanguage } from "@/hooks/use-language";
 import { useUser } from "@/hooks/use-user";
 import {
   BiometricLoginError,
@@ -136,6 +137,8 @@ export const useUpdatePassword = ({
 };
 
 export const useValidateLinkMutation = () => {
+  const haptics = useHaptics();
+  const { t } = useLanguage();
   return useMutation({
     mutationFn: async (token: string) =>
       await fetcher({
@@ -143,6 +146,13 @@ export const useValidateLinkMutation = () => {
         method: "POST",
         data: { token },
       }),
+    onError: (err) => {
+      haptics("error");
+      errorToast({
+        title: t("error"),
+        description: err.message,
+      });
+    },
   });
 };
 

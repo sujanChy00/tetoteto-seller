@@ -1,22 +1,26 @@
 import { PrimaryButton } from "@/components/ui/button";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { View } from "react-native";
+import { useHaptics } from "@/hooks/use-haptics";
+import { useSendResetEmail } from "@/mutation/auth-mutation";
+import { useLocalSearchParams } from "expo-router";
+import { ActivityIndicator, View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ForgotPasswordForm = () => {
-  const router = useRouter();
+  const haptics = useHaptics();
   const { bottom } = useSafeAreaInsets();
   const { email } = useLocalSearchParams<{ email?: string }>();
+  const { mutateAsync, isPending } = useSendResetEmail();
   const Form = useForm({
     defaultValues: { email },
+    onSubmitInvalid: () => {
+      haptics("error");
+    },
     onSubmit: async ({ value }) => {
-      console.log(value);
-      router.push({
-        pathname: "/auth/otp",
-        params: { email: value.email },
+      await mutateAsync({
+        reset_email: value.email!,
       });
     },
   });
@@ -35,6 +39,13 @@ export const ForgotPasswordForm = () => {
         <View className="items-center">
           <Form.AppField
             name="email"
+            validators={{
+              onSubmit: ({ value }) => {
+                if (!value?.trim()) {
+                  return { message: "Email is required" };
+                }
+              },
+            }}
             children={(Field) => (
               <Field.TextField
                 autoFocus
@@ -64,7 +75,12 @@ export const ForgotPasswordForm = () => {
         }}
       >
         <Form.SubmitButton>
-          {/*{isPending && <Spinner size={16} />}*/}
+          {isPending && (
+            <ActivityIndicator
+              size={"small"}
+              colorClassName="accent-primary-foreground"
+            />
+          )}
           <PrimaryButton.Label>Send Reset Link</PrimaryButton.Label>
         </Form.SubmitButton>
       </KeyboardStickyView>

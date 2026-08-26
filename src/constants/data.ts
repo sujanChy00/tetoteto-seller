@@ -1,4 +1,4 @@
-import { ILanguageCode, ILanguageTexts } from "@/types";
+import { ILanguageCode, ILanguageTexts, ItemSortOption } from "@/types";
 
 export const SASTO_SULAV_NEPAL = 2586825067;
 export const SASTO_SULAV_iNDIA = 2863768825;
@@ -101,21 +101,21 @@ export const shipmentFilterOptions = [
   },
 ];
 
-export const ItemSortOptions = [
+export const ItemSortOptions: ItemSortOption[] = [
   {
-    label: "Price",
+    label: "price",
     value: "price",
   },
   {
-    label: "Stock",
+    label: "stock",
     value: "stock",
   },
   {
-    label: "Updated",
+    label: "updated",
     value: "updated_at",
   },
   {
-    label: "Added",
+    label: "added",
     value: "created_at",
   },
 ];

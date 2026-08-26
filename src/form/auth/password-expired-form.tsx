@@ -3,19 +3,28 @@ import { GhostButton, PrimaryButton } from "@/components/ui/button";
 import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
+import { useHaptics } from "@/hooks/use-haptics";
 import { useScrollToBottomOnKeyboardVisible } from "@/hooks/use-scroll-to-bottom-on-keyboard-visible";
 import { useUser } from "@/hooks/use-user";
-import { useLogoutMutation } from "@/mutation/auth-mutation";
+import { useLogoutMutation, useUpdatePassword } from "@/mutation/auth-mutation";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 
 export const PasswordExpiredForm = () => {
+  const haptics = useHaptics();
   const { scrollViewRef } = useScrollToBottomOnKeyboardVisible();
   const { user } = useUser();
   const { mutate: logout, isPending: isPendingLogout } = useLogoutMutation();
+  const { mutateAsync, isPending } = useUpdatePassword();
   const Form = useForm({
     defaultValues: { oldPassword: "", newPassword: "" },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      await mutateAsync({
+        newPassword: value.newPassword,
+        oldPassword: value.oldPassword,
+      });
+    },
+    onSubmitInvalid: () => {
+      haptics("error");
     },
   });
   return (
@@ -41,6 +50,13 @@ export const PasswordExpiredForm = () => {
           <View className="items-center gap-y-6">
             <Form.AppField
               name="oldPassword"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (!value.trim()) {
+                    return { message: "Old password is required" };
+                  }
+                },
+              }}
               children={(Field) => (
                 <Field.PasswordField
                   placeholder="********"
@@ -50,6 +66,13 @@ export const PasswordExpiredForm = () => {
             />
             <Form.AppField
               name="newPassword"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (!value.trim()) {
+                    return { message: "New password is required" };
+                  }
+                },
+              }}
               children={(Field) => (
                 <Field.PasswordField
                   placeholder="********"
@@ -66,7 +89,12 @@ export const PasswordExpiredForm = () => {
       <StickyKeyboardWrapper closedOffset={-22}>
         <View className="gap-y-1 w-full">
           <Form.SubmitButton>
-            {/*<ActivityIndicator size={16} />*/}
+            {isPending && (
+              <ActivityIndicator
+                size={"small"}
+                colorClassName="accent-primaryaccent-primary-foreground"
+              />
+            )}
             <PrimaryButton.Label>Reset Password</PrimaryButton.Label>
           </Form.SubmitButton>
           <GhostButton
@@ -74,7 +102,12 @@ export const PasswordExpiredForm = () => {
               logout();
             }}
           >
-            {isPendingLogout && <ActivityIndicator size={20} />}
+            {isPendingLogout && (
+              <ActivityIndicator
+                size={"small"}
+                colorClassName="accent-primary"
+              />
+            )}
             <GhostButton.Label>Login with another account?</GhostButton.Label>
           </GhostButton>
         </View>

@@ -3,18 +3,26 @@ import { PrimaryButton } from "@/components/ui/button";
 import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { ScrollView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useHaptics } from "@/hooks/use-haptics";
+import { useUpdatePassword } from "@/mutation/auth-mutation";
+import { useLocalSearchParams } from "expo-router";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
 export const ResetPasswordForm = () => {
-  const router = useRouter();
-  const { bottom } = useSafeAreaInsets();
+  const haptics = useHaptics();
+  const { mutateAsync, isPending } = useUpdatePassword();
   const { token } = useLocalSearchParams<{ token: string }>();
   const Form = useForm({
     defaultValues: { newPassword: "", confirmNewPassword: "" },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      await mutateAsync({
+        newPassword: value.newPassword,
+        oldPassword: null,
+        token,
+      });
+    },
+    onSubmitInvalid: () => {
+      haptics("error");
     },
   });
   return (
@@ -36,6 +44,13 @@ export const ResetPasswordForm = () => {
           <View className="items-center gap-y-6">
             <Form.AppField
               name="newPassword"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (!value.trim()) {
+                    return { message: "Password is required" };
+                  }
+                },
+              }}
               children={(Field) => (
                 <Field.PasswordField
                   placeholder="********"
@@ -47,6 +62,15 @@ export const ResetPasswordForm = () => {
             />
             <Form.AppField
               name="confirmNewPassword"
+              validators={{
+                onSubmit: ({ fieldApi, value }) => {
+                  const password = fieldApi.form.getFieldValue("newPassword");
+
+                  if (value !== password) {
+                    return { message: "Passwords don't match" };
+                  }
+                },
+              }}
               children={(Field) => (
                 <Field.PasswordField
                   placeholder="********"
@@ -62,7 +86,12 @@ export const ResetPasswordForm = () => {
       </ScrollView>
       <StickyKeyboardWrapper>
         <Form.SubmitButton>
-          {/*<Spinner size={16} />*/}
+          {isPending && (
+            <ActivityIndicator
+              size={"small"}
+              colorClassName="accent-primary-foreground"
+            />
+          )}
           <PrimaryButton.Label>Reset Password</PrimaryButton.Label>
         </Form.SubmitButton>
       </StickyKeyboardWrapper>

@@ -2,6 +2,7 @@ import { AnimatedSpacer } from "@/components/ui/animated-spacer";
 import { ThemedText } from "@/components/ui/themed-text";
 import { isIOS } from "@/constants/platform";
 import { useForm } from "@/hooks/use-form";
+import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import {
   useAddItemVaritaions,
@@ -30,6 +31,7 @@ interface Props {
 
 export const ItemVariationForm = ({ variation, refetch }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
+  const haptics = useHaptics();
   const router = useRouter();
   const { t } = useLanguage();
   const { itemId } = useLocalSearchParams<{ itemId: string }>();
@@ -58,6 +60,9 @@ export const ItemVariationForm = ({ variation, refetch }: Props) => {
     } satisfies ItemVariationInput,
     validators: {
       onSubmit: ItemVariationSchema,
+    },
+    onSubmitInvalid: () => {
+      haptics("error");
     },
     onSubmit: async ({ value }) => {
       const parsed = v.parse(ItemVariationSchema, value);

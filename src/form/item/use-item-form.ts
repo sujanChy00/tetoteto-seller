@@ -1,4 +1,5 @@
 import { useForm } from "@/hooks/use-form";
+import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import {
   useAddItem,
@@ -26,6 +27,7 @@ interface Props {
 export const useItemForm = ({ item, itemId, copyItem }: Props) => {
   const router = useRouter();
   const { t } = useLanguage();
+  const haptics = useHaptics();
   const getItemByLan = useCallback(
     (lan: ILanguageCode) => {
       if (!item) return null;
@@ -92,6 +94,9 @@ export const useItemForm = ({ item, itemId, copyItem }: Props) => {
     } satisfies ItemFormInput,
     validators: {
       onSubmit: itemFormSchema,
+    },
+    onSubmitInvalid: () => {
+      haptics("error");
     },
     onSubmit: async ({ value }) => {
       const parsed = v.parse(itemFormSchema, value);

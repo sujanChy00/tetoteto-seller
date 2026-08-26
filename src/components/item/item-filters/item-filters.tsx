@@ -5,8 +5,9 @@ import { Menu } from "@/components/ui/menu";
 import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { ItemSortOptions } from "@/constants/data";
+import { useLanguage } from "@/hooks/use-language";
 import { useSortItems } from "@/hooks/use-sort-items";
-import { ItemSortOption } from "@/types";
+import { ILanguageTexts, ItemSortOption } from "@/types";
 import { useMemo, useState } from "react";
 import { View } from "react-native";
 import { ZoomIn, ZoomOut } from "react-native-reanimated";
@@ -21,6 +22,7 @@ export const ItemFilters = ({
   showSearch = false,
   options,
 }: ItemFiltersProps) => {
+  const { t } = useLanguage();
   const { onSort, params, router } = useSortItems();
   const [query, setQuery] = useState(params.query ?? "");
   const sortOptions = useMemo(() => options || ItemSortOptions, [options]);
@@ -35,7 +37,7 @@ export const ItemFilters = ({
       >
         <Menu
           nativeOptions={sortOptions.map((item) => ({
-            title: item.label,
+            title: t(item.label as ILanguageTexts),
             id: item.value,
             state: params.sort === item.value ? "on" : "off",
           }))}

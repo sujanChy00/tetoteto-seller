@@ -72,6 +72,7 @@ const ItemVariationDetailScreen = () => {
         contentContainerClassName="p-2"
         onRefresh={onRefresh}
         recycleItems
+        estimatedItemSize={170}
         ListEmptyComponent={ListEmptyComponent}
       />
     </View>

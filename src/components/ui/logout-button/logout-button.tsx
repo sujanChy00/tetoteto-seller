@@ -10,7 +10,7 @@ export const LogoutButton = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
       { text: "Cancel", style: "cancel" },
       {
-        text: "Delete",
+        text: "Logout",
         style: "destructive",
         onPress: () => {
           logout();

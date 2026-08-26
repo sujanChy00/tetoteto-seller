@@ -3,13 +3,14 @@ import { PrimaryButton } from "@/components/ui/button";
 import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { ThemedText } from "@/components/ui/themed-text";
 import { useForm } from "@/hooks/use-form";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { ScrollView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useHaptics } from "@/hooks/use-haptics";
+import { useValidateCode } from "@/mutation/auth-mutation";
+import { useLocalSearchParams } from "expo-router";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
 export const OtpForm = () => {
-  const router = useRouter();
-  const { bottom } = useSafeAreaInsets();
+  const haptics = useHaptics();
+  const { mutateAsync, isPending } = useValidateCode();
 
   const { email } = useLocalSearchParams<{ email?: string }>();
   const Form = useForm({
@@ -17,12 +18,13 @@ export const OtpForm = () => {
       email,
       reset_code: "",
     },
-    onSubmit: ({ value }) => {
-      router.push({
-        pathname: "/auth/update-password",
-        params: {
-          email: value.email,
-        },
+    onSubmitInvalid: () => {
+      haptics("error");
+    },
+    onSubmit: async ({ value }) => {
+      await mutateAsync({
+        email: value.email!,
+        reset_code: Number(value.reset_code),
       });
     },
   });
@@ -50,6 +52,13 @@ export const OtpForm = () => {
           <View className="items-center gap-y-6">
             <Form.AppField
               name="email"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (!value?.trim()) {
+                    return { message: "Email is required" };
+                  }
+                },
+              }}
               children={(Field) => (
                 <Field.TextField
                   keyboardType="email-address"
@@ -64,6 +73,13 @@ export const OtpForm = () => {
             />
             <Form.AppField
               name="reset_code"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (!value?.trim()) {
+                    return { message: "OTP is required" };
+                  }
+                },
+              }}
               children={(Field) => <Field.OTPField label="OTP" />}
             />
           </View>
@@ -72,7 +88,12 @@ export const OtpForm = () => {
       </ScrollView>
       <StickyKeyboardWrapper>
         <Form.SubmitButton>
-          {/*<Spinner size={16} />*/}
+          {isPending && (
+            <ActivityIndicator
+              size={"small"}
+              colorClassName="accent-primary-foreground"
+            />
+          )}
           <PrimaryButton.Label>Send Reset Link</PrimaryButton.Label>
         </Form.SubmitButton>
       </StickyKeyboardWrapper>
