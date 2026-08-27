@@ -75,7 +75,7 @@ const ChatScreen = () => {
       recycleItems
       maintainVisibleContentPosition
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="pt-safe-offset-20 px-2"
+      contentContainerClassName="pt-safe-offset-20 px-2 pb-safe-offset-6"
       drawDistance={500}
       keyboardDismissMode="on-drag"
       ListHeaderComponent={listHeaderComponent}
