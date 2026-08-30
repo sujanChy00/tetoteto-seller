@@ -1,4 +1,4 @@
-import { useSendMessage } from "@/mutation/chat-mutation";
+import { IMessageInput } from "@/types";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { TextInput, View } from "react-native";
@@ -13,15 +13,15 @@ import { ChatItemSelector } from "./chat-item-selector";
 interface Props {
   canReply: boolean;
   isPending: boolean;
+  onSendMessage: (data: IMessageInput) => void;
 }
 
-export const ChatActions = ({ canReply, isPending }: Props) => {
+export const ChatActions = ({ canReply, isPending, onSendMessage }: Props) => {
   const { userId, orderId } = useLocalSearchParams<{
     userId: string;
     orderId?: string;
   }>();
   const [text, setText] = useState("");
-  const { mutate: sendMessage } = useSendMessage();
 
   if (!isPending && !canReply)
     return (
@@ -44,8 +44,13 @@ export const ChatActions = ({ canReply, isPending }: Props) => {
       className="flex-row items-center gap-1"
     >
       <View className="flex-row items-center flex-1 bg-surface-secondary rounded-3xl pl-2">
-        <ChatImageSender disabled={isPending} />
-        {!!orderId && <ChatItemSelector disabled={isPending} />}
+        <ChatImageSender onSendMessage={onSendMessage} disabled={isPending} />
+        {!!orderId && (
+          <ChatItemSelector
+            onSendMessage={onSendMessage}
+            disabled={isPending}
+          />
+        )}
         <TextInput
           value={text}
           onChangeText={setText}
@@ -57,7 +62,7 @@ export const ChatActions = ({ canReply, isPending }: Props) => {
       </View>
       <PrimaryButton
         onPress={() => {
-          sendMessage({ userId: Number(userId), text: text.trim() });
+          onSendMessage({ userId: Number(userId), text: text.trim() });
           setText("");
         }}
         disabled={isPending}

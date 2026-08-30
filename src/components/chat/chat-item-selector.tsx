@@ -1,6 +1,5 @@
-import { useSendMessage } from "@/mutation/chat-mutation";
 import { useGetOrderById } from "@/queries/order-query";
-import { ChatItem, ITransactionById } from "@/types";
+import { ChatItem, IMessageInput, ITransactionById } from "@/types";
 import { getAvatarName } from "@/utils/avatar-name";
 import {
   BottomSheetModal,
@@ -18,10 +17,14 @@ import { ThemedText } from "../ui/themed-text";
 interface Props {
   disabled?: boolean;
   className?: string;
+  onSendMessage: (data: IMessageInput) => void;
 }
 
-export const ChatItemSelector = ({ disabled, className }: Props) => {
-  const { mutate: sendMessage } = useSendMessage();
+export const ChatItemSelector = ({
+  disabled,
+  className,
+  onSendMessage,
+}: Props) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [opened, setOpend] = useState(false);
   const { userId, orderId } = useLocalSearchParams<{
@@ -46,7 +49,7 @@ export const ChatItemSelector = ({ disabled, className }: Props) => {
   }, []);
 
   const onItemSend = (item: Partial<ChatItem>) => {
-    sendMessage({
+    onSendMessage({
       userId: Number(userId),
       item: {
         itemId: item.itemId,

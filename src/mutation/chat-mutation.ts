@@ -97,14 +97,9 @@ export const useSendMessage = () => {
     mutationFn: async (data: IMessageInput) => {
       const { userId, text, image, itemId } = data;
       const formData = new FormData();
-      if (text) {
-        formData.append("text", text.trim());
-      }
-      if (itemId) {
-        formData.append("itemId", itemId);
-      }
+      if (text) formData.append("text", text.trim());
+      if (itemId) formData.append("itemId", itemId);
       formData.append("userId", String(userId));
-
       if (image) {
         if (typeof image === "string") {
           addLocalFileToFormData(image, formData, "image");
@@ -112,16 +107,16 @@ export const useSendMessage = () => {
           formData.append("image", image);
         }
       }
-
-      await fetcher({
+      // capture and return the created message — see note below
+      const response = await fetcher<IChatMessage>({
         url: `/shop-message/${selectedShop?.shopId}`,
         method: "POST",
         data: formData,
-        headers: {
-          "content-type": "multipart/form-data",
-        },
+        headers: { "content-type": "multipart/form-data" },
       });
+      return response;
     },
+
     onMutate: async (variables) => {
       await queryClient.cancelQueries({
         queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
@@ -130,8 +125,11 @@ export const useSendMessage = () => {
         queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
       });
 
+      // generated internally — callers never need to know this exists
+      const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
       const optimisticMsg: IChatMessage = {
-        id: Math.random(),
+        id: tempId,
         text: variables.text,
         image:
           typeof variables.image === "string" ? variables.image : undefined,
@@ -145,16 +143,12 @@ export const useSendMessage = () => {
       queryClient.setQueriesData<InfiniteData<IPaginatedChatResponse>>(
         {
           queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
-          predicate: (query) => {
-            return (
-              query.queryKey[0] === GET_USER_CHAT_DETAILS_QUERY_KEY &&
-              (query.queryKey[1] as any)?.userId === variables.userId
-            );
-          },
+          predicate: (query) =>
+            query.queryKey[0] === GET_USER_CHAT_DETAILS_QUERY_KEY &&
+            (query.queryKey[1] as any)?.userId === variables.userId,
         },
         (old) => {
           if (!old) return old;
-
           const newPages = [...old.pages];
           if (newPages.length > 0) {
             newPages[0] = {
@@ -162,37 +156,51 @@ export const useSendMessage = () => {
               content: [optimisticMsg, ...newPages[0].content],
             };
           }
-
-          return {
-            ...old,
-            pages: newPages,
-          };
+          return { ...old, pages: newPages };
         },
       );
 
-      return { previousData };
+      return { previousData, tempId };
     },
+
+    // Reconcile the SAME key in place — no invalidate needed for the happy path.
+    onSuccess: (serverMessage, variables, context) => {
+      if (!serverMessage || !context?.tempId) return;
+      queryClient.setQueriesData<InfiniteData<IPaginatedChatResponse>>(
+        {
+          queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
+          predicate: (query) =>
+            query.queryKey[0] === GET_USER_CHAT_DETAILS_QUERY_KEY &&
+            (query.queryKey[1] as any)?.userId === variables.userId,
+        },
+        (old) => {
+          if (!old) return old;
+          const newPages = old.pages.map((page) => ({
+            ...page,
+            content: page.content.map((msg) =>
+              msg.id === context.tempId
+                ? { ...serverMessage, sending: false }
+                : msg,
+            ),
+          }));
+          return { ...old, pages: newPages };
+        },
+      );
+    },
+
     onError(error, _, context) {
       if (context?.previousData) {
         context.previousData.forEach(([queryKey, data]) => {
           queryClient.setQueryData(queryKey, data);
         });
       }
-      errorToast({
-        title: t("error"),
-        description: error.message,
-      });
-    },
-    onSettled: (_, __, variables) => {
-      return queryClient.invalidateQueries({
+      // only resync from server when the local cache might be wrong
+      queryClient.invalidateQueries({
         queryKey: [GET_USER_CHAT_DETAILS_QUERY_KEY],
-        predicate: (query) => {
-          return (
-            query.queryKey[0] === GET_USER_CHAT_DETAILS_QUERY_KEY &&
-            (query.queryKey[1] as any)?.userId === variables.userId
-          );
-        },
       });
+      errorToast({ title: t("error"), description: error.message });
     },
+
+    // no onSettled — the happy path is fully reconciled by onSuccess above
   });
 };

@@ -37,7 +37,7 @@ export type UnseenCount = {
 };
 
 export type IChatMessage = {
-  id: number;
+  id: number | string;
   text?: string;
   image?: string;
   user: boolean;

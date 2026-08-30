@@ -1,4 +1,4 @@
-import { useSendMessage } from "@/mutation/chat-mutation";
+import { IMessageInput } from "@/types";
 import {
   BottomSheetModal,
   BottomSheetView,
@@ -14,12 +14,16 @@ import { StyledSymbolView } from "../ui/symbol-view";
 interface Props {
   disabled?: boolean;
   className?: string;
+  onSendMessage: (data: IMessageInput) => void;
 }
 
-export const ChatImageSender = ({ disabled, className }: Props) => {
+export const ChatImageSender = ({
+  disabled,
+  className,
+  onSendMessage,
+}: Props) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const { userId } = useLocalSearchParams<{ userId: string }>();
-  const { mutate: sendMessage } = useSendMessage();
 
   const onOpen = useCallback(() => {
     if (!bottomSheetRef.current) return;
@@ -47,7 +51,7 @@ export const ChatImageSender = ({ disabled, className }: Props) => {
     if (result.canceled) return;
 
     const uri = result.assets[0]?.uri;
-    sendMessage({
+    onSendMessage({
       userId: Number(userId),
       image: uri,
     });
@@ -61,7 +65,7 @@ export const ChatImageSender = ({ disabled, className }: Props) => {
     });
     if (!result.canceled && result.assets) {
       const uri = result.assets[0]?.uri;
-      sendMessage({
+      onSendMessage({
         userId: Number(userId),
         image: uri,
       });

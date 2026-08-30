@@ -1,6 +1,6 @@
 import { IChatMessage } from "@/types";
-import { LegendList } from "@legendapp/list/react-native";
-import { useCallback } from "react";
+import { LegendList, type LegendListRef } from "@legendapp/list/react-native";
+import { forwardRef, useCallback } from "react";
 import { ScrollViewProps, View } from "react-native";
 import { PendingComponent } from "../layout/pending-component";
 import { VirtualizedListScrollView } from "../layout/virtualized-list-scroll-view";
@@ -19,77 +19,68 @@ interface Props {
 
 const renderSeparator = () => <ListSeparator className="h-5" />;
 
-export const ChatList = ({
-  messages,
-  hasNextPage,
-  isFetchingNextPage,
-  fetchNextPage,
-  isPending,
-}: Props) => {
-  const renderItem = useCallback(
-    ({ item }: { item: IChatMessage }) => <ChatMessage item={item} />,
-    [],
-  );
-
-  const keyExtractor = useCallback(({ id }: IChatMessage) => id.toString(), []);
-
-  const onStartReached = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const ListFooterComponent = useCallback(() => <View className="h-2" />, []);
-  const ListHeaderComponent = useCallback(() => <View className="h-4" />, []);
-
-  const getItemType = useCallback(({ text, image, item }: IChatMessage) => {
-    if (item) return "item";
-    if (image) return "image";
-    if (text) return "text";
-    return "empty";
-  }, []);
-  if (isPending) return <PendingComponent />;
-  if (messages.length === 0)
-    return (
-      <View className="flex-1 items-center justify-center gap-3">
-        <StyledSymbolView
-          size={50}
-          name={{
-            android: "sms",
-            ios: "message",
-          }}
-        />
-        <ThemedText className="italic text-center text-base">
-          Start a conversation
-        </ThemedText>
-      </View>
+export const ChatList = forwardRef<LegendListRef, Props>(
+  (
+    { messages, hasNextPage, isFetchingNextPage, fetchNextPage, isPending },
+    ref,
+  ) => {
+    const renderItem = useCallback(
+      ({ item }: { item: IChatMessage }) => <ChatMessage item={item} />,
+      [],
+    );
+    const keyExtractor = useCallback(
+      ({ id }: IChatMessage) => id.toString(),
+      [],
+    );
+    const onStartReached = useCallback(() => {
+      if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+    const getItemType = useCallback(({ text, image, item }: IChatMessage) => {
+      if (item) return "item";
+      if (image) return "image";
+      if (text) return "text";
+      return "empty";
+    }, []);
+    const memoList = useCallback(
+      (props: ScrollViewProps) => <VirtualizedListScrollView {...props} />,
+      [],
     );
 
-  const memoList = useCallback(
-    (props: ScrollViewProps) => <VirtualizedListScrollView {...props} />,
-    [],
-  );
+    if (isPending) return <PendingComponent />;
+    if (messages.length === 0)
+      return (
+        <View className="flex-1 items-center justify-center gap-3">
+          <StyledSymbolView
+            size={50}
+            name={{ android: "sms", ios: "message" }}
+          />
+          <ThemedText className="italic text-center text-base">
+            Start a conversation
+          </ThemedText>
+        </View>
+      );
 
-  return (
-    <LegendList
-      showsVerticalScrollIndicator={false}
-      data={messages}
-      getItemType={getItemType}
-      recycleItems
-      renderScrollComponent={memoList}
-      renderItem={renderItem}
-      estimatedItemSize={100}
-      maintainVisibleContentPosition={{ size: true }}
-      scrollEventThrottle={16}
-      onStartReachedThreshold={0.05}
-      ListHeaderComponent={ListHeaderComponent}
-      contentContainerClassName="p-2"
-      ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={renderSeparator}
-      keyExtractor={keyExtractor}
-      onStartReached={onStartReached}
-      alignItemsAtEnd
-      maintainScrollAtEnd
-      initialScrollAtEnd
-      maintainScrollAtEndThreshold={0.1}
-    />
-  );
-};
+    return (
+      <LegendList
+        ref={ref}
+        showsVerticalScrollIndicator={false}
+        data={messages}
+        getItemType={getItemType}
+        recycleItems
+        renderItem={renderItem}
+        maintainVisibleContentPosition
+        scrollEventThrottle={16}
+        onStartReachedThreshold={0.05}
+        contentContainerClassName="p-2"
+        ItemSeparatorComponent={renderSeparator}
+        keyExtractor={keyExtractor}
+        onStartReached={onStartReached}
+        renderScrollComponent={memoList}
+        alignItemsAtEnd
+        estimatedItemSize={80}
+        initialScrollAtEnd
+      />
+    );
+  },
+);
+ChatList.displayName = "ChatList";
