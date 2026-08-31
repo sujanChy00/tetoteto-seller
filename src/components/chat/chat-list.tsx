@@ -1,7 +1,9 @@
+import { isAndroid } from "@/constants/platform";
 import { IChatMessage } from "@/types";
-import { LegendList, type LegendListRef } from "@legendapp/list/react-native";
-import { forwardRef, useCallback } from "react";
+import { type LegendListRef } from "@legendapp/list/react-native";
+import { ComponentRef, forwardRef, useCallback, useRef } from "react";
 import { ScrollViewProps, View } from "react-native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 import { PendingComponent } from "../layout/pending-component";
 import { VirtualizedListScrollView } from "../layout/virtualized-list-scroll-view";
 import { ListSeparator } from "../ui/list/list-separator";
@@ -17,13 +19,17 @@ interface Props {
   isPending: boolean;
 }
 
+type ChatListRef = ComponentRef<typeof Animated.FlatList>;
+
 const renderSeparator = () => <ListSeparator className="h-5" />;
 
-export const ChatList = forwardRef<LegendListRef, Props>(
+export const ChatList = forwardRef<ChatListRef, Props>(
   (
     { messages, hasNextPage, isFetchingNextPage, fetchNextPage, isPending },
     ref,
   ) => {
+    const isBulkLoadRef = useRef(false);
+
     const renderItem = useCallback(
       ({ item }: { item: IChatMessage }) => <ChatMessage item={item} />,
       [],
@@ -32,20 +38,25 @@ export const ChatList = forwardRef<LegendListRef, Props>(
       ({ id }: IChatMessage) => id.toString(),
       [],
     );
-    const onStartReached = useCallback(() => {
-      if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+
+    const onEndReached = useCallback(() => {
+      if (hasNextPage && !isFetchingNextPage) {
+        isBulkLoadRef.current = true;
+        fetchNextPage();
+      }
     }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
     const getItemType = useCallback(({ text, image, item }: IChatMessage) => {
       if (item) return "item";
       if (image) return "image";
       if (text) return "text";
       return "empty";
     }, []);
+
     const memoList = useCallback(
       (props: ScrollViewProps) => <VirtualizedListScrollView {...props} />,
       [],
     );
-
     if (isPending) return <PendingComponent />;
     if (messages.length === 0)
       return (
@@ -61,24 +72,25 @@ export const ChatList = forwardRef<LegendListRef, Props>(
       );
 
     return (
-      <LegendList
+      <Animated.FlatList
         ref={ref}
+        itemLayoutAnimation={LinearTransition}
         showsVerticalScrollIndicator={false}
         data={messages}
-        getItemType={getItemType}
-        recycleItems
         renderItem={renderItem}
-        maintainVisibleContentPosition
+        initialNumToRender={15}
+        maxToRenderPerBatch={5}
+        windowSize={12}
+        updateCellsBatchingPeriod={30}
+        removeClippedSubviews={isAndroid}
         scrollEventThrottle={16}
-        onStartReachedThreshold={0.05}
-        contentContainerClassName="p-2"
+        onEndReachedThreshold={0.5}
+        contentContainerStyle={{ padding: 8 }}
         ItemSeparatorComponent={renderSeparator}
         keyExtractor={keyExtractor}
-        onStartReached={onStartReached}
+        onEndReached={onEndReached}
+        inverted
         renderScrollComponent={memoList}
-        alignItemsAtEnd
-        estimatedItemSize={80}
-        initialScrollAtEnd
       />
     );
   },

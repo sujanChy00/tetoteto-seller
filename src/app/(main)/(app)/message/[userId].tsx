@@ -6,16 +6,16 @@ import { useSendMessage } from "@/mutation/chat-mutation";
 import { useGetUserMessagesById } from "@/queries/chat-query";
 import { IMessageInput } from "@/types";
 import SHOPPING_BAG_ICON from "@expo/material-symbols/local_mall.xml";
-import { LegendListRef } from "@legendapp/list/react-native";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useMemo, useRef } from "react";
+import { ComponentRef, useMemo, useRef } from "react";
 import { View } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
+import Animated from "react-native-reanimated";
 import { twMerge } from "tailwind-merge";
 
 const ChatDetailScreen = () => {
   const router = useRouter();
-  const listRef = useRef<LegendListRef>(null);
+  const listRef = useRef<ComponentRef<typeof Animated.FlatList>>(null);
   const { mutate: sendMessage } = useSendMessage();
   const { userId } = useLocalSearchParams<{ userId: string }>();
   const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage } =
@@ -31,7 +31,7 @@ const ChatDetailScreen = () => {
       return true;
     });
     return {
-      messages: deduped.toReversed(),
+      messages: deduped,
       canReply: firstPage?.canReply,
       user: firstPage?.user,
     };
@@ -39,6 +39,9 @@ const ChatDetailScreen = () => {
 
   const handleSendMessage = (data: IMessageInput) => {
     sendMessage(data);
+    requestAnimationFrame(() => {
+      listRef.current?.scrollToOffset({ offset: 0, animated: true });
+    });
   };
   return (
     <View className="flex-1">
