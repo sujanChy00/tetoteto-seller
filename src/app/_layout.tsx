@@ -3,9 +3,11 @@ import { AppThemeProvider, useAppTheme } from "@/context/app-theme-provider";
 import { AuthProvider, useLoading } from "@/context/auth-provider";
 import { QueryProvider } from "@/context/query-provider";
 import { useAppInit } from "@/hooks/use-app-init";
+import { useNotificationHandler } from "@/hooks/use-notifiation-handler";
 import { useUser } from "@/hooks/use-user";
 import { Toaster } from "burnt/web";
 import { useFonts } from "expo-font";
+import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
 import * as SplashScreen from "expo-splash-screen";
@@ -19,7 +21,20 @@ import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
+// Must be set at module scope, not inside a component,
+// so it applies before any notification arrives.
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 export default function RootLayout() {
+  useNotificationHandler();
+
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -36,7 +51,6 @@ export default function RootLayout() {
     </SafeAreaProvider>
   );
 }
-
 function StackLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),

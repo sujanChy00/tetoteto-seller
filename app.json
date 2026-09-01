@@ -8,15 +8,8 @@
     "scheme": "tetotetoseller",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "fetch",
-          "remote-notification",
-          "fetch",
-          "remote-notification"
-        ]
-      }
+      "icon": "./assets/images/icon.png",
+      "bundleIdentifier": "com.sujan-chy.tetotetoseller"
     },
     "android": {
       "softwareKeyboardLayoutMode": "resize",
@@ -25,10 +18,10 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
-        "android.permission.ACCESS_NETWORK_STATE"
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
       ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -36,7 +29,8 @@
         "backgroundImage": "./assets/images/adaptive-icon.png",
         "monochromeImage": "./assets/images/adaptive-icon.png"
       },
-      "package": "com.sujan_chy.tetotetoseller"
+      "package": "com.sujan_chy.tetotetoseller",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "output": "static",
@@ -53,7 +47,6 @@
             "image": "./assets/images/splash.png",
             "backgroundColor": "#000000"
           },
-
           "imageWidth": 76
         }
       ],
@@ -73,7 +66,16 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

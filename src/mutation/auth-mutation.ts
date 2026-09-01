@@ -5,6 +5,7 @@ import {
   TOKEN_KEY,
 } from "@/constants/query-keys";
 import { useAppInit } from "@/hooks/use-app-init";
+import { useDeviceToken } from "@/hooks/use-device-token";
 import { useHaptics } from "@/hooks/use-haptics";
 import { useLanguage } from "@/hooks/use-language";
 import { useUser } from "@/hooks/use-user";
@@ -263,6 +264,7 @@ export const useSendResetEmail = () => {
 
 export const useBiometricLoginMutation = () => {
   const hapticFeedback = useHaptics();
+  const { deviceToken } = useDeviceToken();
   const queryClient = useQueryClient();
   const { mutateAsync: login } = useLoginMutation();
 
@@ -287,7 +289,11 @@ export const useBiometricLoginMutation = () => {
         throw new BiometricLoginError(result.error);
       }
 
-      await login({ email: storedEmail, password: storedPassword });
+      await login({
+        email: storedEmail,
+        password: storedPassword,
+        deviceToken,
+      });
     },
     onError(error) {
       hapticFeedback("error");
