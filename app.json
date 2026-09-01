@@ -9,7 +9,9 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/images/icon.png",
-      "bundleIdentifier": "com.sujan-chy.tetotetoseller"
+      "bundleIdentifier": "com.sujan-chy.tetotetoseller",
+      "supportsTablet": true,
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "softwareKeyboardLayoutMode": "resize",
