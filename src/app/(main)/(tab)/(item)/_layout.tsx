@@ -18,7 +18,6 @@ const ItemsTabLayout = () => {
         tabBarIndicatorStyle: {
           backgroundColor: primaryColor,
         },
-
         tabBarActiveTintColor: primaryColor,
       }}
     >
