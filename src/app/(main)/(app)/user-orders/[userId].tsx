@@ -5,8 +5,9 @@ import { useRefreshOnFocus } from "@/hooks/use-refetch-onfocus";
 import { useGetUserOrders } from "@/queries/order-query";
 import { UserOrders } from "@/types";
 import { LegendList } from "@legendapp/list/react-native";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
+import { View } from "react-native";
 
 const renderSeparator = () => <ListSeparator />;
 
@@ -37,25 +38,31 @@ const UserOrderScreen = () => {
   );
 
   const orders = useMemo(() => data ?? [], [data]);
+  const totalAmount = orders.reduce((acc, order) => 0 + order.totalPrice, 0);
 
   return (
-    <LegendList
-      recycleItems
-      maintainVisibleContentPosition
-      showsVerticalScrollIndicator={false}
-      contentContainerClassName="p-2 pb-safe-offset-10"
-      drawDistance={500}
-      keyboardDismissMode="on-drag"
-      onEndReachedThreshold={0.5}
-      estimatedItemSize={195}
-      data={orders}
-      ItemSeparatorComponent={renderSeparator}
-      renderItem={renderItem}
-      refreshing={refreshing}
-      keyExtractor={keyExtractor}
-      onRefresh={onRefresh}
-      ListEmptyComponent={ListEmptyComponent}
-    />
+    <View className="flex-1">
+      <Stack.Title>
+        {orders.length} Orders (¥{totalAmount})
+      </Stack.Title>
+      <LegendList
+        recycleItems
+        maintainVisibleContentPosition
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="p-2 pb-safe-offset-10"
+        drawDistance={500}
+        keyboardDismissMode="on-drag"
+        onEndReachedThreshold={0.5}
+        estimatedItemSize={195}
+        data={orders}
+        ItemSeparatorComponent={renderSeparator}
+        renderItem={renderItem}
+        refreshing={refreshing}
+        keyExtractor={keyExtractor}
+        onRefresh={onRefresh}
+        ListEmptyComponent={ListEmptyComponent}
+      />
+    </View>
   );
 };
 

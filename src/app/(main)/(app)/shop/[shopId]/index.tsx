@@ -1,17 +1,15 @@
 import { PendingComponent } from "@/components/layout/pending-component";
+import { ShopAddress } from "@/components/shop/shop-address";
 import { ShopInfo } from "@/components/shop/shop-info";
 import { ShopPrefectures } from "@/components/shop/shop-prefectures";
 import { ShopPromotionalMessage } from "@/components/shop/shop-promotional-message";
-import { ShopTitle } from "@/components/shop/shop-title";
-import { PrimaryButton } from "@/components/ui/button";
 import { FalllBackMesage } from "@/components/ui/fallback-message";
 import { StyledImage } from "@/components/ui/image";
-import { ParallaxScrollView } from "@/components/ui/parallax-scroll-view";
-import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { useGetShopDetails } from "@/queries/shop-query";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import EDIT_ICON from "@expo/material-symbols/edit.xml";
+import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { RefreshControl, View } from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
 
 const ShopDetailsScreen = () => {
   const router = useRouter();
@@ -21,25 +19,7 @@ const ShopDetailsScreen = () => {
   if (isPending) return <PendingComponent />;
   if (!data) return <FalllBackMesage />;
   return (
-    <ParallaxScrollView
-      headerHeight={224}
-      headerImage={
-        <Link
-          href={{
-            pathname: "/image/[image]",
-            params: {
-              image: data.shopPhotoUrl,
-            },
-          }}
-        >
-          <StyledImage
-            placeholderContentFit="cover"
-            source={data.shopPhotoUrl}
-            alt={data.shopName}
-            className="w-full h-56"
-          />
-        </Link>
-      }
+    <ScrollView
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -53,37 +33,45 @@ const ShopDetailsScreen = () => {
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="pb-safe-offset-6"
     >
+      <Stack.Title>{data.shopName}</Stack.Title>
+      <Stack.Toolbar placement="right">
+        <Stack.Toolbar.Button
+          variant="prominent"
+          onPress={() => {
+            router.push({
+              pathname: "/shop/[shopId]/edit",
+              params: {
+                shopId,
+              },
+            });
+          }}
+        >
+          <Stack.Toolbar.Icon sf="plus" src={EDIT_ICON} />
+        </Stack.Toolbar.Button>
+      </Stack.Toolbar>
+      <Link
+        href={{
+          pathname: "/image/[image]",
+          params: {
+            image: data.shopPhotoUrl,
+          },
+        }}
+      >
+        <StyledImage
+          placeholderContentFit="cover"
+          source={data.shopPhotoUrl}
+          alt={data.shopName}
+          className="w-full h-56"
+        />
+      </Link>
       <View className="p-2 gap-6 pt-6">
-        <ShopTitle data={data} />
         <ShopInfo shop={data} />
+        <ShopAddress address={data.shopAddress} />
         <ShopPromotionalMessage promotionalMessage={data.shopIntroduction} />
         <ShopPrefectures prefectures={data.supportedPrefectures} />
       </View>
-      <View className="px-2 pt-4">
-        <Link
-          asChild
-          href={{
-            pathname: "/shop/[shopId]/edit",
-            params: {
-              shopId,
-            },
-          }}
-        >
-          <PrimaryButton>
-            <StyledSymbolView
-              tintColorClassName={"accent-primary-foreground"}
-              name={{
-                android: "edit",
-                ios: "pencil",
-              }}
-              size={18}
-            />
-            <PrimaryButton.Label>Edit Shop</PrimaryButton.Label>
-          </PrimaryButton>
-        </Link>
-      </View>
       <View className="h-5" />
-    </ParallaxScrollView>
+    </ScrollView>
   );
 };
 

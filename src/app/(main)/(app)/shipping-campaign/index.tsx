@@ -56,7 +56,6 @@ const ShippingCampaignScreen = () => {
           }}
         >
           <Stack.Toolbar.Icon sf="plus" src={PLUST_ICON} />
-          <Stack.Toolbar.Label>Add</Stack.Toolbar.Label>
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
       <LegendList
