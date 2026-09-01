@@ -1,8 +1,10 @@
+import { AppUpdateNotifier } from "@/components/layout/app-update-notifier";
 import { NAV_THEME } from "@/constants/theme";
 import { AppThemeProvider, useAppTheme } from "@/context/app-theme-provider";
 import { AuthProvider, useLoading } from "@/context/auth-provider";
 import { QueryProvider } from "@/context/query-provider";
 import { useAppInit } from "@/hooks/use-app-init";
+import { useNetworkStatus } from "@/hooks/use-network-status";
 import { useNotificationHandler } from "@/hooks/use-notifiation-handler";
 import { useUser } from "@/hooks/use-user";
 import { Toaster } from "burnt/web";
@@ -42,6 +44,7 @@ export default function RootLayout() {
           <AppThemeProvider>
             <AuthProvider>
               <QueryProvider>
+                <AppUpdateNotifier />
                 <StackLayout />
               </QueryProvider>
             </AuthProvider>
@@ -60,7 +63,7 @@ function StackLayout() {
   const { loading } = useLoading();
   const { initApp } = useAppInit();
 
-  // useNetworkStatus();
+  useNetworkStatus();
 
   useEffect(() => {
     if (error) throw error;
