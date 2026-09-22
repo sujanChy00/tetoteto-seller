@@ -7,14 +7,15 @@ import { StickyKeyboardWrapper } from "@/components/ui/sticky-keyboard-wrapper";
 import { StyledSymbolView } from "@/components/ui/symbol-view";
 import { orderSortOptions } from "@/constants/data";
 import { useLanguage } from "@/hooks/use-language";
-import { dateOnlyFormatter, endOfMonth, startOfMonth } from "@/utils/date";
-import { BottomSheetModal } from "@expo/ui/community/bottom-sheet";
+import { dateOnlyFormatter } from "@/utils/date";
+import { DateRangeSelection } from "@expo/ui/jetpack-compose";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 import { ZoomIn, ZoomOut } from "react-native-reanimated";
 
 export const OrderFilters = () => {
+  const [isVisible, setIsVisible] = useState(false);
   const {
     endDate,
     orderStatus,
@@ -26,14 +27,14 @@ export const OrderFilters = () => {
     orderStatus?: string;
     query?: string;
   }>();
+  const [date, setDate] = useState<DateRangeSelection>({
+    start: startDate ? new Date(startDate) : null,
+    end: endDate ? new Date(endDate) : null,
+  });
+
   const { t } = useLanguage();
   const router = useRouter();
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [query, setQuery] = useState(queryParam ?? "");
-
-  const onOpen = useCallback(() => {
-    bottomSheetRef.current?.present();
-  }, []);
 
   return (
     <StickyKeyboardWrapper openedOffset={-70}>
@@ -101,28 +102,25 @@ export const OrderFilters = () => {
           ) : null}
         </InputGroup>
         <SecondaryButton
-          onPress={onOpen}
+          onPress={() => {
+            setIsVisible(true);
+          }}
           className="px-0 size-12 rounded-full shadow"
         >
           <StyledSymbolView name={{ android: "date_range", ios: "calendar" }} />
         </SecondaryButton>
       </View>
       <DateRangePicker
-        value={{
-          startDate: startDate ? startOfMonth(new Date(startDate)) : undefined,
-          endDate: endDate ? endOfMonth(new Date(endDate)) : undefined,
-        }}
-        onChange={(data) => {
+        value={date}
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        onChange={(date) => {
           router.setParams({
-            startDate: dateOnlyFormatter(
-              new Date(data.startDate as string),
-            ) as string,
-            endDate: dateOnlyFormatter(
-              new Date(data.endDate as string),
-            ) as string,
+            startDate: dateOnlyFormatter(date.start),
+            endDate: dateOnlyFormatter(date.end),
           });
+          setDate(date);
         }}
-        bottomSheetRef={bottomSheetRef}
       />
     </StickyKeyboardWrapper>
   );

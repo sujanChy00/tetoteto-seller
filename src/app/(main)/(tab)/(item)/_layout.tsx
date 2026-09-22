@@ -1,4 +1,4 @@
-import { MaterialTopTabs } from "@/components/layout/top-tabs";
+import { TopTabs } from "expo-router/js-top-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
 
@@ -8,7 +8,7 @@ const ItemsTabLayout = () => {
   const foregroundColor = useCSSVariable("--color-foreground");
 
   return (
-    <MaterialTopTabs
+    <TopTabs
       screenOptions={{
         lazy: true,
         tabBarInactiveTintColor: foregroundColor,
@@ -21,31 +21,31 @@ const ItemsTabLayout = () => {
         tabBarActiveTintColor: primaryColor,
       }}
     >
-      <MaterialTopTabs.Screen
+      <TopTabs.Screen
         name="item"
         options={{
           title: "Items",
         }}
       />
-      <MaterialTopTabs.Screen
+      <TopTabs.Screen
         name="stock-item"
         options={{
           title: "In Stock",
         }}
       />
-      <MaterialTopTabs.Screen
+      <TopTabs.Screen
         name="low-stock-item"
         options={{
           title: "Low Stock",
         }}
       />
-      <MaterialTopTabs.Screen
+      <TopTabs.Screen
         name="expired-item"
         options={{
           title: "Expired",
         }}
       />
-    </MaterialTopTabs>
+    </TopTabs>
   );
 };
 

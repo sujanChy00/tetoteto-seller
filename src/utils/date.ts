@@ -6,7 +6,7 @@ export const formatter = new Intl.DateTimeFormat("ja-JP", {
   minute: "2-digit",
 });
 
-export const dateOnlyFormatter = (date?: Date, separator = "-") => {
+export const dateOnlyFormatter = (date?: Date | null, separator = "-") => {
   if (!date) return;
 
   const formatter = new Intl.DateTimeFormat("ja-JP", {

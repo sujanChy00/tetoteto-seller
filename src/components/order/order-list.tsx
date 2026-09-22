@@ -16,7 +16,11 @@ interface Props {
 }
 
 const renderSeparator = () => <ListSeparator />;
-const footerStyle = { padding: 10, alignItems: "center" as const };
+const footerStyle = {
+  padding: 10,
+  paddingBottom: 80,
+  alignItems: "center" as const,
+};
 
 export const OrderList = ({ orderType, status }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
