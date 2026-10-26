@@ -61,7 +61,12 @@
           "microphonePermission": false
         }
       ],
-      "expo-image",
+      [
+        "expo-image",
+        {
+          "disableLibdav1d": true
+        }
+      ],
       [
         "expo-local-authentication",
         {
@@ -86,16 +91,20 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {},
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
       "eas": {
-        "projectId": "b786e9db-573c-4423-8f17-b8c5914598a8"
+        "projectId": "4d7a1f78-4d13-47e9-b6b1-cb340be67fd4"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/b786e9db-573c-4423-8f17-b8c5914598a8"
+      "url": "https://u.expo.dev/4d7a1f78-4d13-47e9-b6b1-cb340be67fd4"
     }
   }
 }

@@ -1,6 +1,5 @@
 import { isAndroid } from "@/constants/platform";
 import { IChatMessage } from "@/types";
-import { type LegendListRef } from "@legendapp/list/react-native";
 import { ComponentRef, forwardRef, useCallback, useRef } from "react";
 import { ScrollViewProps, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
@@ -73,8 +72,8 @@ export const ChatList = forwardRef<ChatListRef, Props>(
 
     return (
       <Animated.FlatList
-        ref={ref}
         itemLayoutAnimation={LinearTransition}
+        ref={ref}
         showsVerticalScrollIndicator={false}
         data={messages}
         renderItem={renderItem}

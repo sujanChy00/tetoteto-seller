@@ -40,7 +40,7 @@ export const ChatMessage = memo(({ item }: ChatMessageProps) => {
             text: "Delete",
             style: "destructive",
             onPress: () => {
-              deleteMessage(item.id);
+              deleteMessage(Number(item.id ?? ""));
             },
           },
         ],
